@@ -1,6 +1,6 @@
 ---
 permalink: /
-title: "academicpages is a ready-to-fork GitHub Pages template for academic personal websites"
+title: "My Academic Profile"
 excerpt: "About me"
 author_profile: true
 redirect_from: 
@@ -8,7 +8,20 @@ redirect_from:
   - /about.html
 ---
 
-This is the front page of a website that is powered by the [academicpages template](https://github.com/academicpages/academicpages.github.io) and hosted on GitHub pages. [GitHub pages](https://pages.github.com) is a free service in which websites are built and hosted from code and data stored in a GitHub repository, automatically updating when a new commit is made to the respository. This template was forked from the [Minimal Mistakes Jekyll Theme](https://mmistakes.github.io/minimal-mistakes/) created by Michael Rose, and then extended to support the kinds of content that academics have: publications, talks, teaching, a portfolio, blog posts, and a dynamically-generated CV. You can fork [this repository](https://github.com/academicpages/academicpages.github.io) right now, modify the configuration and markdown files, add your own PDFs and other content, and have your own site for free, with no ads! An older version of this template powers my own personal website at [stuartgeiger.com](http://stuartgeiger.com), which uses [this Github repository](https://github.com/staeiou/staeiou.github.io).
+I'm a passionate postgraduate researcher specializing in Natural Language Processing (NLP), with a strong focus on combatting fake health news. My goal is to leverage cutting-edge NLP techniques to verify and address the spread of misinformation in the healthcare domain.
+
+Here's a glimpse of my expertise:
+* Skilled in Python, HTML, CSS, JavaScript, and PHP
+* Proficient in TensorFlow, PyTorch, Hugging Face, SBERT, and various ML techniques
+* Valuable experience as a part-time NLP research intern at MomentOne
+
+My areas of interest include:
+*Health fake news verification
+*Exploring the potential of Large Language Models and AI in the text domain
+
+I'm driven by a desire to collaborate with like-minded professionals in the NLP field who are passionate about using technology to solve real-world challenges. If you're looking for a motivated and skilled NLP professional to join your team, I'd love to connect!
+
+<!---
 
 A data-driven personal website
 ======
@@ -48,3 +61,5 @@ Example: editing a markdown file for a talk
 For more info
 ------
 More info about configuring academicpages can be found in [the guide](https://academicpages.github.io/markdown/). The [guides for the Minimal Mistakes theme](https://mmistakes.github.io/minimal-mistakes/docs/configuration/) (which this theme was forked from) might also be helpful.
+
+-->
