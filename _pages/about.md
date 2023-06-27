@@ -16,8 +16,8 @@ Here's a glimpse of my expertise:
 * Valuable experience as a part-time NLP research intern at MomentOne
 
 My areas of interest include:
-*Health fake news verification
-*Exploring the potential of Large Language Models and AI in the text domain
+* Health fake news verification
+* Exploring the potential of Large Language Models and AI in the text domain
 
 I'm driven by a desire to collaborate with like-minded professionals in the NLP field who are passionate about using technology to solve real-world challenges. If you're looking for a motivated and skilled NLP professional to join your team, I'd love to connect!
 
