@@ -4,82 +4,96 @@ body {
   background: #f6f8fa;
   color: #21243d;
 }
-header {
-  background: #22223b;
-  color: #fff;
-  padding: 1.5rem 0 1rem 0;
-  margin-bottom: 2rem;
-  position: relative;
-}
-.header-flex {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  max-width: 750px;
-  margin: 0 auto;
-  padding: 0 1rem;
-}
-header h1 {
-  margin: 0;
-  font-size: 2.1rem;
-  font-weight: 700;
-}
-header p {
-  margin: 0.3rem 0 0.8rem 0;
-  font-size: 1.15rem;
-  color: #d3d3e7;
-}
-header .contact {
-  font-size: 1rem;
-  margin-top: 0.5rem;
-}
-header .contact a { color: #aad1fe; text-decoration: none; }
-header .contact a:hover { text-decoration: underline; }
-
-/* Tiny profile picture in corner */
-.profile-pic-corner {
-  width: 65px;
-  height: 65px;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 2.5px solid #fff;
-  box-shadow: 0 2px 7px rgba(30,32,50,.10);
-  margin-top: 0.3rem;
-  margin-left: 1.7rem;
-}
-
 nav {
   display: flex;
   justify-content: center;
   gap: 2.2rem;
-  background: #373abd;
+  background: #fff;
+  border-bottom: 2.5px solid #ececff;
   padding: 0.95rem 0 0.85rem 0;
   font-size: 1.17rem;
   font-weight: 500;
   letter-spacing: .03em;
-  border-bottom: 2.5px solid #ececff;
 }
 nav a {
-  color: #fff;
+  color: #373abd;
   text-decoration: none;
   padding: 0.2em 0.3em 0.15em 0.3em;
   border-bottom: 2.5px solid transparent;
   transition: border-color 0.15s, color 0.15s;
 }
 nav a.active, nav a:focus, nav a:hover {
-  border-bottom: 2.5px solid #aad1fe;
-  color: #aad1fe;
+  border-bottom: 2.5px solid #373abd;
+  color: #21243d;
 }
 
-/* Main content styling */
-.container {
-  max-width: 750px;
+/* Sidebar + main flex layout */
+.container.main-flex {
+  display: flex;
+  align-items: flex-start;
+  gap: 2.3rem;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 2.3rem 1.1rem;
   background: none;
+}
+
+.sidebar {
+  width: 210px;
+  min-width: 170px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(30,32,50,0.06);
+  padding: 1.8rem 1rem 1.1rem 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.profile-pic {
+  width: 82px;
+  height: 82px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2.5px solid #e7e9fc;
+  box-shadow: 0 2px 7px rgba(30,32,50,.11);
+  margin-bottom: 0.6rem;
+}
+.sidebar-name {
+  font-size: 1.19rem;
+  font-weight: 700;
+  margin: 0.8rem 0 0.25rem 0;
+  color: #22223b;
+}
+.sidebar-title {
+  color: #373abd;
+  font-size: 1.01rem;
+  margin-bottom: 1.05rem;
+}
+.sidebar-contact {
+  font-size: 0.98rem;
+  color: #333a;
+  margin-top: 0.1rem;
+  line-height: 1.55;
+}
+.sidebar-contact a {
+  color: #2d72d9;
+  text-decoration: none;
+}
+.sidebar-contact a:hover {
+  text-decoration: underline;
+}
+
+/* Main content */
+main {
+  flex: 1 1 0;
+  min-width: 0;
 }
 main section {
   margin-bottom: 2.3rem;
+}
+h1 {
+  display: none;
 }
 h2 {
   color: #373abd;
@@ -122,20 +136,47 @@ footer {
 }
 
 /* Responsive */
-@media (max-width: 600px) {
-  .header-flex {
+@media (max-width: 900px) {
+  .container.main-flex {
     flex-direction: column;
-    align-items: flex-start;
-    padding: 0 0.4rem;
+    gap: 1.2rem;
+    padding: 1.4rem 0.4rem;
   }
-  .profile-pic-corner {
-    margin-left: 0;
-    margin-top: 0.8rem;
-    width: 50px;
-    height: 50px;
+  .sidebar {
+    width: 100%;
+    min-width: 0;
+    flex-direction: row;
+    align-items: center;
+    padding: 1.3rem 0.7rem;
+    justify-content: flex-start;
+    text-align: left;
+    margin-bottom: 1rem;
   }
-  header h1 { font-size: 1.3rem; }
-  header p { font-size: 0.97rem; }
+  .profile-pic {
+    margin: 0 1.1rem 0 0;
+    width: 58px;
+    height: 58px;
+  }
+  .sidebar-name {
+    font-size: 1.08rem;
+    margin: 0 0.8rem 0 0;
+  }
+  .sidebar-title { font-size: 0.95rem; }
+  .sidebar-contact { font-size: 0.97rem; }
+}
+@media (max-width: 600px) {
   nav { gap: 1.1rem; font-size: 1.04rem; }
-  .container { padding: 1.05rem 0.35rem; }
+  .sidebar {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0.95rem 0.2rem 0.5rem 0.2rem;
+  }
+  .profile-pic {
+    width: 46px;
+    height: 46px;
+    margin: 0 0 0.4rem 0;
+  }
+  .sidebar-name, .sidebar-title, .sidebar-contact { margin: 0; font-size: 0.95rem; }
+  .container.main-flex { padding: 0.5rem 0.1rem; }
 }
