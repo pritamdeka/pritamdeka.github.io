@@ -50,6 +50,16 @@ nav a.active, nav a:focus, nav a:hover {
   flex-direction: column;
   align-items: center;
 }
+.sidebar-contact i {
+  margin-right: 0.43em;
+  color: #888bb0;
+  width: 1.1em;
+  text-align: center;
+}
+.sidebar-contact a {
+  vertical-align: middle;
+}
+
 
 /* -- ENHANCED NAME AND TITLE IN SIDEBAR -- */
 .sidebar-name {
