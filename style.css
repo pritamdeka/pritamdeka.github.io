@@ -3,6 +3,7 @@ body {
   font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
   background: #f6f8fa;
   color: #21243d;
+  font-size: 1.10rem;
 }
 
 nav {
@@ -12,7 +13,7 @@ nav {
   background: #fff;
   border-bottom: 2.5px solid #ececff;
   padding: 0.95rem 0 0.85rem 0;
-  font-size: 1.17rem;
+  font-size: 1.22rem;
   font-weight: 500;
   letter-spacing: .03em;
 }
@@ -50,9 +51,26 @@ nav a.active, nav a:focus, nav a:hover {
   align-items: center;
 }
 
+/* -- ENHANCED NAME AND TITLE IN SIDEBAR -- */
+.sidebar-name {
+  font-size: 1.55rem;
+  font-weight: 800;
+  margin: 0.4rem 0 0.12rem 0;
+  color: #1a1854;
+  letter-spacing: 0.01em;
+}
+
+.sidebar-title {
+  color: #373abd;
+  font-size: 1.13rem;
+  font-weight: 500;
+  margin-bottom: 1.03rem;
+  line-height: 1.35;
+}
+
 .profile-pic-tiny {
-  width: 38px;
-  height: 38px;
+  width: 80px;
+  height: 80px;
   object-fit: cover;
   border-radius: 50%;
   border: 1.8px solid #e7e9fc;
@@ -60,19 +78,8 @@ nav a.active, nav a:focus, nav a:hover {
   margin-bottom: 0.45rem;
 }
 
-.sidebar-name {
-  font-size: 1.04rem;
-  font-weight: 700;
-  margin: 0.3rem 0 0.13rem 0;
-  color: #22223b;
-}
-.sidebar-title {
-  color: #373abd;
-  font-size: 0.98rem;
-  margin-bottom: 0.8rem;
-}
 .sidebar-contact {
-  font-size: 0.89rem;
+  font-size: 1.00rem;
   color: #333a;
   margin-top: 0.1rem;
   line-height: 1.43;
@@ -85,6 +92,7 @@ nav a.active, nav a:focus, nav a:hover {
   text-decoration: underline;
 }
 
+/* MAIN CONTENT */
 main {
   flex: 1 1 0;
   min-width: 0;
@@ -94,26 +102,31 @@ main section {
 }
 h2 {
   color: #373abd;
-  font-size: 1.25rem;
-  margin-bottom: 0.3rem;
+  font-size: 1.27rem;
+  margin-bottom: 0.32rem;
   margin-top: 0;
   border-bottom: 1px solid #e2e8f0;
-  padding-bottom: 0.3rem;
+  padding-bottom: 0.23rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
 }
+
+/* -- COMPACT BULLET POINTS -- */
 ul, ol {
-  padding-left: 1.4em;
-  margin-top: 0.6em;
-  margin-bottom: 0.5em;
+  padding-left: 1.25em;
+  margin-top: 0.35em;
+  margin-bottom: 0.18em;
 }
 ul li, ol li {
-  margin-bottom: 0.4em;
-  font-size: 1.04rem;
-  line-height: 1.7;
+  margin-bottom: 0.13em;
+  font-size: 1.02rem;
+  line-height: 1.45;
 }
 ul ul, ul ol {
-  margin-top: 0.2em;
-  margin-bottom: 0.2em;
+  margin-top: 0.08em;
+  margin-bottom: 0.08em;
 }
+
 a {
   color: #2d72d9;
   text-decoration: none;
@@ -128,11 +141,21 @@ footer {
   color: #cfd2e2;
   text-align: center;
   padding: 1rem 0 1.3rem 0;
-  font-size: 0.98rem;
-  margin-top: 2.5rem;
+  font-size: 0.99rem;
+  margin-top: 2.2rem;
 }
 
-/* Responsive: sidebar stacks on top, photo stays tiny */
+/* -- CENTER MAIN-CONTENT ON OTHER PAGES (NO SIDEBAR) -- */
+.main-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2.3rem 1.1rem;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(70,90,120,0.05);
+}
+
+/* Responsive: sidebar stacks on top, photo stays medium */
 @media (max-width: 700px) {
   .container.main-flex {
     flex-direction: column;
@@ -152,7 +175,15 @@ footer {
   .profile-pic-tiny {
     margin-right: 0.9rem;
     margin-bottom: 0;
+    width: 56px;
+    height: 56px;
   }
+  .sidebar-name {
+    font-size: 1.11rem;
+    margin: 0 0.8rem 0 0;
+  }
+  .sidebar-title { font-size: 0.99rem; }
+  .sidebar-contact { font-size: 0.96rem; }
 }
 @media (max-width: 400px) {
   .profile-pic-tiny { width: 30px; height: 30px; }
