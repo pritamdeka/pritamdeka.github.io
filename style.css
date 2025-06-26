@@ -175,34 +175,65 @@ footer {
 
 /* Responsive: sidebar stacks on top, photo stays medium */
 @media (max-width: 700px) {
+  nav {
+    gap: 0.7rem;
+    font-size: 1rem;              /* Smaller tab text */
+    padding: 0.7rem 0 0.6rem 0;   /* Less vertical padding */
+  }
+  nav a {
+    padding: 0.18em 0.55em 0.15em 0.55em; /* Less side padding for tabs */
+    font-size: 1em;
+  }
   .container.main-flex {
     flex-direction: column;
-    gap: 1.2rem;
-    padding: 1.4rem 0.4rem;
+    gap: 0.6rem;
+    padding: 0.6rem 0.2rem;
   }
   .sidebar {
     width: 100%;
     min-width: 0;
     flex-direction: row;
     align-items: center;
-    padding: 0.7rem 0.4rem;
+    padding: 0.5rem 0.18rem;
     justify-content: flex-start;
     text-align: left;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
   }
   .profile-pic-tiny {
-    margin-right: 0.9rem;
+    margin-right: 0.6rem;
     margin-bottom: 0;
-    width: 56px;
-    height: 56px;
+    width: 38px;
+    height: 38px;
   }
   .sidebar-name {
-    font-size: 1.11rem;
-    margin: 0 0.8rem 0 0;
+    font-size: 0.97rem;
+    margin: 0 0.7rem 0 0;
   }
-  .sidebar-title { font-size: 0.99rem; }
-  .sidebar-contact { font-size: 0.96rem; }
+  .sidebar-title { font-size: 0.87rem; }
+  .sidebar-contact { font-size: 0.87rem; }
+  main, .main-container { padding: 0.07rem 0.08rem; }
 }
+
 @media (max-width: 400px) {
-  .profile-pic-tiny { width: 30px; height: 30px; }
+  nav {
+    font-size: 0.82rem;
+    gap: 0.25rem;
+    padding: 0.25rem 0 0.19rem 0;
+  }
+  nav a {
+    padding: 0.10em 0.2em 0.08em 0.2em;
+    font-size: 0.97em;
+  }
+  .sidebar,
+  .container.main-flex,
+  .main-container {
+    padding: 0.05rem 0.02rem;
+  }
+  .profile-pic-tiny {
+    width: 22px;
+    height: 22px;
+    margin-right: 0.35rem;
+  }
+  .sidebar-name, .sidebar-title, .sidebar-contact { font-size: 0.78rem; }
 }
+
