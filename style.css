@@ -28,7 +28,14 @@ nav a.active, nav a:focus, nav a:hover {
   border-bottom: 2.5px solid #373abd;
   color: #21243d;
 }
-
+.huggingface-emoji {
+  display: inline-block;
+  width: 1.2em;
+  text-align: center;
+  margin-right: 0.4em;
+  font-size: 1.18em;
+  vertical-align: middle;
+}
 .container.main-flex {
   display: flex;
   align-items: flex-start;
