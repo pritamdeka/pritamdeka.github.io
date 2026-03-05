@@ -360,6 +360,33 @@ function formatNumber(num) {
 
 fetchDynamicStats();
 
+// ===== Typing Animation =====
+const typingTexts = document.querySelectorAll('.typing-text');
+
+typingTexts.forEach(element => {
+  const text = element.getAttribute('data-text');
+  if (text) {
+    element.textContent = text;
+    element.style.animation = 'none';
+    element.offsetHeight; // Trigger reflow
+    element.style.animation = 'typing 3s steps(40) forwards, blink 0.7s step-end infinite';
+  }
+});
+
+// Reset animation on visibility change (when user comes back to tab)
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') {
+    typingTexts.forEach(element => {
+      const text = element.getAttribute('data-text');
+      if (text) {
+        element.style.animation = 'none';
+        element.offsetHeight;
+        element.style.animation = 'typing 3s steps(40) forwards, blink 0.7s step-end infinite';
+      }
+    });
+  }
+});
+
 // ===== Contact Form Handler =====
 const contactForm = document.getElementById('contact-form');
 const formStatus = document.getElementById('form-status');
