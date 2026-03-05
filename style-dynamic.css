@@ -146,7 +146,7 @@ nav a.active, nav a:focus, nav a:hover {
   padding: 2.3rem 1.1rem;
 }
 
-/* ===== Updated Sidebar Styles ===== */
+/* ===== Sidebar ===== */
 .sidebar {
   width: 300px;
   min-width: 300px;
@@ -159,32 +159,12 @@ nav a.active, nav a:focus, nav a:hover {
   flex-direction: column;
   align-items: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid var(--border);
   position: sticky;
   top: 100px;
-  border: 1px solid var(--border);
-  max-height: calc(100vh - 120px); /* Fit within viewport */
-  overflow-y: auto; /* Enable scrolling */
-  scrollbar-width: thin; /* Firefox */
-  scrollbar-color: var(--accent) var(--bg-primary);
-}
-
-/* Custom Scrollbar for Webkit */
-.sidebar::-webkit-scrollbar {
-  width: 6px;
-}
-
-.sidebar::-webkit-scrollbar-track {
-  background: var(--bg-primary);
-  border-radius: 10px;
-}
-
-.sidebar::-webkit-scrollbar-thumb {
-  background: var(--accent);
-  border-radius: 10px;
-}
-
-.sidebar::-webkit-scrollbar-thumb:hover {
-  background: var(--text-secondary);
+  align-self: flex-start;
+  max-height: calc(100vh - 120px);
+  overflow: hidden; /* Hide overflow on parent */
 }
 
 .sidebar:hover {
@@ -192,22 +172,55 @@ nav a.active, nav a:focus, nav a:hover {
   box-shadow: 0 8px 30px var(--shadow-hover);
 }
 
-/* Ensure sidebar content doesn't overflow */
+/* Scrollable inner container */
+.sidebar-content {
+  width: 100%;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) var(--bg-primary);
+  max-height: inherit;
+}
+
+.sidebar-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-content::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+  border-radius: 10px;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 10px;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Ensure content fits */
 .sidebar > div {
   width: 100%;
 }
 
-/* Responsive: Remove sticky on mobile, let it flow naturally */
+/* Responsive: Remove sticky on mobile */
 @media (max-width: 900px) {
   .sidebar {
     width: 100%;
     position: static;
     max-height: none;
-    overflow-y: visible;
+    overflow: visible;
     margin-bottom: 2rem;
   }
   
-  .sidebar::-webkit-scrollbar {
+  .sidebar-content {
+    overflow: visible;
+    max-height: none;
+  }
+  
+  .sidebar-content::-webkit-scrollbar {
     display: none;
   }
 }
