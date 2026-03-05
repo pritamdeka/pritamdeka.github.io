@@ -146,26 +146,70 @@ nav a.active, nav a:focus, nav a:hover {
   padding: 2.3rem 1.1rem;
 }
 
-/* ===== Sidebar ===== */
+/* ===== Updated Sidebar Styles ===== */
 .sidebar {
-  width: 280px;
-  min-width: 260px;
+  width: 300px;
+  min-width: 300px;
   background: var(--bg-secondary);
-  border-radius: 13px;
-  box-shadow: 0 2px 10px var(--shadow);
-  padding: 1.5rem 1rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px var(--shadow);
+  padding: 2rem 1.5rem;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: sticky;
   top: 100px;
+  border: 1px solid var(--border);
+  max-height: calc(100vh - 120px); /* Fit within viewport */
+  overflow-y: auto; /* Enable scrolling */
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: var(--accent) var(--bg-primary);
+}
+
+/* Custom Scrollbar for Webkit */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+  border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
 }
 
 .sidebar:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px var(--shadow-hover);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px var(--shadow-hover);
+}
+
+/* Ensure sidebar content doesn't overflow */
+.sidebar > div {
+  width: 100%;
+}
+
+/* Responsive: Remove sticky on mobile, let it flow naturally */
+@media (max-width: 900px) {
+  .sidebar {
+    width: 100%;
+    position: static;
+    max-height: none;
+    overflow-y: visible;
+    margin-bottom: 2rem;
+  }
+  
+  .sidebar::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 /* Quick Stats */
