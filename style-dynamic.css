@@ -615,20 +615,27 @@ footer {
 
 /* Typing Animation */
 .typing-text {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  line-height: 1.35;
+  min-height: 2.8em;
   border-right: 2px solid var(--text-secondary);
   white-space: nowrap;
   overflow: hidden;
-  animation: typing 3s steps(40) forwards, blink 0.7s step-end infinite;
-  max-width: 100%;
+  width: 0; /* Start at 0 width */
+  animation: typing 3.5s steps(45) forwards, blink 0.7s step-end infinite;
+  animation-delay: 0.5s; /* Delay before starting */
 }
 
 @keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
+  from { width: 0; }
+  to { width: 100%; }
 }
 
 @keyframes blink {
-  50% { border-color: transparent }
+  50% { border-color: transparent; }
 }
 
 /* ===== Responsive ===== */

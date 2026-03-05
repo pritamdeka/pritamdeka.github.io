@@ -366,10 +366,11 @@ const typingTexts = document.querySelectorAll('.typing-text');
 typingTexts.forEach(element => {
   const text = element.getAttribute('data-text');
   if (text) {
-    element.textContent = text;
+    //element.textContent = text;
     element.style.animation = 'none';
     element.offsetHeight; // Trigger reflow
-    element.style.animation = 'typing 3s steps(40) forwards, blink 0.7s step-end infinite';
+    element.style.animation = 'typing 3.5s steps(45) forwards, blink 0.7s step-end infinite';
+    element.style.animationDelay = '0.5s';
   }
 });
 
@@ -381,7 +382,8 @@ document.addEventListener('visibilitychange', () => {
       if (text) {
         element.style.animation = 'none';
         element.offsetHeight;
-        element.style.animation = 'typing 3s steps(40) forwards, blink 0.7s step-end infinite';
+        element.style.animation = 'typing 3.5s steps(45) forwards, blink 0.7s step-end infinite';
+        element.style.animationDelay = '0.5s';
       }
     });
   }
