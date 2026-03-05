@@ -310,14 +310,15 @@ async function fetchDynamicStats() {
     }
   }
 
-  // Citation count - Manual update from Google Scholar
+  // Citation count - Manual update from Google Scholar (NOT HF downloads!)
   const citationCountEl = document.getElementById('citation-count');
   if (citationCountEl) {
-    // Update this from: https://scholar.google.com/citations?user=b0jYTAUAAAAJ
-    citationCountEl.textContent = '172'; // Replace with your actual count
+    // Get your actual count from: https://scholar.google.com/citations?user=b0jYTAUAAAAJ
+    citationCountEl.textContent = '172'; // UPDATE THIS with your Google Scholar citations
+    citationCountEl.title = 'Google Scholar Citations';
   }
 
-  // HuggingFace Stats
+  // HuggingFace Stats (separate section)
   const hfDownloadsEl = document.getElementById('hf-downloads');
   const hfModelsEl = document.getElementById('hf-models');
   

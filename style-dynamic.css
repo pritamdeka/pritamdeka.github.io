@@ -1223,8 +1223,7 @@ footer {
   margin-left: 0.3rem;
 }
 
-/* HF Stats */
-
+/* HuggingFace Stats */
 .hf-stats {
   display: flex;
   justify-content: space-around;
@@ -1233,6 +1232,7 @@ footer {
   background: var(--bg-primary);
   border-radius: 10px;
   font-size: 0.85rem;
+  border: 1px solid var(--border);
 }
 
 .hf-stat-item {
@@ -1247,8 +1247,10 @@ footer {
   font-size: 1.1rem;
 }
 
-
-
+.hf-stat-item span {
+  font-weight: 600;
+  color: var(--text-primary);
+}
 
 
 /* Research Interests Cloud */
