@@ -10,6 +10,18 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body class="light-mode">
+  <!-- Scroll Progress Bar -->
+  <div class="scroll-progress" id="scroll-progress"></div>
+  
+  <!-- Search Bar -->
+  <div class="search-container" id="search-container">
+    <div class="search-box">
+      <input type="text" id="search-input" placeholder="Search papers, skills, experience..." aria-label="Search">
+      <button id="search-close" class="search-close"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="search-results" id="search-results"></div>
+  </div>
+
   <!-- Mobile Menu Toggle -->
   <button class="mobile-menu-toggle" id="mobile-menu-btn">
     <i class="fas fa-bars"></i>
@@ -20,9 +32,13 @@
     <a href="education.html">Education</a>
     <a href="papers.html">Papers</a>
     <a href="activities.html">Activities</a>
+    <a href="#news">News</a>
     <a href="#contact">Contact</a>
     <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
       <i class="fas fa-moon"></i>
+    </button>
+    <button id="search-toggle" class="search-toggle" aria-label="Search">
+      <i class="fas fa-search"></i>
     </button>
   </nav>
   
@@ -36,7 +52,7 @@
         <!-- Quick Stats -->
         <div class="quick-stats">
           <div class="stat-item">
-            <span class="stat-number" id="paper-count">9+</span>
+            <span class="stat-number" id="paper-count">10+</span>
             <span class="stat-label">Publications</span>
           </div>
           <div class="stat-item">
@@ -44,6 +60,21 @@
             <span class="stat-label">Citations</span>
           </div>
         </div>
+        
+        <!-- Email Copy Button -->
+        <div class="email-copy-wrapper">
+          <div class="email-address" id="email-text">p.deka@qub.ac.uk</div>
+          <button class="copy-email-btn" id="copy-email-btn" title="Copy email">
+            <i class="fas fa-copy"></i>
+          </button>
+          <div class="copy-toast" id="copy-toast">Copied!</div>
+        </div>
+        
+        <!-- CV Download -->
+        <a href="cv/Pritam_Deka_CV.pdf" download class="cv-download-btn" id="cv-download">
+          <i class="fas fa-download"></i> Download CV
+          <span class="download-count" id="download-count">Loading...</span>
+        </a>
         
         <div class="sidebar-contact">
           <div><i class="fas fa-map-marker-alt"></i> Belfast, UK</div>
@@ -58,11 +89,78 @@
     </aside>
     
     <main>
+      <!-- Research Interests Cloud -->
+      <section class="fade-in" id="interests">
+        <h2><i class="fas fa-lightbulb"></i> Research Interests</h2>
+        <div class="interests-cloud">
+          <span class="interest-tag" data-weight="10">Natural Language Processing</span>
+          <span class="interest-tag" data-weight="9">Large Language Models</span>
+          <span class="interest-tag" data-weight="9">Vision-Language Models</span>
+          <span class="interest-tag" data-weight="8">Information Extraction</span>
+          <span class="interest-tag" data-weight="8">AI for Cybersecurity</span>
+          <span class="interest-tag" data-weight="7">Fact Checking</span>
+          <span class="interest-tag" data-weight="7">Named Entity Recognition</span>
+          <span class="interest-tag" data-weight="6">Transformer Models</span>
+          <span class="interest-tag" data-weight="6">Prompt Engineering</span>
+          <span class="interest-tag" data-weight="5">Multimodal AI</span>
+          <span class="interest-tag" data-weight="5">Health Informatics</span>
+          <span class="interest-tag" data-weight="4">Code-Mixed NLP</span>
+          <span class="interest-tag" data-weight="4">Business Process Mining</span>
+          <span class="interest-tag" data-weight="3">Mental Health AI</span>
+          <span class="interest-tag" data-weight="3">Language Endangerment</span>
+        </div>
+      </section>
+
       <section class="fade-in" id="about">
         <h2><i class="fas fa-user"></i> About</h2>
         <p>
           I am a highly motivated researcher specializing in Natural Language Processing (NLP) and AI, passionate about advancing research in large language and vision-language models, information extraction, and AI for cybersecurity. I thrive on solving real-world problems with cutting-edge technology and contributing to the open-source community.
         </p>
+      </section>
+
+      <!-- News/Updates Section -->
+      <section class="fade-in" id="news">
+        <h2><i class="fas fa-newspaper"></i> Latest News & Updates</h2>
+        <div class="news-timeline">
+          <div class="news-item">
+            <span class="news-date">March 2026</span>
+            <div class="news-content">
+              <h4><i class="fas fa-file-contract"></i> Paper Accepted at ACM SAC 2026</h4>
+              <p>Our work on "Structured Extraction from Business Process Diagrams Using Vision-Language Models" has been accepted for presentation at ACM SAC 2026.</p>
+            </div>
+          </div>
+          <div class="news-item">
+            <span class="news-date">January 2025</span>
+            <div class="news-content">
+              <h4><i class="fas fa-chalkboard-teacher"></i> Vision and Language Symposium Speaker</h4>
+              <p>Main speaker at the Vision and Language Symposium 2025 held at Queen's University Belfast.</p>
+            </div>
+          </div>
+          <div class="news-item">
+            <span class="news-date">May 2024</span>
+            <div class="news-content">
+              <h4><i class="fas fa-briefcase"></i> Started as Research Fellow at QUB</h4>
+              <p>Joined Queen's University Belfast as a Research Fellow in AI, focusing on corporate document understanding with LLMs and VLMs.</p>
+            </div>
+          </div>
+          <div class="news-item">
+            <span class="news-date">December 2024</span>
+            <div class="news-content">
+              <h4><i class="fas fa-graduation-cap"></i> PhD Completed</h4>
+              <p>Successfully defended PhD thesis on "Evidence-Based Approach to Verification of Online Health-Related Content" at Queen's University Belfast.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Academic Journey Map -->
+      <section class="fade-in" id="journey">
+        <h2><i class="fas fa-map-marked-alt"></i> Academic Journey</h2>
+        <div class="journey-map">
+          <div class="map-container" id="map-container">
+            <!-- Journey items will be populated by JS -->
+          </div>
+        </div>
       </section>
 
       <section class="fade-in" id="skills">
@@ -76,6 +174,8 @@
           <div class="skill-tag"><i class="fas fa-search"></i> Information Extraction</div>
           <div class="skill-tag"><i class="fab fa-hackerrank"></i> Model Evaluation</div>
           <div class="skill-tag"><i class="fas fa-flask"></i> Research</div>
+          <div class="skill-tag"><i class="fas fa-shield-alt"></i> AI Security</div>
+          <div class="skill-tag"><i class="fas fa-language"></i> Code-Mixed NLP</div>
         </div>
       </section>
 
@@ -88,10 +188,10 @@
               <h3>Research Fellow (AI)</h3>
               <span class="timeline-date">May 2024–Ongoing | Queen's University Belfast</span>
               <ul>
-                <li>Research on Large Language Models (LLMs) and Vision-Language Models (VLMs) for processing business process data</li>
-                <li>Investigating SOTA LLMs/VLMs for corporate data analysis and automation</li>
+                <li>Focusing on AI for corporate document understanding with multimodal data processing</li>
+                <li>Investigating GPT-based models and open-source LLMs/VLMs for corporate data analysis</li>
                 <li>Integrating NLP and prompt engineering to streamline information extraction</li>
-                <li>Developing and optimizing data pipelines for scalable model training</li>
+                <li>Evaluating prompts and models on curated process diagram datasets</li>
               </ul>
             </div>
           </div>
@@ -103,7 +203,8 @@
               <span class="timeline-date">May 2025–August 2025 | INTO Queen's University Belfast</span>
               <ul>
                 <li>Delivering lectures in Object-Oriented Programming using C++</li>
-                <li>Designing assignments, practical labs, and assessments</li>
+                <li>Designing assignments, assessments, and practical coding labs</li>
+                <li>Implementing student engagement techniques and formative assessment tools</li>
               </ul>
             </div>
           </div>
@@ -114,8 +215,33 @@
               <h3>Senior Research Assistant (AI-Security)</h3>
               <span class="timeline-date">Jul 2023–Jan 2024 | University of Southampton</span>
               <ul>
-                <li>Led a team to create a cyber-attack attribution dataset for NER tasks</li>
-                <li>Developed methods and metrics for dataset quality</li>
+                <li>Led a team to create a NER dataset for cyber-attack attribution</li>
+                <li>Developed methods and metrics for dataset quality assessment</li>
+                <li>Ensured dataset suitability for training NER models in cybersecurity</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+              <h3>AI Intern</h3>
+              <span class="timeline-date">Mar 2022–Sep 2022 | Momentone</span>
+              <ul>
+                <li>Built a mental health chatbot using Rasa and HuggingFace transformers</li>
+                <li>Developed NLP solutions for mental health support</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+              <h3>Lecturer</h3>
+              <span class="timeline-date">Aug 2018–Sep 2019 | Royal Global University, Assam</span>
+              <ul>
+                <li>Taught Python, C++ OOP, Data Structures, and Algorithms</li>
+                <li>Supervised undergraduate projects and contributed to curriculum development</li>
               </ul>
             </div>
           </div>
@@ -151,6 +277,11 @@
       </section>
     </main>
   </div>
+  
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="back-to-top" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
   
   <footer>
     <div class="container">
