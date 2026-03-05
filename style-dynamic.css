@@ -1247,9 +1247,19 @@ footer {
   font-size: 1.1rem;
 }
 
-.hf-stat-item span {
-  font-weight: 600;
+.hf-stat-item span#hf-downloads,
+.hf-stat-item span#hf-models {
+  font-weight: 700;
   color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.hf-stat-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 
