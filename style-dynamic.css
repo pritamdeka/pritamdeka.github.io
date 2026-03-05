@@ -628,11 +628,11 @@ footer {
 
 .typing-line {
   display: block;
-  border-right: 2px solid var(--text-secondary);
   white-space: nowrap;
   overflow: hidden;
   width: 0;
-  animation: typing 3s steps(40) forwards, blink 0.7s step-end infinite;
+  animation: typing 3s steps(40) forwards;
+  /* Removed: border-right and blink animation */
 }
 
 .typing-line:nth-child(1) {
@@ -650,10 +650,7 @@ footer {
   to { width: 100%; }
 }
 
-@keyframes blink {
-  50% { border-color: transparent; }
-  from, to { border-color: var(--text-secondary); }
-}
+/* Removed: @keyframes blink */
 
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
