@@ -182,8 +182,24 @@ nav a.active, nav a:focus, nav a:hover {
   max-height: inherit;
 }
 
+/* Firefox - Hide by default, show on hover */
+.sidebar-content {
+  scrollbar-color: transparent transparent;
+}
+
+.sidebar:hover .sidebar-content {
+  scrollbar-color: var(--accent) var(--bg-primary);
+}
+
+/* Webkit (Chrome, Safari, Edge) - Hide by default, show on hover */
 .sidebar-content::-webkit-scrollbar {
   width: 6px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar:hover .sidebar-content::-webkit-scrollbar {
+  opacity: 1;
 }
 
 .sidebar-content::-webkit-scrollbar-track {
@@ -194,6 +210,7 @@ nav a.active, nav a:focus, nav a:hover {
 .sidebar-content::-webkit-scrollbar-thumb {
   background: var(--accent);
   border-radius: 10px;
+  transition: background 0.3s ease;
 }
 
 .sidebar-content::-webkit-scrollbar-thumb:hover {
