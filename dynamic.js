@@ -292,11 +292,69 @@ if (lastUpdatedEl) {
   lastUpdatedEl.textContent = now.toLocaleDateString('en-GB', options);
 }
 
-// ===== Citation Counter =====
-const citationCountEl = document.getElementById('citation-count');
-if (citationCountEl) {
-  citationCountEl.textContent = '100+'; // Update manually from Google Scholar
+// ===== Dynamic Stats Fetcher =====
+async function fetchDynamicStats() {
+  // Paper count from papers.html
+  const paperCountEl = document.getElementById('paper-count');
+  if (paperCountEl) {
+    try {
+      const response = await fetch('papers.html');
+      const html = await response.text();
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const papers = doc.querySelectorAll('.paper-item');
+      paperCountEl.textContent = papers.length + '+';
+    } catch (error) {
+      paperCountEl.textContent = '10+';
+    }
+  }
+
+  // HuggingFace Downloads
+  const citationCountEl = document.getElementById('citation-count');
+  if (citationCountEl) {
+    try {
+      const hfUsername = 'pritamdeka';
+      const response = await fetch(`https://huggingface.co/api/models?author=${hfUsername}`);
+      const models = await response.json();
+      
+      const totalDownloads = models.reduce((sum, model) => {
+        return sum + (model.downloads || 0);
+      }, 0);
+      
+      const totalModels = models.length;
+      
+      citationCountEl.textContent = formatNumber(totalDownloads);
+      citationCountEl.title = `${totalModels} models on HuggingFace`;
+      
+      // Add model count to stats
+      const statsContainer = document.querySelector('.quick-stats');
+      if (statsContainer && !document.getElementById('model-count')) {
+        const modelStat = document.createElement('div');
+        modelStat.className = 'stat-item';
+        modelStat.id = 'model-count';
+        modelStat.innerHTML = `
+          <span class="stat-number">${totalModels}</span>
+          <span class="stat-label">HF Models</span>
+        `;
+        statsContainer.appendChild(modelStat);
+      }
+    } catch (error) {
+      citationCountEl.textContent = '100+';
+      console.log('HuggingFace API unavailable');
+    }
+  }
 }
+
+function formatNumber(num) {
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(1) + 'M';
+  } else if (num >= 1000) {
+    return (num / 1000).toFixed(1) + 'k';
+  }
+  return num.toString();
+}
+
+fetchDynamicStats();
 
 // ===== Contact Form Handler =====
 const contactForm = document.getElementById('contact-form');
