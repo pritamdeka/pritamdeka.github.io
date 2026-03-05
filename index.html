@@ -4,23 +4,47 @@
   <meta charset="UTF-8">
   <title>Pritam Deka | AI & NLP Researcher</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="AI & NLP Research Fellow at Queen's University Belfast. Specializing in LLMs, VLMs, and Information Extraction.">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/style-dynamic.css">
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 </head>
-<body>
-  <nav>
+<body class="light-mode">
+  <!-- Mobile Menu Toggle -->
+  <button class="mobile-menu-toggle" id="mobile-menu-btn">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <nav id="main-nav">
     <a href="index.html" class="active">About</a>
     <a href="education.html">Education</a>
     <a href="papers.html">Papers</a>
     <a href="activities.html">Activities</a>
+    <a href="#contact">Contact</a>
+    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+      <i class="fas fa-moon"></i>
+    </button>
   </nav>
+  
   <div class="container main-flex">
-    <!-- Sidebar with ultra-small photo and compact info -->
     <aside class="sidebar">
-      <img src="profile.jpg" alt="Pritam Deka" class="profile-pic-tiny">
+      <img src="assets/profile.jpg" alt="Pritam Deka" class="profile-pic-tiny">
       <div>
         <div class="sidebar-name">Pritam Deka</div>
-        <div class="sidebar-title">AI & NLP Research Fellow<br>Queen’s University Belfast</div>
+        <div class="sidebar-title typing-text" data-text="AI & NLP Research Fellow | Queen's University Belfast"></div>
+        
+        <!-- Quick Stats -->
+        <div class="quick-stats">
+          <div class="stat-item">
+            <span class="stat-number" id="paper-count">9+</span>
+            <span class="stat-label">Publications</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number" id="citation-count">Loading...</span>
+            <span class="stat-label">Citations</span>
+          </div>
+        </div>
+        
         <div class="sidebar-contact">
           <div><i class="fas fa-map-marker-alt"></i> Belfast, UK</div>
           <div><i class="fas fa-envelope"></i> <a href="mailto:p.deka@qub.ac.uk">p.deka@qub.ac.uk</a></div>
@@ -28,88 +52,121 @@
           <div><i class="fab fa-github"></i> <a href="https://github.com/pritamdeka" target="_blank">GitHub</a></div>
           <div><span class="huggingface-emoji">🤗</span> <a href="https://huggingface.co/pritamdeka" target="_blank">HuggingFace</a></div>
           <div><i class="fab fa-linkedin"></i> <a href="https://www.linkedin.com/in/pritam-deka-phd-9158251b8/" target="_blank">LinkedIn</a></div>
+          <div><i class="fab fa-google"></i> <a href="https://scholar.google.com/citations?user=YOUR_ID" target="_blank">Google Scholar</a></div>
         </div>
-
       </div>
     </aside>
+    
     <main>
-      <section>
-        <h2>About</h2>
+      <section class="fade-in" id="about">
+        <h2><i class="fas fa-user"></i> About</h2>
         <p>
           I am a highly motivated researcher specializing in Natural Language Processing (NLP) and AI, passionate about advancing research in large language and vision-language models, information extraction, and AI for cybersecurity. I thrive on solving real-world problems with cutting-edge technology and contributing to the open-source community.
         </p>
       </section>
 
-      <section>
-        <h2>Skills</h2>
-        <ul>
-          <li>Python (spaCy, scispaCy, NLTK, TensorFlow, PyTorch, HuggingFace, SBERT)</li>
-          <li>C++ (Object-Oriented Programming, teaching experience)</li>
-          <li>Model Evaluation, Prompt Engineering</li>
-          <li>NLP, Research Methodology, LLM, VLM</li>
-        </ul>
+      <section class="fade-in" id="skills">
+        <h2><i class="fas fa-tools"></i> Skills</h2>
+        <div class="skills-grid">
+          <div class="skill-tag"><i class="fab fa-python"></i> Python</div>
+          <div class="skill-tag"><i class="fas fa-brain"></i> NLP</div>
+          <div class="skill-tag"><i class="fas fa-robot"></i> LLM/VLM</div>
+          <div class="skill-tag"><i class="fab fa-cuttlefish"></i> C++</div>
+          <div class="skill-tag"><i class="fas fa-database"></i> Data Pipelines</div>
+          <div class="skill-tag"><i class="fas fa-search"></i> Information Extraction</div>
+          <div class="skill-tag"><i class="fab fa-hackerrank"></i> Model Evaluation</div>
+          <div class="skill-tag"><i class="fas fa-flask"></i> Research</div>
+        </div>
       </section>
 
-      <section>
-        <h2>Experience</h2>
-        <ul>
-          <li>
-            <b>Research Fellow (AI)</b> — Queen’s University Belfast, May 2024–Ongoing
-            <ul>
-              <li>Research on Large Language Models (LLMs) and Vision-Language Models (VLMs) for processing business process data (flowcharts, documents).</li>
-              <li>Investigating SOTA LLMs/VLMs for corporate data analysis and automation.</li>
-              <li>Integrating NLP and prompt engineering to streamline information extraction and structure parsing.</li>
-              <li>Developing and optimizing data pipelines for scalable, high-quality model training and evaluation.</li>
-              <li>Benchmarking and validating latest GenAI techniques for business problems.</li>
-              <li>Publishing research in peer-reviewed venues and contributing to open-source NLP/AI projects.</li>
-            </ul>
-          </li>
-          <li>
-            <b>Subject Teacher</b> — INTO Queen’s University Belfast, May 2025–August 2025
-            <ul>
-              <li>Delivering lectures in Object-Oriented Programming using C++.</li>
-              <li>Designing assignments, practical labs, and assessments focused on core object-oriented principles.</li>
-              <li>Implementing student engagement and real-time formative assessment tools.</li>
-              <li>Carrying out duties including exam invigilation and grading.</li>
-            </ul>
-          </li>
-          <li>
-            <b>Senior Research Assistant (AI-Security)</b> — University of Southampton, Jul 2023–Jan 2024
-            <ul>
-              <li>Led a team to create a cyber-attack attribution dataset for NER tasks in cybersecurity.</li>
-              <li>Developed methods and metrics for dataset quality and effectiveness.</li>
-              <li>Analyzed and adapted SOTA approaches for cybersecurity use cases.</li>
-            </ul>
-          </li>
-          <li>
-            <b>Lab Demonstrator / Teaching Assistant</b> — Queen’s University Belfast, 2021–2022
-            <ul>
-              <li>Supervised lab practical classes for Python, Databases, Web Development, and Computing Foundations modules.</li>
-              <li>Marked assignments and invigilated lab exams.</li>
-            </ul>
-          </li>
-          <li>
-            <b>AI Intern</b> — Momentone, Mar 2022–Sep 2022
-            <ul>
-              <li>Built a mental health chatbot using Rasa and Huggingface transformer models.</li>
-              <li>Developed solutions focusing on real-world NLP for mental health support.</li>
-            </ul>
-          </li>
-          <li>
-            <b>Lecturer</b> — Royal Global University, Assam, Aug 2018–Sep 2019
-            <ul>
-              <li>Taught undergraduate courses: Python, OOP in C++, Introduction to Computing with C, Data Structures, and Algorithms.</li>
-              <li>Designed assignments, supervised projects, and contributed to curriculum development.</li>
-            </ul>
-          </li>
-        </ul>
+      <section class="fade-in" id="experience">
+        <h2><i class="fas fa-briefcase"></i> Experience</h2>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+              <h3>Research Fellow (AI)</h3>
+              <span class="timeline-date">May 2024–Ongoing | Queen's University Belfast</span>
+              <ul>
+                <li>Research on Large Language Models (LLMs) and Vision-Language Models (VLMs) for processing business process data</li>
+                <li>Investigating SOTA LLMs/VLMs for corporate data analysis and automation</li>
+                <li>Integrating NLP and prompt engineering to streamline information extraction</li>
+                <li>Developing and optimizing data pipelines for scalable model training</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+              <h3>Subject Teacher</h3>
+              <span class="timeline-date">May 2025–August 2025 | INTO Queen's University Belfast</span>
+              <ul>
+                <li>Delivering lectures in Object-Oriented Programming using C++</li>
+                <li>Designing assignments, practical labs, and assessments</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+              <h3>Senior Research Assistant (AI-Security)</h3>
+              <span class="timeline-date">Jul 2023–Jan 2024 | University of Southampton</span>
+              <ul>
+                <li>Led a team to create a cyber-attack attribution dataset for NER tasks</li>
+                <li>Developed methods and metrics for dataset quality</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="fade-in" id="contact">
+        <h2><i class="fas fa-paper-plane"></i> Get In Touch</h2>
+        <div class="contact-form-wrapper">
+          <form id="contact-form" action="https://formspree.io/f/mzdjpyve" method="POST">
+            <div class="form-group">
+              <label for="name"><i class="fas fa-user"></i> Name</label>
+              <input type="text" id="name" name="name" required placeholder="Your name">
+            </div>
+            <div class="form-group">
+              <label for="email"><i class="fas fa-envelope"></i> Email</label>
+              <input type="email" id="email" name="email" required placeholder="your@email.com">
+            </div>
+            <div class="form-group">
+              <label for="subject"><i class="fas fa-tag"></i> Subject</label>
+              <input type="text" id="subject" name="subject" required placeholder="Research collaboration?">
+            </div>
+            <div class="form-group">
+              <label for="message"><i class="fas fa-comment"></i> Message</label>
+              <textarea id="message" name="message" rows="5" required placeholder="Your message..."></textarea>
+            </div>
+            <button type="submit" class="submit-btn">
+              <i class="fas fa-send"></i> Send Message
+            </button>
+          </form>
+          <div id="form-status"></div>
+        </div>
       </section>
     </main>
   </div>
+  
   <footer>
     <div class="container">
-      &copy; 2025 Pritam Deka &middot; Last updated June 2025
+      <div class="view-counter">
+        <i class="fas fa-eye"></i> Page views: <span id="view-count">Loading...</span>
+      </div>
+      <p>&copy; <span id="current-year">2025</span> Pritam Deka · Last updated: <span id="last-updated">Loading...</span></p>
+      <div class="social-footer">
+        <a href="https://github.com/pritamdeka" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="https://huggingface.co/pritamdeka" target="_blank"><i class="fab fa-huggingface"></i></a>
+        <a href="https://www.linkedin.com/in/pritam-deka-phd-9158251b8/" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="https://scholar.google.com/citations?user=b0jYTAUAAAAJ&hl=en" target="_blank"><i class="fas fa-graduation-cap"></i></a>
+      </div>
     </div>
   </footer>
+  
+  <script src="js/dynamic.js"></script>
 </body>
 </html>

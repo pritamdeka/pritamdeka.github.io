@@ -4,37 +4,120 @@
   <meta charset="UTF-8">
   <title>Pritam Deka | Academic Papers</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="style-dynamic.css">
 </head>
-<body>
-
+<body class="light-mode">
   <nav>
     <a href="index.html">About</a>
     <a href="education.html">Education</a>
     <a href="papers.html" class="active">Papers</a>
     <a href="activities.html">Activities</a>
+    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+      <i class="fas fa-moon"></i>
+    </button>
   </nav>
 
   <div class="main-container">
-    <section>
-      <h2>Academic Papers</h2>
-      <ul>
-        <li>Unsupervised Keyword Combination Query Generation from Online Health Related Content for Evidence-Based Fact Checking (Best Paper, iiWAS21). <a href="https://doi.org/10.1145/3487664.3487701" target="_blank">DOI</a></li>
-        <li>Improved Methods To Aid Unsupervised Evidence-Based Fact Checking For Online Health News, Journal of Data Intelligence. <a href="https://doi.org/10.26421/JDI3.4-5" target="_blank">DOI</a></li>
-        <li>Evidence Extraction to Validate Medical Claims in Fake News Detection, HIS2022. <a href="https://doi.org/10.1007/978-3-031-20627-6_1" target="_blank">DOI</a></li>
-        <li>Multiple Evidence Combination for Fact-Checking of Health-Related Information, BioNLP2023 @ ACL2023. <a href="https://doi.org/10.18653/v1/2023.bionlp-1.20" target="_blank">DOI</a></li>
-        <li>BERT-based Language Identification in Code-Mix Kannada-English Text at the CoLI-Kanglish Shared Task@ICON 2022. <a href="https://aclanthology.org/2022.icon-wlli.3" target="_blank">URL</a></li>
-        <li>BERT Based Language Identification in Code-Mixed English-Assamese Social Media Text, Springer Algorithms for Intelligent Systems. <a href="https://doi.org/10.1007/978-981-99-1620-7_14" target="_blank">DOI</a></li>
-        <li>PD-AR at ArAIEval Shared Task: A BERT-Centric Approach to Tackle Arabic Disinformation, ArabicNLP 2023. <a href="https://doi.org/10.18653/v1/2023.arabicnlp-1.57" target="_blank">DOI</a></li>
-        <li>A New Probabilistic Model of Language Competition, Endangerment and Extinction, IJCA. <a href="https://doi.org/10.5120/ijca2016909958" target="_blank">DOI</a></li>
-        <li>AttackER: Towards Enhancing Cyber-Attack Attribution with a Named Entity Recognition Dataset, WISE2024. <a href="https://doi.org/10.1007/978-981-96-0576-7_20" target="_blank">DOI</a></li>
+    <section class="fade-in">
+      <h2><i class="fas fa-file-alt"></i> Academic Papers</h2>
+      
+      <div class="filter-controls">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="2024">2024</button>
+        <button class="filter-btn" data-filter="2023">2023</button>
+        <button class="filter-btn" data-filter="2022">2022</button>
+        <button class="filter-btn" data-filter="older">Older</button>
+      </div>
+      
+      <ul class="papers-list">
+        <li class="paper-item" data-year="2024">
+          <span class="paper-year">2024</span>
+          <span class="paper-title">AttackER: Towards Enhancing Cyber-Attack Attribution with a Named Entity Recognition Dataset</span>
+          <span class="paper-venue">WISE2024</span>
+          <a href="https://doi.org/10.1007/978-981-96-0576-7_20" target="_blank" class="paper-link"><i class="fas fa-link"></i> DOI</a>
+        </li>
+        <li class="paper-item" data-year="2023">
+          <span class="paper-year">2023</span>
+          <span class="paper-title">Multiple Evidence Combination for Fact-Checking of Health-Related Information</span>
+          <span class="paper-venue">BioNLP2023 @ ACL2023</span>
+          <a href="https://doi.org/10.18653/v1/2023.bionlp-1.20" target="_blank" class="paper-link"><i class="fas fa-link"></i> DOI</a>
+        </li>
+        <li class="paper-item" data-year="2023">
+          <span class="paper-year">2023</span>
+          <span class="paper-title">PD-AR at ArAIEval Shared Task: A BERT-Centric Approach to Tackle Arabic Disinformation</span>
+          <span class="paper-venue">ArabicNLP 2023</span>
+          <a href="https://doi.org/10.18653/v1/2023.arabicnlp-1.57" target="_blank" class="paper-link"><i class="fas fa-link"></i> DOI</a>
+        </li>
+        <li class="paper-item" data-year="2023">
+          <span class="paper-year">2023</span>
+          <span class="paper-title">BERT Based Language Identification in Code-Mixed English-Assamese Social Media Text</span>
+          <span class="paper-venue">Springer Algorithms for Intelligent Systems</span>
+          <a href="https://doi.org/10.1007/978-981-99-1620-7_14" target="_blank" class="paper-link"><i class="fas fa-link"></i> DOI</a>
+        </li>
+        <li class="paper-item" data-year="2022">
+          <span class="paper-year">2022</span>
+          <span class="paper-title">Evidence Extraction to Validate Medical Claims in Fake News Detection</span>
+          <span class="paper-venue">HIS2022</span>
+          <a href="https://doi.org/10.1007/978-3-031-20627-6_1" target="_blank" class="paper-link"><i class="fas fa-link"></i> DOI</a>
+        </li>
+        <li class="paper-item" data-year="2022">
+          <span class="paper-year">2022</span>
+          <span class="paper-title">BERT-based Language Identification in Code-Mix Kannada-English Text at the CoLI-Kanglish Shared Task@ICON 2022</span>
+          <span class="paper-venue">ACL Anthology</span>
+          <a href="https://aclanthology.org/2022.icon-wlli.3" target="_blank" class="paper-link"><i class="fas fa-link"></i> URL</a>
+        </li>
+        <li class="paper-item" data-year="2021">
+          <span class="paper-year badge-best">2021 🏆</span>
+          <span class="paper-title">Unsupervised Keyword Combination Query Generation from Online Health Related Content for Evidence-Based Fact Checking</span>
+          <span class="paper-venue">iiWAS21 <span class="badge">Best Paper</span></span>
+          <a href="https://doi.org/10.1145/3487664.3487701" target="_blank" class="paper-link"><i class="fas fa-link"></i> DOI</a>
+        </li>
+        <li class="paper-item" data-year="older">
+          <span class="paper-year">2021</span>
+          <span class="paper-title">Improved Methods To Aid Unsupervised Evidence-Based Fact Checking For Online Health News</span>
+          <span class="paper-venue">Journal of Data Intelligence</span>
+          <a href="https://doi.org/10.26421/JDI3.4-5" target="_blank" class="paper-link"><i class="fas fa-link"></i> DOI</a>
+        </li>
+        <li class="paper-item" data-year="older">
+          <span class="paper-year">2016</span>
+          <span class="paper-title">A New Probabilistic Model of Language Competition, Endangerment and Extinction</span>
+          <span class="paper-venue">IJCA</span>
+          <a href="https://doi.org/10.5120/ijca2016909958" target="_blank" class="paper-link"><i class="fas fa-link"></i> DOI</a>
+        </li>
       </ul>
     </section>
   </div>
+  
   <footer>
     <div class="container">
-      &copy; 2025 Pritam Deka
+      <div class="view-counter">
+        <i class="fas fa-eye"></i> Page views: <span id="view-count">Loading...</span>
+      </div>
+      <p>&copy; <span id="current-year">2025</span> Pritam Deka</p>
     </div>
   </footer>
+  
+  <script src="dynamic.js"></script>
+  <script>
+    // Paper filter functionality
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        const filter = btn.dataset.filter;
+        document.querySelectorAll('.paper-item').forEach(item => {
+          if (filter === 'all' || item.dataset.year === filter) {
+            item.style.display = 'flex';
+            item.style.opacity = '1';
+          } else {
+            item.style.display = 'none';
+            item.style.opacity = '0';
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>
