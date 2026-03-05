@@ -299,11 +299,13 @@ nav a.active, nav a:focus, nav a:hover {
 
 .sidebar-title {
   color: var(--text-secondary);
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 500;
   margin-bottom: 1rem;
-  line-height: 1.35;
+  line-height: 1.4;
   min-height: 2.8em;
+  display: block;
+  /* Clean display, no animation issues */
 }
 
 /* Sidebar Contact */
@@ -613,26 +615,39 @@ footer {
   }
 }
 
-/* Typing Animation */
+/* Typing Animation - Multi-line */
 .typing-text {
   color: var(--text-secondary);
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   font-weight: 500;
   margin-bottom: 1rem;
-  line-height: 1.35;
+  line-height: 1.4;
   min-height: 2.8em;
+  display: block;
+}
+
+.typing-line {
   display: block;
   border-right: 2px solid var(--text-secondary);
   white-space: nowrap;
   overflow: hidden;
-  width: fit-content;
-  animation: typing 3.5s steps(45) forwards, blink 0.7s step-end infinite;
-  max-width: 100%;
+  width: 0;
+  animation: typing 3s steps(40) forwards, blink 0.7s step-end infinite;
+}
+
+.typing-line:nth-child(1) {
+  animation-delay: 0.3s;
+}
+
+.typing-line:nth-child(2) {
+  animation-delay: 1.5s;
+  font-size: 0.9em;
+  color: var(--text-muted);
 }
 
 @keyframes typing {
-  from { max-width: 0; }
-  to { max-width: 100%; }
+  from { width: 0; }
+  to { width: 100%; }
 }
 
 @keyframes blink {
