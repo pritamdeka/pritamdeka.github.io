@@ -293,6 +293,7 @@ if (lastUpdatedEl) {
 }
 
 // ===== Dynamic Stats Fetcher =====
+
 async function fetchDynamicStats() {
   // Paper count from papers.html
   const paperCountEl = document.getElementById('paper-count');
@@ -309,9 +310,18 @@ async function fetchDynamicStats() {
     }
   }
 
-  // HuggingFace Downloads
+  // Citation count - Manual update from Google Scholar
   const citationCountEl = document.getElementById('citation-count');
   if (citationCountEl) {
+    // Update this from: https://scholar.google.com/citations?user=b0jYTAUAAAAJ
+    citationCountEl.textContent = '172'; // Replace with your actual count
+  }
+
+  // HuggingFace Stats
+  const hfDownloadsEl = document.getElementById('hf-downloads');
+  const hfModelsEl = document.getElementById('hf-models');
+  
+  if (hfDownloadsEl || hfModelsEl) {
     try {
       const hfUsername = 'pritamdeka';
       const response = await fetch(`https://huggingface.co/api/models?author=${hfUsername}`);
@@ -323,23 +333,16 @@ async function fetchDynamicStats() {
       
       const totalModels = models.length;
       
-      citationCountEl.textContent = formatNumber(totalDownloads);
-      citationCountEl.title = `${totalModels} models on HuggingFace`;
+      if (hfDownloadsEl) {
+        hfDownloadsEl.textContent = formatNumber(totalDownloads);
+      }
       
-      // Add model count to stats
-      const statsContainer = document.querySelector('.quick-stats');
-      if (statsContainer && !document.getElementById('model-count')) {
-        const modelStat = document.createElement('div');
-        modelStat.className = 'stat-item';
-        modelStat.id = 'model-count';
-        modelStat.innerHTML = `
-          <span class="stat-number">${totalModels}</span>
-          <span class="stat-label">HF Models</span>
-        `;
-        statsContainer.appendChild(modelStat);
+      if (hfModelsEl) {
+        hfModelsEl.textContent = totalModels;
       }
     } catch (error) {
-      citationCountEl.textContent = '100+';
+      if (hfDownloadsEl) hfDownloadsEl.textContent = 'N/A';
+      if (hfModelsEl) hfModelsEl.textContent = 'N/A';
       console.log('HuggingFace API unavailable');
     }
   }
