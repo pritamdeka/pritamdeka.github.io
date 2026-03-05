@@ -361,33 +361,8 @@ function formatNumber(num) {
 fetchDynamicStats();
 
 // ===== Typing Animation =====
-const typingTexts = document.querySelectorAll('.typing-text');
-
-typingTexts.forEach(element => {
-  const text = element.getAttribute('data-text');
-  if (text) {
-    //element.textContent = text;
-    element.style.animation = 'none';
-    element.offsetHeight; // Trigger reflow
-    element.style.animation = 'typing 3.5s steps(45) forwards, blink 0.7s step-end infinite';
-    element.style.animationDelay = '0.5s';
-  }
-});
-
-// Reset animation on visibility change (when user comes back to tab)
-document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible') {
-    typingTexts.forEach(element => {
-      const text = element.getAttribute('data-text');
-      if (text) {
-        element.style.animation = 'none';
-        element.offsetHeight;
-        element.style.animation = 'typing 3.5s steps(45) forwards, blink 0.7s step-end infinite';
-        element.style.animationDelay = '0.5s';
-      }
-    });
-  }
-});
+// Animation runs automatically via CSS, no JS needed for basic effect
+// Just ensure the element has text content in HTML
 
 // ===== Contact Form Handler =====
 const contactForm = document.getElementById('contact-form');

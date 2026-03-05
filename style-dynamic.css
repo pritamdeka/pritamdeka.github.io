@@ -621,21 +621,23 @@ footer {
   margin-bottom: 1rem;
   line-height: 1.35;
   min-height: 2.8em;
+  display: block;
   border-right: 2px solid var(--text-secondary);
   white-space: nowrap;
   overflow: hidden;
-  width: 0; /* Start at 0 width */
+  width: fit-content;
   animation: typing 3.5s steps(45) forwards, blink 0.7s step-end infinite;
-  animation-delay: 0.5s; /* Delay before starting */
+  max-width: 100%;
 }
 
 @keyframes typing {
-  from { width: 0; }
-  to { width: 100%; }
+  from { max-width: 0; }
+  to { max-width: 100%; }
 }
 
 @keyframes blink {
   50% { border-color: transparent; }
+  from, to { border-color: var(--text-secondary); }
 }
 
 /* ===== Responsive ===== */
