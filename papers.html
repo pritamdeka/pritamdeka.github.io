@@ -8,6 +8,21 @@
   <link rel="stylesheet" href="style-dynamic.css">
 </head>
 <body class="light-mode">
+ <!-- Mobile Breadcrumb -->
+<div class="mobile-breadcrumb">
+ <a href="index.html">Home</a>
+ <span class="separator">/</span>
+ <span class="current">Papers</span>
+</div>
+
+<!-- Mobile Quick Nav (Filter Buttons) -->
+<div class="mobile-quick-nav" id="mobile-paper-filters">
+ <button class="active" data-filter="all">All</button>
+ <button data-filter="2024">2024</button>
+ <button data-filter="2023">2023</button>
+ <button data-filter="2022">2022</button>
+ <button data-filter="older">Older</button>
+</div>
   <nav>
     <a href="index.html">About</a>
     <a href="education.html">Education</a>
@@ -101,23 +116,31 @@
   <script src="dynamic.js"></script>
   <script>
     // Paper filter functionality
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        
-        const filter = btn.dataset.filter;
-        document.querySelectorAll('.paper-item').forEach(item => {
-          if (filter === 'all' || item.dataset.year === filter) {
-            item.style.display = 'flex';
-            item.style.opacity = '1';
-          } else {
-            item.style.display = 'none';
-            item.style.opacity = '0';
-          }
-        });
-      });
-    });
+	function setupPaperFilters() {
+	  const allFilterBtns = document.querySelectorAll('.filter-btn, #mobile-paper-filters button');
+	  
+	  allFilterBtns.forEach(btn => {
+		btn.addEventListener('click', () => {
+		  // Update active state for both desktop and mobile
+		  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+		  document.querySelectorAll('#mobile-paper-filters button').forEach(b => b.classList.remove('active'));
+		  btn.classList.add('active');
+		  
+		  const filter = btn.dataset.filter;
+		  document.querySelectorAll('.paper-item').forEach(item => {
+			if (filter === 'all' || item.dataset.year === filter) {
+			  item.style.display = 'flex';
+			  item.style.opacity = '1';
+			} else {
+			  item.style.display = 'none';
+			  item.style.opacity = '0';
+			}
+		  });
+		});
+	  });
+	}
+
+	setupPaperFilters();
   </script>
 </body>
 </html>

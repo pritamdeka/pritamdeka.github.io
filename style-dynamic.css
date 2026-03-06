@@ -714,6 +714,86 @@ footer {
   }
 }
 
+/* ===== Mobile Breadcrumb Navigation ===== */
+.mobile-breadcrumb {
+ display: none;
+ background: var(--bg-secondary);
+ border-bottom: 1px solid var(--border);
+ padding: 0.8rem 1rem;
+ font-size: 0.9rem;
+}
+
+.mobile-breadcrumb a {
+ color: var(--accent);
+ text-decoration: none;
+ font-weight: 600;
+}
+
+.mobile-breadcrumb a:hover {
+ text-decoration: underline;
+}
+
+.mobile-breadcrumb .separator {
+ color: var(--text-muted);
+ margin: 0 0.5rem;
+}
+
+.mobile-breadcrumb .current {
+ color: var(--text-muted);
+ font-weight: 500;
+}
+
+/* Mobile Quick Links (for papers filter, etc.) */
+.mobile-quick-nav {
+ display: none;
+ background: var(--bg-primary);
+ padding: 0.8rem 1rem;
+ border-bottom: 1px solid var(--border);
+ overflow-x: auto;
+ white-space: nowrap;
+}
+
+.mobile-quick-nav button,
+.mobile-quick-nav a {
+ display: inline-block;
+ padding: 0.5rem 1rem;
+ margin-right: 0.5rem;
+ background: var(--bg-secondary);
+ border: 2px solid var(--text-secondary);
+ border-radius: 20px;
+ color: var(--text-secondary);
+ font-weight: 600;
+ font-size: 0.85rem;
+ text-decoration: none;
+ cursor: pointer;
+ transition: all 0.2s ease;
+}
+
+.mobile-quick-nav button:hover,
+.mobile-quick-nav a:hover,
+.mobile-quick-nav button.active {
+ background: var(--text-secondary);
+ color: var(--bg-primary);
+}
+
+/* Show on mobile */
+@media (max-width: 700px) {
+ .mobile-breadcrumb {
+ display: block;
+ }
+ 
+ .mobile-quick-nav {
+ display: block;
+ }
+ 
+ /* Hide desktop filter controls on mobile, use quick nav instead */
+ .filter-controls {
+ display: none;
+ }
+}
+
+
+
 /* ===== ADD THESE STYLES FOR OTHER PAGES ===== */
 
 /* ===== Main Container (for pages without sidebar) ===== */

@@ -8,6 +8,20 @@
   <link rel="stylesheet" href="style-dynamic.css">
 </head>
 <body class="light-mode">
+<!-- Mobile Breadcrumb -->
+<div class="mobile-breadcrumb">
+ <a href="index.html">Home</a>
+ <span class="separator">/</span>
+ <span class="current">Education</span>
+</div>
+
+<!-- Mobile Quick Nav (Jump to Degrees) -->
+<div class="mobile-quick-nav">
+ <a href="#phd">PhD</a>
+ <a href="#mtech">MTech</a>
+ <a href="#be">BE</a>
+</div>
+
   <nav>
     <a href="index.html">About</a>
     <a href="education.html" class="active">Education</a>
@@ -22,7 +36,7 @@
     <section class="fade-in">
       <h2><i class="fas fa-graduation-cap"></i> Education</h2>
       
-      <div class="degree-card">
+      <div class="degree-card" id="phd">
         <div class="degree-header">
           <h3>PhD, Computer Science</h3>
           <span class="edu-meta">
@@ -40,7 +54,7 @@
         </ul>
       </div>
 
-      <div class="degree-card">
+      <div class="degree-card" id="mtech">
         <div class="degree-header">
           <h3>MTech, Information Technology</h3>
           <span class="edu-meta">
@@ -56,7 +70,7 @@
         </ul>
       </div>
 
-      <div class="degree-card">
+      <div class="degree-card" id="be">
         <div class="degree-header">
           <h3>BE, Computer Science & Engineering</h3>
           <span class="edu-meta">

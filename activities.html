@@ -8,6 +8,21 @@
   <link rel="stylesheet" href="style-dynamic.css">
 </head>
 <body class="light-mode">
+<!-- Mobile Breadcrumb -->
+<div class="mobile-breadcrumb">
+ <a href="index.html">Home</a>
+ <span class="separator">/</span>
+ <span class="current">Activities</span>
+</div>
+
+<!-- Mobile Quick Nav (Jump to Sections) -->
+<div class="mobile-quick-nav">
+ <a href="#opensource">Open Source</a>
+ <a href="#demos">Demos</a>
+ <a href="#reviewing">Reviewing</a>
+ <a href="#speaking">Speaking</a>
+ <a href="#teaching">Teaching</a>
+</div>
   <nav>
     <a href="index.html">About</a>
     <a href="education.html">Education</a>
@@ -23,7 +38,7 @@
       <h2><i class="fas fa-trophy"></i> Academic Activities</h2>
       
       <div class="activity-grid">
-        <div class="activity-card">
+        <div class="activity-card" id="opensource">
           <div class="activity-icon"><i class="fas fa-robot"></i></div>
           <h3>Open Source</h3>
           <p>Released fine-tuned language models in HuggingFace repository</p>
@@ -32,7 +47,7 @@
           </a>
         </div>
         
-        <div class="activity-card">
+        <div class="activity-card" id="demos">
           <div class="activity-icon"><i class="fas fa-laptop-code"></i></div>
           <h3>Live Demos</h3>
           <p>Created interactive demos based on PhD work using Python, Gradio, and SOTA NLP libraries</p>
@@ -46,7 +61,7 @@
           </div>
         </div>
         
-        <div class="activity-card">
+        <div class="activity-card" id="reviewing">
           <div class="activity-icon"><i class="fas fa-gavel"></i></div>
           <h3>Reviewing</h3>
           <ul class="activity-list">
@@ -57,7 +72,7 @@
           </ul>
         </div>
         
-        <div class="activity-card">
+        <div class="activity-card" id="speaking">
           <div class="activity-icon"><i class="fas fa-microphone-alt"></i></div>
           <h3>Speaking</h3>
           <ul class="activity-list">
@@ -68,7 +83,7 @@
           </ul>
         </div>
         
-        <div class="activity-card">
+        <div class="activity-card" id="teaching">
           <div class="activity-icon"><i class="fas fa-chalkboard-teacher"></i></div>
           <h3>Teaching</h3>
           <ul class="activity-list">
