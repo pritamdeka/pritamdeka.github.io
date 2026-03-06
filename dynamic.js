@@ -434,81 +434,148 @@ document.querySelectorAll('.fade-in').forEach(section => {
 console.log('%c👋 Hello, fellow developer!', 'font-size: 20px; color: #667eea; font-weight: bold;');
 console.log('%cCheck out my GitHub: https://github.com/pritamdeka', 'font-size: 12px; color: #888;');
 
-// ===== Particle Background Effect =====
-const canvas = document.getElementById('particles-canvas');
-if (canvas) {
- const ctx = canvas.getContext('2d');
- canvas.width = window.innerWidth;
- canvas.height = window.innerHeight;
- 
- const particles = [];
- const particleCount = 80;
- 
- class Particle {
-  constructor() {
-   this.x = Math.random() * canvas.width;
-   this.y = Math.random() * canvas.height;
-   this.size = Math.random() * 3 + 1;
-   this.speedX = Math.random() * 1 - 0.5;
-   this.speedY = Math.random() * 1 - 0.5;
-   this.opacity = Math.random() * 0.5 + 0.2;
-  }
+// ===== Research Topic Network =====
+const networkContainer = document.getElementById('research-network');
+
+if (networkContainer) {
+ // Define nodes (topics and papers)
+ const nodes = [
+  // Core Research Areas (Blue)
+  { id: 1, label: 'NLP', group: 'core', value: 25 },
+  { id: 2, label: 'LLMs', group: 'core', value: 20 },
+  { id: 3, label: 'VLMs', group: 'core', value: 18 },
+  { id: 4, label: 'Information Extraction', group: 'core', value: 22 },
   
-  update() {
-   this.x += this.speedX;
-   this.y += this.speedY;
-   
-   if (this.x > canvas.width) this.x = 0;
-   if (this.x < 0) this.x = canvas.width;
-   if (this.y > canvas.height) this.y = 0;
-   if (this.y < 0) this.y = canvas.height;
-  }
+  // Applications (Green)
+  { id: 5, label: 'Fact Checking', group: 'application', value: 15 },
+  { id: 6, label: 'Healthcare AI', group: 'application', value: 18 },
+  { id: 7, label: 'Process Mining', group: 'application', value: 12 },
+  { id: 8, label: 'Document Understanding', group: 'application', value: 16 },
   
-  draw() {
-   ctx.fillStyle = `rgba(45, 114, 217, ${this.opacity})`;
-   ctx.beginPath();
-   ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-   ctx.fill();
-  }
- }
- 
- for (let i = 0; i < particleCount; i++) {
-  particles.push(new Particle());
- }
- 
- function animateParticles() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  particles.forEach(p => {
-   p.update();
-   p.draw();
-  });
+  // Methods (Orange)
+  { id: 9, label: 'BERT', group: 'method', value: 14 },
+  { id: 10, label: 'Transformers', group: 'method', value: 16 },
+  { id: 11, label: 'Prompt Engineering', group: 'method', value: 13 },
+  { id: 12, label: 'Fine-tuning', group: 'method', value: 12 },
   
-  // Draw connections between nearby particles
-  particles.forEach((p1, index) => {
-   for (let j = index + 1; j < particles.length; j++) {
-    const p2 = particles[j];
-    const dx = p1.x - p2.x;
-    const dy = p1.y - p2.y;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-    
-    if (distance < 100) {
-     ctx.strokeStyle = `rgba(45, 114, 217, ${0.1 * (1 - distance / 100)})`;
-     ctx.lineWidth = 0.5;
-     ctx.beginPath();
-     ctx.moveTo(p1.x, p1.y);
-     ctx.lineTo(p2.x, p2.y);
-     ctx.stroke();
-    }
+  // Domains (Purple)
+  { id: 13, label: 'Cybersecurity', group: 'domain', value: 10 },
+  { id: 14, label: 'Business Process', group: 'domain', value: 11 },
+  { id: 15, label: 'Social Media', group: 'domain', value: 9 },
+  { id: 16, label: 'Scientific Literature', group: 'domain', value: 8 },
+ ];
+ 
+ // Define edges (connections)
+ const edges = [
+  // NLP connects to everything
+  { from: 1, to: 2 },
+  { from: 1, to: 3 },
+  { from: 1, to: 4 },
+  { from: 1, to: 5 },
+  { from: 1, to: 6 },
+  
+  // LLMs/VLMs to applications
+  { from: 2, to: 5 },
+  { from: 2, to: 6 },
+  { from: 2, to: 7 },
+  { from: 2, to: 8 },
+  { from: 3, to: 7 },
+  { from: 3, to: 8 },
+  
+  // Information Extraction to applications
+  { from: 4, to: 5 },
+  { from: 4, to: 6 },
+  { from: 4, to: 8 },
+  { from: 4, to: 13 },
+  
+  // Methods to core research
+  { from: 9, to: 1 },
+  { from: 9, to: 5 },
+  { from: 9, to: 6 },
+  { from: 10, to: 2 },
+  { from: 10, to: 3 },
+  { from: 11, to: 2 },
+  { from: 11, to: 8 },
+  { from: 12, to: 2 },
+  { from: 12, to: 3 },
+  
+  // Domains to applications
+  { from: 13, to: 4 },
+  { from: 13, to: 9 },
+  { from: 14, to: 7 },
+  { from: 14, to: 8 },
+  { from: 15, to: 5 },
+  { from: 15, to: 1 },
+  { from: 16, to: 6 },
+ ];
+ 
+ // Create data arrays
+ const data = {
+  nodes: new vis.DataSet(nodes),
+  edges: new vis.DataSet(edges)
+ };
+ 
+ // Options for styling
+ const options = {
+  nodes: {
+   shape: 'dot',
+   font: {
+    size: 14,
+    color: '#21243d',
+    face: 'Segoe UI'
+   },
+   borderWidth: 2,
+   shadow: true
+  },
+  edges: {
+   width: 1.5,
+   color: { color: '#ececff', highlight: '#2d72d9' },
+   smooth: { type: 'continuous' }
+  },
+  groups: {
+   core: {
+    color: { background: '#2d72d9', border: '#1a5bc7' },
+    label: { bold: true }
+   },
+   application: {
+    color: { background: '#10b981', border: '#059669' }
+   },
+   method: {
+    color: { background: '#f59e0b', border: '#d97706' }
+   },
+   domain: {
+    color: { background: '#8b5cf6', border: '#7c3aed' }
    }
-  });
-  
-  requestAnimationFrame(animateParticles);
- }
+  },
+  physics: {
+   enabled: true,
+   barnesHut: {
+    gravitationalConstant: -3000,
+    centralGravity: 0.3,
+    springLength: 95,
+    springConstant: 0.04,
+    damping: 0.09
+   },
+   stabilization: { iterations: 150 }
+  },
+  interaction: {
+   hover: true,
+   tooltipDelay: 200,
+   zoomView: true,
+   dragNodes: true
+  }
+ };
  
- animateParticles();
+ // Initialize network
+ const network = new vis.Network(networkContainer, data, options);
  
- window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+ // Add click event to show paper links
+ network.on('click', function(params) {
+  if (params.nodes.length > 0) {
+   const nodeId = params.nodes[0];
+   const node = nodes.find(n => n.id === nodeId);
+   console.log('Clicked:', node.label);
+   // Could open papers filtered by topic here
+  }
  });
 }

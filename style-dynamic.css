@@ -1625,3 +1625,39 @@ footer {
     justify-content: flex-start;
   }
 }
+
+/* ===== Research Topic Network ===== */
+#research-network {
+ width: 100%;
+ height: 500px;
+ background: var(--bg-primary);
+ border-radius: 12px;
+ border: 2px solid var(--border);
+ margin-top: 1.5rem;
+}
+
+.network-legend {
+ display: flex;
+ justify-content: center;
+ gap: 1.5rem;
+ flex-wrap: wrap;
+ margin-top: 1rem;
+ padding: 1rem;
+ background: var(--bg-primary);
+ border-radius: 10px;
+}
+
+.legend-item {
+ display: flex;
+ align-items: center;
+ gap: 0.5rem;
+ font-size: 0.9rem;
+ color: var(--text-muted);
+}
+
+.legend-dot {
+ width: 12px;
+ height: 12px;
+ border-radius: 50%;
+ display: inline-block;
+}
