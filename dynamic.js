@@ -316,12 +316,34 @@ async function fetchDynamicStats() {
   }
 
   // Citation count - Manual update from Google Scholar (NOT HF downloads!)
-  const citationCountEl = document.getElementById('citation-count');
-  if (citationCountEl) {
+  //const citationCountEl = document.getElementById('citation-count');
+  //if (citationCountEl) {
     // Get your actual count from: https://scholar.google.com/citations?user=b0jYTAUAAAAJ
-    citationCountEl.textContent = '172'; // UPDATE THIS with your Google Scholar citations
-    citationCountEl.title = 'Google Scholar Citations';
-  }
+    //citationCountEl.textContent = '174'; // UPDATE THIS with your Google Scholar citations
+    //citationCountEl.title = 'Google Scholar Citations';
+  //}
+  
+  // ===== Citation Count - Auto-fetch from JSON =====
+	const citationCountEl = document.getElementById('citation-count');
+
+	async function updateCitationCount() {
+	  if (!citationCountEl) return;
+	  
+	  try {
+		const response = await fetch('citations.json');
+		const data = await response.json();
+		
+		citationCountEl.textContent = data.citations.toLocaleString();
+		citationCountEl.title = `Google Scholar Citations (updated: ${new Date(data.updated).toLocaleDateString()})`;
+	  } catch (error) {
+		// Fallback if JSON doesn't exist yet
+		citationCountEl.textContent = '174';
+		citationCountEl.title = 'Google Scholar Citations';
+		console.log('Using fallback citation count');
+	  }
+	}
+
+	updateCitationCount();
 
   // HuggingFace Stats (separate section)
   const hfDownloadsEl = document.getElementById('hf-downloads');
