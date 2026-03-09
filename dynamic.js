@@ -298,61 +298,58 @@ if (lastUpdatedEl) {
 }
 
 // ===== Dynamic Stats Fetcher =====
+async function fetchDynamicStats() {
+  const paperCountEl = document.getElementById('paper-count');
+  const citationCountEl = document.getElementById('citation-count');
+  
+  try {
+    const response = await fetch('citations.json');
+    const data = await response.json();
+    
+    if (paperCountEl) {
+      paperCountEl.textContent = data.papers + '+';
+    }
+    
+    if (citationCountEl) {
+      citationCountEl.textContent = data.citations.toLocaleString();
+      citationCountEl.title = `Updated: ${new Date(data.updated).toLocaleDateString()}`;
+    }
+  } catch (error) {
+    console.error('Stats fetch error:', error);
+    if (paperCountEl) paperCountEl.textContent = '10+';
+    if (citationCountEl) citationCountEl.textContent = '174';
+  }
+}
 
-
-	async function fetchDynamicStats() {
-	  const paperCountEl = document.getElementById('paper-count');
-	  const citationCountEl = document.getElementById('citation-count');
-	  
-	  try {
-		const response = await fetch('citations.json');
-		const data = await response.json();
-		
-		if (paperCountEl) {
-		  paperCountEl.textContent = data.papers + '+';
-		}
-		
-		if (citationCountEl) {
-		  citationCountEl.textContent = data.citations.toLocaleString();
-		  citationCountEl.title = `Updated: ${new Date(data.updated).toLocaleDateString()}`;
-		}
-	  } catch (error) {
-		console.error('Stats fetch error:', error);
-		if (paperCountEl) paperCountEl.textContent = '10+';
-		if (citationCountEl) citationCountEl.textContent = '174';
-	  }
-	}
-
-	fetchDynamicStats();
-
-  // HuggingFace Stats (separate section)
+// ===== HuggingFace Stats =====
+async function fetchHuggingFaceStats() {
   const hfDownloadsEl = document.getElementById('hf-downloads');
   const hfModelsEl = document.getElementById('hf-models');
   
-  if (hfDownloadsEl || hfModelsEl) {
-    try {
-      const hfUsername = 'pritamdeka';
-      const response = await fetch(`https://huggingface.co/api/models?author=${hfUsername}`);
-      const models = await response.json();
-      
-      const totalDownloads = models.reduce((sum, model) => {
-        return sum + (model.downloads || 0);
-      }, 0);
-      
-      const totalModels = models.length;
-      
-      if (hfDownloadsEl) {
-        hfDownloadsEl.textContent = formatNumber(totalDownloads);
-      }
-      
-      if (hfModelsEl) {
-        hfModelsEl.textContent = totalModels;
-      }
-    } catch (error) {
-      if (hfDownloadsEl) hfDownloadsEl.textContent = 'N/A';
-      if (hfModelsEl) hfModelsEl.textContent = 'N/A';
-      console.log('HuggingFace API unavailable');
+  if (!hfDownloadsEl && !hfModelsEl) return;
+  
+  try {
+    const hfUsername = 'pritamdeka';
+    const response = await fetch(`https://huggingface.co/api/models?author=${hfUsername}`);
+    const models = await response.json();
+    
+    const totalDownloads = models.reduce((sum, model) => {
+      return sum + (model.downloads || 0);
+    }, 0);
+    
+    const totalModels = models.length;
+    
+    if (hfDownloadsEl) {
+      hfDownloadsEl.textContent = formatNumber(totalDownloads);
     }
+    
+    if (hfModelsEl) {
+      hfModelsEl.textContent = totalModels;
+    }
+  } catch (error) {
+    if (hfDownloadsEl) hfDownloadsEl.textContent = 'N/A';
+    if (hfModelsEl) hfModelsEl.textContent = 'N/A';
+    console.log('HuggingFace API unavailable');
   }
 }
 
@@ -365,7 +362,9 @@ function formatNumber(num) {
   return num.toString();
 }
 
+// Run both functions
 fetchDynamicStats();
+fetchHuggingFaceStats();
 
 // ===== Typing Animation =====
 // Animation runs automatically via CSS, no JS needed for basic effect
