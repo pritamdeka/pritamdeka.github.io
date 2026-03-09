@@ -20,9 +20,11 @@ jobs:
       
       - name: Install dependencies
         run: |
-          pip install scholarly
+          pip install requests
       
-      - name: Fetch citations
+      - name: Fetch citations via SerpAPI
+        env:
+          SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
         run: python scripts/fetch_citations.py
       
       - name: Commit and push if changed
