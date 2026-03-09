@@ -337,7 +337,7 @@ async function fetchDynamicStats() {
 		citationCountEl.title = `Google Scholar Citations (updated: ${new Date(data.updated).toLocaleDateString()})`;
 	  } catch (error) {
 		// Fallback if JSON doesn't exist yet
-		citationCountEl.textContent = '174';
+		citationCountEl.textContent = '172';
 		citationCountEl.title = 'Google Scholar Citations';
 		console.log('Using fallback citation count');
 	  }
