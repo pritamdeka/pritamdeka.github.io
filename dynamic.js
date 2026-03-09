@@ -325,25 +325,31 @@ async function fetchDynamicStats() {
   
   // ===== Citation Count - Auto-fetch from JSON =====
 	const citationCountEl = document.getElementById('citation-count');
+	const paperCountEl = document.getElementById('paper-count');
 
-	async function updateCitationCount() {
-	  if (!citationCountEl) return;
-	  
+	async function fetchDynamicStats() {
 	  try {
 		const response = await fetch('citations.json');
 		const data = await response.json();
 		
-		citationCountEl.textContent = data.citations.toLocaleString();
-		citationCountEl.title = `Google Scholar Citations (updated: ${new Date(data.updated).toLocaleDateString()})`;
+		// Update paper count
+		if (paperCountEl) {
+		  paperCountEl.textContent = data.papers + '+';
+		}
+		
+		// Update citation count
+		if (citationCountEl) {
+		  citationCountEl.textContent = data.citations.toLocaleString();
+		  citationCountEl.title = `Google Scholar (updated: ${new Date(data.updated).toLocaleDateString()})`;
+		}
 	  } catch (error) {
-		// Fallback if JSON doesn't exist yet
-		citationCountEl.textContent = '172';
-		citationCountEl.title = 'Google Scholar Citations';
-		console.log('Using fallback citation count');
+		console.log('Using fallback stats');
+		if (paperCountEl) paperCountEl.textContent = '10+';
+		if (citationCountEl) citationCountEl.textContent = '174';
 	  }
 	}
 
-	updateCitationCount();
+	fetchDynamicStats();
 
   // HuggingFace Stats (separate section)
   const hfDownloadsEl = document.getElementById('hf-downloads');
