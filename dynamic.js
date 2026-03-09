@@ -300,56 +300,45 @@ if (lastUpdatedEl) {
 // ===== Dynamic Stats Fetcher =====
 
 async function fetchDynamicStats() {
-  // Paper count from papers.html
   const paperCountEl = document.getElementById('paper-count');
-  if (paperCountEl) {
-    try {
-      const response = await fetch('papers.html');
-      const html = await response.text();
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
-      const papers = doc.querySelectorAll('.paper-item');
-      paperCountEl.textContent = papers.length + '+';
-    } catch (error) {
-      paperCountEl.textContent = '10+';
-    }
-  }
-
-  // Citation count - Manual update from Google Scholar (NOT HF downloads!)
-  //const citationCountEl = document.getElementById('citation-count');
-  //if (citationCountEl) {
-    // Get your actual count from: https://scholar.google.com/citations?user=b0jYTAUAAAAJ
-    //citationCountEl.textContent = '174'; // UPDATE THIS with your Google Scholar citations
-    //citationCountEl.title = 'Google Scholar Citations';
-  //}
+  const citationCountEl = document.getElementById('citation-count');
   
-  // ===== Citation Count - Auto-fetch from JSON =====
-	const citationCountEl = document.getElementById('citation-count');
-	const paperCountEl = document.getElementById('paper-count');
+  console.log('📊 Fetching stats...');
+  
+  try {
+    const response = await fetch('citations.json');
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+    
+    const data = await response.json();
+    console.log('📦 Data received:', data);
+    
+    // Update paper count
+    if (paperCountEl) {
+      paperCountEl.textContent = data.papers + '+';
+    }
+    
+    // Update citation count
+    if (citationCountEl) {
+      citationCountEl.textContent = data.citations.toLocaleString();
+      citationCountEl.title = `Google Scholar (updated: ${new Date(data.updated).toLocaleDateString()})`;
+    }
+    
+  } catch (error) {
+    console.error('❌ Error fetching stats:', error);
+    if (paperCountEl) paperCountEl.textContent = '10+';
+    if (citationCountEl) citationCountEl.textContent = '174';
+  }
+}
 
-	async function fetchDynamicStats() {
-	  try {
-		const response = await fetch('citations.json');
-		const data = await response.json();
-		
-		// Update paper count
-		if (paperCountEl) {
-		  paperCountEl.textContent = data.papers + '+';
-		}
-		
-		// Update citation count
-		if (citationCountEl) {
-		  citationCountEl.textContent = data.citations.toLocaleString();
-		  citationCountEl.title = `Google Scholar (updated: ${new Date(data.updated).toLocaleDateString()})`;
-		}
-	  } catch (error) {
-		console.log('Using fallback stats');
-		if (paperCountEl) paperCountEl.textContent = '10+';
-		if (citationCountEl) citationCountEl.textContent = '174';
-	  }
-	}
-
-	fetchDynamicStats();
+// Run when page loads
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', fetchDynamicStats);
+} else {
+  fetchDynamicStats();
+}
 
   // HuggingFace Stats (separate section)
   const hfDownloadsEl = document.getElementById('hf-downloads');
