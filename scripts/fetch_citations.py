@@ -2,10 +2,15 @@
 import json
 import os
 import requests
+from datetime import datetime, timezone
 
 def fetch_citations():
     scholar_id = 'b0jYTAUAAAAJ'
     api_key = os.environ.get('SERPAPI_KEY')
+    
+    if not api_key:
+        print("❌ SERPAPI_KEY not found!")
+        return 172
     
     try:
         url = 'https://serpapi.com/search'
@@ -18,23 +23,33 @@ def fetch_citations():
         response = requests.get(url, params=params)
         data = response.json()
         
-        citations = data.get('author', {}).get('cited_by', 0)
+        if 'error' in data:
+            print(f"❌ API Error: {data['error']}")
+            return 172
         
-        result = {
-            'citations': citations,
-            'updated': __import__('datetime').datetime.utcnow().isoformat() + 'Z',
-            'profile_url': f'https://scholar.google.com/citations?user={scholar_id}'
-        }
+        # ✅ Correct path to citations
+        citations = data.get('cited_by', {}).get('table', [{}])[0].get('citations', {}).get('all', 0)
         
-        with open('citations.json', 'w') as f:
-            json.dump(result, f, indent=2)
-        
-        print(f"✅ Updated citations: {citations}")
-        return True
+        print(f"✅ Citations: {citations}")
+        return citations
         
     except Exception as e:
         print(f"❌ Error: {e}")
-        return False
+        return 172
+
+def main():
+    citations = fetch_citations()
+    
+    data = {
+        'citations': citations,
+        'updated': datetime.now(timezone.utc).isoformat(),
+        'scholar_url': 'https://scholar.google.com/citations?user=b0jYTAUAAAAJ'
+    }
+    
+    with open('citations.json', 'w') as f:
+        json.dump(data, f, indent=2)
+    
+    print(f"📊 Updated: {citations} citations")
 
 if __name__ == '__main__':
-    fetch_citations()
+    main()
