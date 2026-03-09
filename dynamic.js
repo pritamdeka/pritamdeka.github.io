@@ -299,46 +299,31 @@ if (lastUpdatedEl) {
 
 // ===== Dynamic Stats Fetcher =====
 
-async function fetchDynamicStats() {
-  const paperCountEl = document.getElementById('paper-count');
-  const citationCountEl = document.getElementById('citation-count');
-  
-  console.log('📊 Fetching stats...');
-  
-  try {
-    const response = await fetch('citations.json');
-    
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
-    
-    const data = await response.json();
-    console.log('📦 Data received:', data);
-    
-    // Update paper count
-    if (paperCountEl) {
-      paperCountEl.textContent = data.papers + '+';
-    }
-    
-    // Update citation count
-    if (citationCountEl) {
-      citationCountEl.textContent = data.citations.toLocaleString();
-      citationCountEl.title = `Google Scholar (updated: ${new Date(data.updated).toLocaleDateString()})`;
-    }
-    
-  } catch (error) {
-    console.error('❌ Error fetching stats:', error);
-    if (paperCountEl) paperCountEl.textContent = '10+';
-    if (citationCountEl) citationCountEl.textContent = '174';
-  }
-}
 
-// Run when page loads
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', fetchDynamicStats);
-} else {
-  fetchDynamicStats();
-}
+	async function fetchDynamicStats() {
+	  const paperCountEl = document.getElementById('paper-count');
+	  const citationCountEl = document.getElementById('citation-count');
+	  
+	  try {
+		const response = await fetch('citations.json');
+		const data = await response.json();
+		
+		if (paperCountEl) {
+		  paperCountEl.textContent = data.papers + '+';
+		}
+		
+		if (citationCountEl) {
+		  citationCountEl.textContent = data.citations.toLocaleString();
+		  citationCountEl.title = `Updated: ${new Date(data.updated).toLocaleDateString()}`;
+		}
+	  } catch (error) {
+		console.error('Stats fetch error:', error);
+		if (paperCountEl) paperCountEl.textContent = '10+';
+		if (citationCountEl) citationCountEl.textContent = '174';
+	  }
+	}
+
+	fetchDynamicStats();
 
   // HuggingFace Stats (separate section)
   const hfDownloadsEl = document.getElementById('hf-downloads');
