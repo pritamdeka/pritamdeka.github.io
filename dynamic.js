@@ -27,7 +27,7 @@ themeToggle.addEventListener('click', () => {
 const mobileMenuBtn = document.getElementById('mobile-menu-btn');
 const mainNav = document.getElementById('main-nav');
 
-if (mobileMenuBtn) {
+if (mobileMenuBtn && mainNav) {
   mobileMenuBtn.addEventListener('click', () => {
     mainNav.classList.toggle('active');
     const icon = mobileMenuBtn.querySelector('i');
@@ -185,6 +185,7 @@ if (cvDownload) {
   
   function updateDownloadCount() {
     if (downloadCount) {
+      downloadCount.classList.remove('skeleton');
       downloadCount.textContent = `(${downloads} downloads)`;
     }
   }
@@ -249,14 +250,16 @@ const mapContainer = document.getElementById('map-container');
 if (mapContainer) {
   mapContainer.innerHTML = journeyData.map(item => `
     <div class="journey-item">
-      <div class="journey-location">
-        <i class="fas ${item.icon} location-icon"></i>
-        <div class="location-name">${item.location}</div>
-        <div class="location-country">${item.country}</div>
+      <div class="journey-pin">
+        <i class="fas ${item.icon}"></i>
       </div>
-      <div class="journey-details">
+      <div class="journey-card">
+        <div class="journey-location">
+          <span class="location-name">${item.location}</span>
+          <span class="location-country">${item.country}</span>
+        </div>
         <div class="journey-role">${item.role}</div>
-        <div class="journey-period">${item.period}</div>
+        <span class="journey-period">${item.period}</span>
         <p class="journey-description">${item.description}</p>
       </div>
     </div>
@@ -270,15 +273,17 @@ async function updateViewCounter() {
  if (!viewCountEl) return;
  
  try {
-  const response = await fetch('https://api.countapi.xyz/hit/pritamdeka-homepage/visits');
-  const data = await response.json();
-  viewCountEl.textContent = data.value.toLocaleString();
+   const response = await fetch('https://api.countapi.xyz/hit/pritamdeka-homepage/visits');
+   const data = await response.json();
+   viewCountEl.classList.remove('skeleton');
+   whenVisible(viewCountEl, () => animateCounter(viewCountEl, data.value));
  } catch (error) {
-  // Fallback: use localStorage for demo
-  let views = localStorage.getItem('pageViews') || 2500;
-  views = parseInt(views) + 1;
-  localStorage.setItem('pageViews', views);
-  viewCountEl.textContent = views.toLocaleString();
+   // Fallback: use localStorage for demo
+   let views = localStorage.getItem('pageViews') || 2500;
+   views = parseInt(views) + 1;
+   localStorage.setItem('pageViews', views);
+   viewCountEl.classList.remove('skeleton');
+   whenVisible(viewCountEl, () => animateCounter(viewCountEl, views));
  }
 }
 
@@ -297,6 +302,72 @@ if (lastUpdatedEl) {
   lastUpdatedEl.textContent = now.toLocaleDateString('en-GB', options);
 }
 
+// ===== Hero Typewriter Rotator =====
+const heroTy = document.getElementById('hero-ty');
+if (heroTy) {
+  const roles = [
+    'Senior AI Engineer',
+    'LLMs & Agentic AI',
+    'Multimodal & Vision-Language AI',
+    'Document Intelligence',
+    'AI Research Fellow, QUB'
+  ];
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) {
+    heroTy.textContent = roles[0];
+  } else {
+    let r = 0, c = 0, deleting = false;
+    (function tick() {
+      const word = roles[r];
+      if (deleting) {
+        heroTy.textContent = word.slice(0, --c);
+      } else {
+        heroTy.textContent = word.slice(0, ++c);
+      }
+      let delay = deleting ? 45 : 90;
+      if (!deleting && c === word.length) {
+        delay = 1800;
+        deleting = true;
+      } else if (deleting && c === 0) {
+        deleting = false;
+        r = (r + 1) % roles.length;
+        delay = 350;
+      }
+      setTimeout(tick, delay);
+    })();
+  }
+}
+
+// ===== Animated Count-Up =====
+function animateCounter(el, target, duration = 1200) {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) {
+    el.textContent = target.toLocaleString();
+    return;
+  }
+  const start = performance.now();
+  function frame(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(target * eased).toLocaleString();
+    if (p < 1) requestAnimationFrame(frame);
+    else el.textContent = target.toLocaleString();
+  }
+  requestAnimationFrame(frame);
+}
+
+function whenVisible(el, cb) {
+  if (!el) return;
+  if (el.getBoundingClientRect().top < window.innerHeight && el.getBoundingClientRect().bottom > 0) {
+    cb();
+    return;
+  }
+  const obs = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) { obs.disconnect(); cb(); }
+  }, { threshold: 0.3 });
+  obs.observe(el);
+}
+
 // ===== Dynamic Stats Fetcher =====
 async function fetchDynamicStats() {
   const paperCountEl = document.getElementById('paper-count');
@@ -311,13 +382,17 @@ async function fetchDynamicStats() {
     }
     
     if (citationCountEl) {
-      citationCountEl.textContent = data.citations.toLocaleString();
+      citationCountEl.classList.remove('skeleton');
+      whenVisible(citationCountEl, () => animateCounter(citationCountEl, data.citations));
       citationCountEl.title = `Updated: ${new Date(data.updated).toLocaleDateString()}`;
     }
   } catch (error) {
     console.error('Stats fetch error:', error);
     if (paperCountEl) paperCountEl.textContent = '10+';
-    if (citationCountEl) citationCountEl.textContent = '174';
+    if (citationCountEl) {
+      citationCountEl.classList.remove('skeleton');
+      citationCountEl.textContent = '174';
+    }
   }
 }
 
@@ -340,15 +415,23 @@ async function fetchHuggingFaceStats() {
     const totalModels = models.length;
     
     if (hfDownloadsEl) {
-      hfDownloadsEl.textContent = formatNumber(totalDownloads);
+      hfDownloadsEl.classList.remove('skeleton');
+      whenVisible(hfDownloadsEl, () => animateCounter(hfDownloadsEl, totalDownloads));
     }
     
     if (hfModelsEl) {
-      hfModelsEl.textContent = totalModels;
+      hfModelsEl.classList.remove('skeleton');
+      whenVisible(hfModelsEl, () => animateCounter(hfModelsEl, totalModels));
     }
   } catch (error) {
-    if (hfDownloadsEl) hfDownloadsEl.textContent = 'N/A';
-    if (hfModelsEl) hfModelsEl.textContent = 'N/A';
+    if (hfDownloadsEl) {
+      hfDownloadsEl.classList.remove('skeleton');
+      hfDownloadsEl.textContent = 'N/A';
+    }
+    if (hfModelsEl) {
+      hfModelsEl.classList.remove('skeleton');
+      hfModelsEl.textContent = 'N/A';
+    }
     console.log('HuggingFace API unavailable');
   }
 }
@@ -459,12 +542,20 @@ if (networkContainer) {
   { id: 11, label: 'Prompt Engineering', group: 'method', value: 13 },
   { id: 12, label: 'Fine-tuning', group: 'method', value: 12 },
   
-  // Domains (Purple)
-  { id: 13, label: 'Cybersecurity', group: 'domain', value: 10 },
-  { id: 14, label: 'Business Process', group: 'domain', value: 11 },
-  { id: 15, label: 'Social Media', group: 'domain', value: 9 },
-  { id: 16, label: 'Scientific Literature', group: 'domain', value: 8 },
- ];
+   // Domains (Purple)
+   { id: 13, label: 'Cybersecurity', group: 'domain', value: 10 },
+   { id: 14, label: 'Business Process', group: 'domain', value: 11 },
+   { id: 15, label: 'Social Media', group: 'domain', value: 9 },
+   { id: 16, label: 'Scientific Literature', group: 'domain', value: 8 },
+   
+   // Collaborators (Pink)
+   { id: 20, label: 'Anna Jurek-Loughrey\n(QUB)', group: 'collab', value: 16 },
+   { id: 21, label: 'Barry Devereux\n(QUB)', group: 'collab', value: 13 },
+   { id: 22, label: 'Deepak P\n(QUB/IIT-M)', group: 'collab', value: 11 },
+   { id: 23, label: 'Erisa Karafili\n(Southampton)', group: 'collab', value: 11 },
+   { id: 24, label: 'Nayan J. Kalita', group: 'collab', value: 8 },
+   { id: 25, label: 'Ashwathy T Revi\n(Southampton)', group: 'collab', value: 8 },
+  ];
  
  // Define edges (connections)
  const edges = [
@@ -500,15 +591,30 @@ if (networkContainer) {
   { from: 12, to: 2 },
   { from: 12, to: 3 },
   
-  // Domains to applications
-  { from: 13, to: 4 },
-  { from: 13, to: 9 },
-  { from: 14, to: 7 },
-  { from: 14, to: 8 },
-  { from: 15, to: 5 },
-  { from: 15, to: 1 },
-  { from: 16, to: 6 },
- ];
+   // Domains to applications
+   { from: 13, to: 4 },
+   { from: 13, to: 9 },
+   { from: 14, to: 7 },
+   { from: 14, to: 8 },
+   { from: 15, to: 5 },
+   { from: 15, to: 1 },
+   { from: 16, to: 6 },
+   
+   // Collaborators to their research areas
+   { from: 20, to: 1, dashes: true },
+   { from: 20, to: 5, dashes: true },
+   { from: 20, to: 6, dashes: true },
+   { from: 21, to: 3, dashes: true },
+   { from: 21, to: 7, dashes: true },
+   { from: 21, to: 8, dashes: true },
+   { from: 22, to: 5, dashes: true },
+   { from: 22, to: 6, dashes: true },
+   { from: 23, to: 13, dashes: true },
+   { from: 23, to: 4, dashes: true },
+   { from: 24, to: 15, dashes: true },
+   { from: 24, to: 1, dashes: true },
+   { from: 25, to: 5, dashes: true },
+  ];
  
  // Create data arrays
  const data = {
@@ -516,50 +622,56 @@ if (networkContainer) {
   edges: new vis.DataSet(edges)
  };
  
- // Options for styling
- const options = {
-  nodes: {
-   shape: 'dot',
-   font: {
-    size: 14,
-    color: '#21243d',
-    face: 'Segoe UI'
+  // Options for styling
+  const options = {
+   nodes: {
+    shape: 'dot',
+    font: {
+     size: 14,
+     color: '#1a1d3a',
+     face: 'Inter, Segoe UI, sans-serif',
+     multi: 'html'
+    },
+    borderWidth: 2,
+    shadow: true
    },
-   borderWidth: 2,
-   shadow: true
-  },
-  edges: {
-   width: 1.5,
-   color: { color: '#ececff', highlight: '#2d72d9' },
-   smooth: { type: 'continuous' }
-  },
-  groups: {
-   core: {
-    color: { background: '#2d72d9', border: '#1a5bc7' },
-    label: { bold: true }
+   edges: {
+    width: 1.5,
+    color: { color: '#e6e8f5', highlight: '#5b6ef5' },
+    smooth: { type: 'continuous' }
    },
-   application: {
-    color: { background: '#10b981', border: '#059669' }
+   groups: {
+    core: {
+     color: { background: '#5b6ef5', border: '#4456e8' },
+     label: { bold: true }
+    },
+    application: {
+     color: { background: '#10b981', border: '#059669' }
+    },
+    method: {
+     color: { background: '#f59e0b', border: '#d97706' }
+    },
+    domain: {
+     color: { background: '#8b5cf6', border: '#7c3aed' }
+    },
+    collab: {
+     color: { background: '#ec4899', border: '#db2777' },
+     shape: 'star',
+     size: 18
+    }
    },
-   method: {
-    color: { background: '#f59e0b', border: '#d97706' }
+   physics: {
+    enabled: true,
+    barnesHut: {
+     gravitationalConstant: -3500,
+     centralGravity: 0.25,
+     springLength: 110,
+     springConstant: 0.04,
+     damping: 0.12
+    },
+    stabilization: { iterations: 200 }
    },
-   domain: {
-    color: { background: '#8b5cf6', border: '#7c3aed' }
-   }
-  },
-  physics: {
-   enabled: true,
-   barnesHut: {
-    gravitationalConstant: -3000,
-    centralGravity: 0.3,
-    springLength: 95,
-    springConstant: 0.04,
-    damping: 0.09
-   },
-   stabilization: { iterations: 150 }
-  },
-  interaction: {
+   interaction: {
    hover: true,
    tooltipDelay: 200,
    zoomView: true,
@@ -570,13 +682,146 @@ if (networkContainer) {
  // Initialize network
  const network = new vis.Network(networkContainer, data, options);
  
- // Add click event to show paper links
- network.on('click', function(params) {
-  if (params.nodes.length > 0) {
-   const nodeId = params.nodes[0];
-   const node = nodes.find(n => n.id === nodeId);
-   console.log('Clicked:', node.label);
-   // Could open papers filtered by topic here
-  }
- });
+  // Add click event to show paper links
+  network.on('click', function(params) {
+   if (params.nodes.length > 0) {
+    const nodeId = params.nodes[0];
+    const node = nodes.find(n => n.id === nodeId);
+    console.log('Clicked:', node.label);
+    // Could open papers filtered by topic here
+   }
+  });
 }
+
+// ===== Command Palette (Ctrl/Cmd+K) =====
+(function setupCommandPalette() {
+  const palette = document.createElement('div');
+  palette.className = 'cmd-palette';
+  palette.id = 'cmd-palette';
+  palette.innerHTML = `
+    <div class="cmd-box" role="dialog" aria-label="Command palette">
+      <div class="cmd-input-wrap">
+        <i class="fas fa-search"></i>
+        <input type="text" class="cmd-input" id="cmd-input" placeholder="Type a command or search…" autocomplete="off" spellcheck="false">
+        <span class="cmd-kbd">esc</span>
+      </div>
+      <div class="cmd-results" id="cmd-results"></div>
+      <div class="cmd-footer">
+        <span><kbd>↑</kbd><kbd>↓</kbd> navigate · <kbd>↵</kbd> select</span>
+        <span>Press <kbd>Ctrl</kbd>+<kbd>K</kbd> anytime</span>
+      </div>
+    </div>`;
+  document.body.appendChild(palette);
+
+  const input = document.getElementById('cmd-input');
+  const results = document.getElementById('cmd-results');
+  let commands = [];
+  let selected = 0;
+
+  function isIndex() { return /index\.html$|\/$/.test(location.pathname); }
+
+  function buildCommands() {
+    const c = [
+      { group: 'Navigate', icon: 'fa-user', label: 'About', hint: 'index.html', run: () => go('index.html') },
+      { group: 'Navigate', icon: 'fa-graduation-cap', label: 'Education', hint: 'education.html', run: () => go('education.html') },
+      { group: 'Navigate', icon: 'fa-file-alt', label: 'Papers', hint: 'papers.html', run: () => go('papers.html') },
+      { group: 'Navigate', icon: 'fa-trophy', label: 'Activities', hint: 'activities.html', run: () => go('activities.html') },
+      { group: 'Navigate', icon: 'fa-download', label: 'Download CV', hint: 'PDF', run: () => go('cv/Pritam_Deka_CV.pdf') },
+      { group: 'Action', icon: 'fa-moon', label: 'Toggle dark / light mode', hint: 'theme', run: () => { themeToggle.click(); closePalette(); } },
+    ];
+    if (isIndex()) {
+      c.push(
+        { group: 'Jump to', icon: 'fa-newspaper', label: 'News', run: () => scrollTo('#news') },
+        { group: 'Jump to', icon: 'fa-project-diagram', label: 'Research Network', run: () => scrollTo('#research-network-section') },
+        { group: 'Jump to', icon: 'fa-map-marked-alt', label: 'Academic Journey', run: () => scrollTo('#journey') },
+        { group: 'Jump to', icon: 'fas fa-rocket', label: 'Projects & Demos', run: () => scrollTo('#projects') },
+        { group: 'Jump to', icon: 'fa-tools', label: 'Skills', run: () => scrollTo('#skills') },
+        { group: 'Jump to', icon: 'fa-briefcase', label: 'Experience', run: () => scrollTo('#experience') },
+        { group: 'Jump to', icon: 'fa-paper-plane', label: 'Contact', run: () => scrollTo('#contact') },
+      );
+    }
+    searchData.forEach(item => {
+      if (item.href) {
+        c.push({ group: 'Search', icon: 'fa-link', label: item.title, hint: item.type, run: () => go(item.href) });
+      } else if (item.section) {
+        c.push({ group: 'Search', icon: 'fa-search', label: item.title, hint: item.type, run: () => scrollTo('#' + item.section) });
+      }
+    });
+    return c;
+  }
+
+  function go(url) { location.href = url; }
+  function scrollTo(sel) {
+    closePalette();
+    const el = document.querySelector(sel);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function render(list) {
+    if (!list.length) {
+      results.innerHTML = '<div class="cmd-item" style="cursor:default;color:var(--text-muted)">No matches</div>';
+      return;
+    }
+    results.innerHTML = '';
+    let lastGroup = '';
+    list.forEach((cmd, i) => {
+      if (cmd.group !== lastGroup) {
+        const g = document.createElement('div');
+        g.className = 'cmd-group';
+        g.textContent = cmd.group;
+        results.appendChild(g);
+        lastGroup = cmd.group;
+      }
+      const item = document.createElement('div');
+      item.className = 'cmd-item' + (i === selected ? ' selected' : '');
+      item.innerHTML = `<i class="fas ${cmd.icon}"></i><span>${cmd.label}</span>${cmd.hint ? '<span class="cmd-hint">' + cmd.hint + '</span>' : ''}`;
+      item.addEventListener('click', () => { cmd.run(); });
+      results.appendChild(item);
+    });
+  }
+
+  function filter(q) {
+    if (!q) { selected = 0; return commands; }
+    return commands.filter(c => (c.label + ' ' + (c.hint || '') + ' ' + c.group).toLowerCase().includes(q.toLowerCase()));
+  }
+
+  function openPalette() {
+    commands = buildCommands();
+    palette.classList.add('active');
+    input.value = '';
+    render(filter(''));
+    setTimeout(() => input.focus(), 30);
+  }
+
+  function closePalette() {
+    palette.classList.remove('active');
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      palette.classList.contains('active') ? closePalette() : openPalette();
+      return;
+    }
+    if (!palette.classList.contains('active')) return;
+    if (e.key === 'Escape') { closePalette(); }
+    else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      const f = filter(input.value);
+      selected = (selected + 1) % f.length;
+      render(f);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      const f = filter(input.value);
+      selected = (selected - 1 + f.length) % f.length;
+      render(f);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      const f = filter(input.value);
+      if (f[selected]) f[selected].run();
+    }
+  });
+
+  input.addEventListener('input', () => { selected = 0; render(filter(input.value)); });
+  palette.addEventListener('click', (e) => { if (e.target === palette) closePalette(); });
+})();

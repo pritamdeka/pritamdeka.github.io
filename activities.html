@@ -4,10 +4,35 @@
   <meta charset="UTF-8">
   <title>Pritam Deka | Academic Activities</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Academic activities of Dr. Pritam Deka: open-source AI models, live demos, conference reviewing, speaking and teaching.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Pritam Deka | Academic Activities">
+  <meta property="og:description" content="Open-source AI models, live demos, conference reviewing, speaking and teaching.">
+  <meta property="og:url" content="https://pritamdeka.github.io/activities.html">
+  <meta name="twitter:card" content="summary">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="favicon.svg">
   <link rel="stylesheet" href="style-dynamic.css">
 </head>
 <body class="light-mode">
+<!-- Search Bar -->
+<div class="search-container" id="search-container">
+  <div class="search-box">
+    <input type="text" id="search-input" placeholder="Search papers, skills, experience..." aria-label="Search">
+    <button id="search-close" class="search-close"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="search-results" id="search-results"></div>
+</div>
+
+<!-- Mobile Menu Toggle -->
+<button class="mobile-menu-toggle" id="mobile-menu-btn">
+  <i class="fas fa-bars"></i>
+</button>
+
 <!-- Mobile Breadcrumb -->
 <div class="mobile-breadcrumb">
  <a href="index.html">Home</a>
@@ -23,13 +48,16 @@
  <a href="#speaking">Speaking</a>
  <a href="#teaching">Teaching</a>
 </div>
-  <nav>
+  <nav id="main-nav">
     <a href="index.html">About</a>
     <a href="education.html">Education</a>
     <a href="papers.html">Papers</a>
     <a href="activities.html" class="active">Activities</a>
     <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
       <i class="fas fa-moon"></i>
+    </button>
+    <button id="search-toggle" class="search-toggle" aria-label="Search">
+      <i class="fas fa-search"></i>
     </button>
   </nav>
 
@@ -97,10 +125,14 @@
     </section>
   </div>
   
+  <button class="back-to-top" id="back-to-top" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+  
   <footer>
     <div class="container">
       <div class="view-counter">
-        <i class="fas fa-eye"></i> Page views: <span id="view-count">Loading...</span>
+        <i class="fas fa-eye"></i> Page views: <span id="view-count" class="skeleton">Loading...</span>
       </div>
       <p>&copy; <span id="current-year">2025</span> Pritam Deka</p>
     </div>
