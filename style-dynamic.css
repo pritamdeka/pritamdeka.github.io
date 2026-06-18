@@ -2880,3 +2880,235 @@ nav a.spy-active::after {
   border-radius: 4px;
   font-size: 0.9em;
 }
+
+/* ===== Mobile App-Like Bottom Tab Bar ===== */
+.tabbar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1001;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--border);
+  padding: 0.35rem 0.2rem;
+  padding-bottom: calc(0.35rem + env(safe-area-inset-bottom, 0px));
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: 0 -4px 24px rgba(30,32,80,0.08);
+  transition: transform var(--dur-slow) var(--ease);
+}
+
+.dark-mode .tabbar {
+  background: rgba(22,24,48,0.92);
+}
+
+.tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.18rem;
+  padding: 0.3rem 0.1rem;
+  min-height: 48px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--dur) var(--ease);
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+}
+
+.tab i {
+  font-size: 1.15rem;
+  transition: transform var(--dur) var(--ease);
+}
+
+.tab.active {
+  color: var(--accent);
+}
+
+.tab.active i {
+  transform: translateY(-2px) scale(1.12);
+}
+
+.tab.active::before {
+  content: '';
+  position: absolute;
+  top: -0.35rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: var(--gradient-1);
+}
+
+.tab:active i {
+  transform: scale(0.88);
+}
+
+/* Hide bottom tab bar when drawer is open */
+body.drawer-open .tabbar {
+  transform: translateY(100%);
+}
+
+/* ===== Mobile Drawer (slide-in for secondary items) ===== */
+.drawer-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1002;
+  background: rgba(10,12,30,0.4);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease);
+}
+
+.drawer-backdrop.active {
+  display: block;
+  opacity: 1;
+}
+
+.drawer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1003;
+  background: var(--bg-secondary);
+  border-radius: 20px 20px 0 0;
+  padding: 0.6rem 1rem calc(1.2rem + env(safe-area-inset-bottom, 0px));
+  transform: translateY(100%);
+  transition: transform var(--dur-slow) var(--ease);
+  box-shadow: 0 -8px 32px rgba(10,12,30,0.18);
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.drawer.active {
+  transform: translateY(0);
+}
+
+.drawer-grip {
+  width: 40px;
+  height: 4px;
+  border-radius: 4px;
+  background: var(--border-strong);
+  margin: 0.3rem auto 1rem;
+}
+
+.drawer-title {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin: 0 0 0.6rem 0.5rem;
+}
+
+.drawer-item {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.85rem 0.8rem;
+  border-radius: 12px;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  background: none;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  font-family: var(--font-body);
+  -webkit-tap-highlight-color: transparent;
+  transition: background var(--dur) var(--ease);
+}
+
+.drawer-item:active {
+  background: var(--accent-soft);
+  transform: scale(0.98);
+}
+
+.drawer-item i {
+  color: var(--accent);
+  font-size: 1.05rem;
+  width: 1.4em;
+  text-align: center;
+}
+
+/* ===== Mobile app-like enhancements ===== */
+@media (max-width: 700px) {
+  /* Show bottom tab bar, hide old hamburger toggle */
+  .tabbar { display: flex; }
+  .mobile-menu-toggle { display: none !important; }
+
+  /* Keep top nav for scroll-spy but hide its links on mobile (tab bar owns nav) */
+  nav#main-nav {
+    display: none !important;
+  }
+  nav#main-nav.active {
+    display: none !important;
+  }
+
+  /* Add bottom padding so content isn't hidden behind the tab bar */
+  body { padding-bottom: 70px; }
+  .back-to-top { bottom: 86px; }
+  footer { padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px) + 60px); }
+
+  /* Hide mobile-breadcrumb and mobile-quick-nav (tab bar replaces them) */
+  .mobile-breadcrumb { display: none !important; }
+  .mobile-quick-nav { display: none !important; }
+
+  /* Card tap feedback */
+  .paper-item, .project-card, .activity-card, .degree-card, .news-item, .journey-card {
+    -webkit-tap-highlight-color: transparent;
+  }
+  .paper-item:active, .project-card:active, .activity-card:active, .news-item:active {
+    transform: scale(0.985);
+    transition: transform 0.1s ease;
+  }
+
+  /* Larger tap targets for filter chips */
+  .filter-btn, .exp-filters .filter-btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  /* Hero CTAs stack full-width */
+  .hero-cta a {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  /* Page header stats wrap nicely */
+  .page-header-stats { gap: 1.2rem; }
+  .ph-stat { min-width: 80px; }
+  .ph-stat .ph-num { font-size: 1.4rem; }
+
+  /* Sidebar becomes a compact hero-ish card on mobile */
+  .sidebar {
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    margin: -1rem 0 1.5rem;
+    padding: 1.5rem 1.2rem calc(1.5rem + 0px);
+  }
+}
+
+/* Desktop: hide tab bar and drawer entirely */
+@media (min-width: 701px) {
+  .tabbar, .drawer, .drawer-backdrop { display: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab, .tab i, .drawer, .drawer-backdrop, .tabbar { transition: none; }
+}

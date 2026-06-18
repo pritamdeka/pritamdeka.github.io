@@ -941,3 +941,114 @@ function fetchWithTimeout(url, ms) {
   ]);
 }
 
+// ===== Mobile App-Like Tab Bar + Drawer =====
+(function setupMobileTabBar() {
+  // Only build on small screens (CSS hides it on desktop, but avoid unnecessary DOM)
+  const isMobile = window.matchMedia('(max-width: 700px)').matches;
+  if (!isMobile) return;
+
+  const page = location.pathname.split('/').pop() || 'index.html';
+
+  // Determine active tab
+  const tabs = [
+    { href: 'index.html', icon: 'fa-user', label: 'About' },
+    { href: 'papers.html', icon: 'fa-file-alt', label: 'Papers' },
+    { href: 'activities.html', icon: 'fa-trophy', label: 'Activity' },
+    { href: 'blog.html', icon: 'fa-rss', label: 'Blog' },
+  ];
+  const activeTab = tabs.find(t => t.href === page) ? page : 'more';
+
+  const tabbar = document.createElement('nav');
+  tabbar.className = 'tabbar';
+  tabbar.innerHTML = tabs.map(t => `
+    <a href="${t.href}" class="tab${t.href === page ? ' active' : ''}">
+      <i class="fas ${t.icon}"></i><span>${t.label}</span>
+    </a>`).join('') + `
+    <button class="tab${activeTab === 'more' ? ' active' : ''}" id="tab-more">
+      <i class="fas fa-ellipsis-h"></i><span>More</span>
+    </button>`;
+  document.body.appendChild(tabbar);
+
+  // Drawer for secondary items
+  const backdrop = document.createElement('div');
+  backdrop.className = 'drawer-backdrop';
+  const drawer = document.createElement('div');
+  drawer.className = 'drawer';
+
+  const isIndex = page === 'index.html';
+  const moreItems = [];
+  moreItems.push({ icon: 'fa-graduation-cap', label: 'Education', href: 'education.html' });
+  if (isIndex) {
+    moreItems.push({ icon: 'fa-newspaper', label: 'News', href: '#news' });
+    moreItems.push({ icon: 'fa-project-diagram', label: 'Research Network', href: '#research-network-section' });
+    moreItems.push({ icon: 'fa-map-marked-alt', label: 'Academic Journey', href: '#journey' });
+    moreItems.push({ icon: 'fa-rocket', label: 'Projects & Demos', href: '#projects' });
+    moreItems.push({ icon: 'fa-briefcase', label: 'Experience', href: '#experience' });
+    moreItems.push({ icon: 'fa-paper-plane', label: 'Contact', href: '#contact' });
+  }
+  moreItems.push({ icon: 'fa-search', label: 'Search', action: 'search' });
+  moreItems.push({ icon: 'fa-moon', label: 'Toggle dark mode', action: 'theme' });
+  moreItems.push({ icon: 'fa-download', label: 'Download CV', href: 'cv/Pritam_Deka_CV.pdf' });
+  moreItems.push({ icon: 'fa-rss', label: 'RSS Feed', href: 'feed.xml' });
+
+  drawer.innerHTML = `
+    <div class="drawer-grip"></div>
+    <p class="drawer-title">More</p>
+    ${moreItems.map(it => {
+      if (it.href) {
+        return `<a href="${it.href}" class="drawer-item"><i class="fas ${it.icon}"></i><span>${it.label}</span></a>`;
+      }
+      return `<button class="drawer-item" data-action="${it.action}"><i class="fas ${it.icon}"></i><span>${it.label}</span></button>`;
+    }).join('')}`;
+  document.body.appendChild(backdrop);
+  document.body.appendChild(drawer);
+
+  const tabMore = document.getElementById('tab-more');
+
+  function openDrawer() {
+    backdrop.classList.add('active');
+    drawer.classList.add('active');
+    document.body.classList.add('drawer-open');
+  }
+  function closeDrawer() {
+    backdrop.classList.remove('active');
+    drawer.classList.remove('active');
+    document.body.classList.remove('drawer-open');
+  }
+
+  if (tabMore) {
+    tabMore.addEventListener('click', () => {
+      if (drawer.classList.contains('active')) closeDrawer();
+      else openDrawer();
+    });
+  }
+  backdrop.addEventListener('click', closeDrawer);
+
+  // Drawer item actions
+  drawer.querySelectorAll('.drawer-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      const action = item.dataset.action;
+      if (action === 'theme') {
+        e.preventDefault();
+        themeToggle && themeToggle.click();
+        closeDrawer();
+      } else if (action === 'search') {
+        e.preventDefault();
+        closeDrawer();
+        const st = document.getElementById('search-toggle');
+        if (st) st.click();
+      } else if (item.getAttribute('href') && item.getAttribute('href').startsWith('#')) {
+        e.preventDefault();
+        const el = document.querySelector(item.getAttribute('href'));
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+        closeDrawer();
+      }
+    });
+  });
+
+  // Close drawer on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeDrawer();
+  });
+})();
+

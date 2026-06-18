@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-"""Generate an Atom feed (feed.xml) from the news items in index.html.
+"""Generate an Atom feed (feed.xml) from news items + weekly blog posts.
 
-Parses the .news-item blocks inside #news and writes a valid Atom 1.0 feed.
-Run locally or in CI after editing news. No third-party deps — stdlib only.
+Parses the .news-item blocks in index.html AND reads blog/index.json,
+merges them by date, and writes a valid Atom 1.0 feed.
+Run locally or in CI. No third-party deps — stdlib only.
 """
+import json
 import re
 import html
 from datetime import datetime, timezone
@@ -28,13 +30,28 @@ def parse_news(html_text):
         items.append((date_str.strip(), heading, body))
     return items
 
+def parse_blog():
+    """Read blog/index.json and return (date, title, excerpt, file) tuples."""
+    p = Path('blog/index.json')
+    if not p.exists():
+        return []
+    try:
+        manifest = json.loads(p.read_text(encoding='utf-8'))
+    except (json.JSONDecodeError, OSError):
+        return []
+    return [(b.get('date', ''), b.get('title', ''), b.get('excerpt', ''), b.get('file', ''))
+            for b in manifest if b.get('date')]
+
 def to_iso_date(date_str):
-    """Convert 'March 2026' -> '2026-03-01T00:00:00Z' (first of month)."""
+    """Convert 'March 2026' or '2026-06-18' -> ISO 8601 UTC."""
     m = re.match(r'(\w+)\s+(\d{4})', date_str)
-    if not m:
-        return datetime.now(timezone.utc).isoformat()
-    month, year = MONTHS.get(m.group(1), 1), int(m.group(2))
-    return f"{year:04d}-{month:02d}-01T00:00:00Z"
+    if m:
+        month, year = MONTHS.get(m.group(1), 1), int(m.group(2))
+        return f"{year:04d}-{month:02d}-01T00:00:00Z"
+    m = re.match(r'(\d{4})-(\d{2})-(\d{2})', date_str)
+    if m:
+        return f"{m.group(1)}-{m.group(2)}-{m.group(3)}T09:00:00Z"
+    return datetime.now(timezone.utc).isoformat()
 
 def esc(s):
     return html.escape(s, quote=True)
@@ -46,16 +63,17 @@ def main():
         return
     html_text = idx.read_text(encoding='utf-8')
     news = parse_news(html_text)
-    if not news:
-        print("No news items found")
-        return
+    blog = parse_blog()
 
-    updated = max(to_iso_date(d) for d, _, _ in news)
     entries = []
+
+    # News items (personal updates)
     for i, (date_str, heading, body) in enumerate(news):
         iso = to_iso_date(date_str)
         eid = f"urn:pritamdeka:news:{i}:{iso[:7]}"
-        entries.append(f"""  <entry>
+        entries.append({
+            'iso': iso,
+            'xml': f"""  <entry>
     <id>{eid}</id>
     <title>{esc(heading)}</title>
     <link href="{SITE}/#news"/>
@@ -63,21 +81,49 @@ def main():
     <published>{iso}</published>
     <summary>{esc(body)}</summary>
     <author><name>{AUTHOR}</name></author>
-  </entry>""")
+  </entry>"""
+        })
+
+    # Blog posts (weekly AI digest)
+    for b in blog:
+        date_str, title, excerpt, file = b
+        iso = to_iso_date(date_str)
+        eid = f"urn:pritamdeka:blog:{iso[:10]}"
+        link = f"{SITE}/{file}" if file else f"{SITE}/blog.html"
+        entries.append({
+            'iso': iso,
+            'xml': f"""  <entry>
+    <id>{eid}</id>
+    <title>{esc(title)}</title>
+    <link href="{link}"/>
+    <updated>{iso}</updated>
+    <published>{iso}</published>
+    <summary>{esc(excerpt)}</summary>
+    <author><name>{AUTHOR} (AI digest)</name></author>
+  </entry>"""
+        })
+
+    if not entries:
+        print("No news or blog items found")
+        return
+
+    # Sort by date descending (newest first)
+    entries.sort(key=lambda e: e['iso'], reverse=True)
+    updated = entries[0]['iso']
 
     feed = f"""<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>{AUTHOR} — News</title>
+  <title>{AUTHOR} — News &amp; Weekly AI Digest</title>
   <link href="{SITE}/" rel="alternate" type="text/html"/>
   <link href="{SITE}/feed.xml" rel="self" type="application/atom+xml"/>
   <id>{FEED_ID}</id>
   <updated>{updated}</updated>
   <author><name>{AUTHOR}</name></author>
-{chr(10).join(entries)}
+{chr(10).join(e['xml'] for e in entries)}
 </feed>
 """
     Path('feed.xml').write_text(feed, encoding='utf-8')
-    print(f"feed.xml generated with {len(news)} entries")
+    print(f"feed.xml generated with {len(news)} news + {len(blog)} blog = {len(entries)} entries")
 
 if __name__ == '__main__':
     main()
