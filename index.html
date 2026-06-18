@@ -2,17 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Dr. Pritam Deka | Senior AI Engineer & NLP Researcher</title>
+  <title>Dr. Pritam Deka | AI Engineer & NLP Researcher</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Senior AI Engineer & AI Research Fellow at Queen's University Belfast. Specializing in LLMs, VLMs, agentic AI and document intelligence.">
+  <meta name="description" content="AI Engineer & AI Research Fellow at Queen's University Belfast. Specializing in LLMs, VLMs, agentic AI and document intelligence.">
   <meta property="og:type" content="profile">
-  <meta property="og:title" content="Dr. Pritam Deka | Senior AI Engineer & NLP Researcher">
-  <meta property="og:description" content="Senior AI Engineer & AI Research Fellow at Queen's University Belfast. LLMs, VLMs, agentic AI and document intelligence.">
+  <meta property="og:title" content="Dr. Pritam Deka | AI Engineer & NLP Researcher">
+  <meta property="og:description" content="AI Engineer & AI Research Fellow at Queen's University Belfast. LLMs, VLMs, agentic AI and document intelligence.">
   <meta property="og:image" content="https://pritamdeka.github.io/profile.jpg">
   <meta property="og:url" content="https://pritamdeka.github.io/">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Dr. Pritam Deka | Senior AI Engineer & NLP Researcher">
-  <meta name="twitter:description" content="Senior AI Engineer & AI Research Fellow at Queen's University Belfast. LLMs, VLMs, agentic AI and document intelligence.">
+  <meta name="twitter:title" content="Dr. Pritam Deka | AI Engineer & NLP Researcher">
+  <meta name="twitter:description" content="AI Engineer & AI Research Fellow at Queen's University Belfast. LLMs, VLMs, agentic AI and document intelligence.">
   <meta name="twitter:image" content="https://pritamdeka.github.io/profile.jpg">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,6 +23,7 @@
   <link rel="stylesheet" href="style-dynamic.css">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="apple-touch-icon" href="favicon.svg">
+  <link rel="alternate" type="application/atom+xml" title="Pritam Deka — News" href="feed.xml">
   
 </head>
 <body class="light-mode">
@@ -48,6 +49,7 @@
     <a href="education.html">Education</a>
     <a href="papers.html">Papers</a>
     <a href="activities.html">Activities</a>
+    <a href="blog.html">Blog</a>
     <a href="#news">News</a>
     <a href="#contact">Contact</a>
     <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
@@ -61,7 +63,7 @@
   <!-- Hero -->
   <header class="hero">
     <div class="hero-inner">
-      <span class="hero-eyebrow">AI &amp; NLP Researcher · Co-founder, Khyontek AI</span>
+      <span class="hero-eyebrow">AI Engineer · Co-founder, Khyontek AI</span>
       <h1 class="hero-name">Dr. Pritam Deka</h1>
       <div class="hero-roles"><span class="ty-text" id="hero-ty"></span></div>
       <div class="hero-cta">
@@ -91,7 +93,7 @@
 		  <div>
 			<div class="sidebar-name">Dr. Pritam Deka</div>
 		  <div class="sidebar-title typing-text">
-		  <span class="typing-line">Senior AI Engineer</span>
+		  <span class="typing-line">AI Engineer</span>
 		  <span class="typing-line">Research Fellow, Queen's University Belfast</span>
 		</div>
 			
@@ -105,6 +107,12 @@
 				<span class="stat-number skeleton" id="citation-count">Loading...</span>
 				<span class="stat-label">Citations</span>
 			  </div>
+			</div>
+
+			<!-- Citation Growth Sparkline -->
+			<div class="citation-spark" id="citation-spark" hidden>
+			  <svg id="spark-svg" viewBox="0 0 120 32" preserveAspectRatio="none" aria-label="Citation growth trend"></svg>
+			  <span class="spark-label">Citation growth</span>
 			</div>
 			
 			<!-- Email Copy Button -->
@@ -158,7 +166,7 @@
 	  <section class="fade-in" id="about">
         <h2><i class="fas fa-user"></i> About</h2>
         <p>
-          I am a Senior AI Engineer and AI Research Fellow specialising in practical AI systems across LLMs, RAG, agentic AI, multimodal AI and document intelligence. My research focuses on fact verification of health information, information extraction using large language and vision-language models, and AI for document and process understanding. I thrive on turning research ideas into working systems, demos and reusable pipelines, and on contributing to the open-source community. I also co-founded Khyontek AI, building SME-focused AI products.
+          I am an AI Engineer and AI Research Fellow specialising in practical AI systems across LLMs, RAG, agentic AI, multimodal AI and document intelligence. My research focuses on fact verification of health information, information extraction using large language and vision-language models, and AI for document and process understanding. I thrive on turning research ideas into working systems, demos and reusable pipelines, and on contributing to the open-source community. I also co-founded Khyontek AI, building SME-focused AI products.
         </p>
       </section>
 	
@@ -291,7 +299,7 @@
       <section class="fade-in" id="projects">
         <h2><i class="fas fa-rocket"></i> Projects &amp; Live Demos</h2>
         <div class="projects-grid">
-          <div class="project-card">
+          <div class="project-card spotlight">
             <div class="project-icon"><i class="fas fa-project-diagram"></i></div>
             <h3>Flowchart2Mermaid</h3>
             <p>Vision-Language Model powered app converting uploaded flowchart images into editable Mermaid code, with diagram preview, export and AI-assisted refinement.</p>
@@ -306,7 +314,7 @@
             </div>
           </div>
 
-          <div class="project-card">
+          <div class="project-card spotlight">
             <div class="project-icon"><i class="fas fa-building"></i></div>
             <h3>BelfastBuild AI</h3>
             <p>RAG-based planning-compliance pre-screener for Northern Ireland planning proposals. Cross-references policy sources, validates postcodes, flags conflicts and cites sources.</p>
@@ -320,7 +328,7 @@
             </div>
           </div>
 
-          <div class="project-card">
+          <div class="project-card spotlight">
             <div class="project-icon"><i class="fas fa-heartbeat"></i></div>
             <h3>Biomedical Fact-Checker</h3>
             <p>PhD-derived demo verifying health-related claims against biomedical evidence using retrieval, evidence extraction, claim classification and explanation generation.</p>
@@ -334,7 +342,7 @@
             </div>
           </div>
 
-          <div class="project-card">
+          <div class="project-card spotlight">
             <span class="project-badge">Internal</span>
             <div class="project-icon"><i class="fas fa-code-branch"></i></div>
             <h3>BPMN Fullstack App</h3>
@@ -349,7 +357,7 @@
             </div>
           </div>
 
-          <div class="project-card">
+          <div class="project-card spotlight">
             <div class="project-icon"><i class="fas fa-database"></i></div>
             <h3>Cyber-Attack Attribution Dataset</h3>
             <p>Publicly released labelled dataset for named entity recognition and predictive cyber-attack attribution, with preprocessing and evaluation workflows.</p>
@@ -364,7 +372,7 @@
             </div>
           </div>
 
-          <div class="project-card">
+          <div class="project-card spotlight">
             <div class="project-icon"><i class="fas fa-robot"></i></div>
             <h3>Open-Source AI Assets</h3>
             <p>50+ fine-tuned models and 20+ datasets on Hugging Face across document intelligence, retrieval, classification, biomedical NLP and multimodal reasoning.</p>
@@ -381,8 +389,14 @@
 
       <section class="fade-in" id="experience">
         <h2><i class="fas fa-briefcase"></i> Experience</h2>
+        <div class="filter-controls exp-filters" id="exp-filters">
+          <button class="filter-btn active" data-cat="all">All</button>
+          <button class="filter-btn" data-cat="research">Research</button>
+          <button class="filter-btn" data-cat="industry">Industry</button>
+          <button class="filter-btn" data-cat="teaching">Teaching</button>
+        </div>
         <div class="timeline">
-          <div class="timeline-item">
+          <div class="timeline-item" data-cat="industry">
             <div class="timeline-marker"></div>
             <div class="timeline-content">
               <h3>Co-Founder & AI Product Lead</h3>
@@ -395,7 +409,7 @@
             </div>
           </div>
           
-          <div class="timeline-item">
+          <div class="timeline-item" data-cat="research">
             <div class="timeline-marker"></div>
             <div class="timeline-content">
               <h3>Research Fellow (AI)</h3>
@@ -411,7 +425,7 @@
             </div>
           </div>
           
-          <div class="timeline-item">
+          <div class="timeline-item" data-cat="teaching">
             <div class="timeline-marker"></div>
             <div class="timeline-content">
               <h3>Subject Teacher</h3>
@@ -424,7 +438,7 @@
             </div>
           </div>
           
-          <div class="timeline-item">
+          <div class="timeline-item" data-cat="research">
             <div class="timeline-marker"></div>
             <div class="timeline-content">
               <h3>Senior Research Assistant (AI-Security)</h3>
@@ -437,7 +451,7 @@
             </div>
           </div>
           
-          <div class="timeline-item">
+          <div class="timeline-item" data-cat="industry">
             <div class="timeline-marker"></div>
             <div class="timeline-content">
               <h3>AI Intern</h3>
@@ -449,7 +463,7 @@
             </div>
           </div>
           
-          <div class="timeline-item">
+          <div class="timeline-item" data-cat="teaching">
             <div class="timeline-marker"></div>
             <div class="timeline-content">
               <h3>Lecturer</h3>

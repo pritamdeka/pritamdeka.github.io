@@ -273,17 +273,15 @@ async function updateViewCounter() {
  if (!viewCountEl) return;
  
  try {
-   const response = await fetch('https://api.countapi.xyz/hit/pritamdeka-homepage/visits');
+   const response = await fetchWithTimeout('https://api.countapi.xyz/hit/pritamdeka-homepage/visits', 4500);
    const data = await response.json();
    viewCountEl.classList.remove('skeleton');
    whenVisible(viewCountEl, () => animateCounter(viewCountEl, data.value));
  } catch (error) {
-   // Fallback: use localStorage for demo
-   let views = localStorage.getItem('pageViews') || 2500;
-   views = parseInt(views) + 1;
-   localStorage.setItem('pageViews', views);
+   // countapi.xyz is frequently down — show a graceful fallback instead of a fake number
    viewCountEl.classList.remove('skeleton');
-   whenVisible(viewCountEl, () => animateCounter(viewCountEl, views));
+   viewCountEl.textContent = '—';
+   viewCountEl.title = 'View counter unavailable';
  }
 }
 
@@ -306,7 +304,7 @@ if (lastUpdatedEl) {
 const heroTy = document.getElementById('hero-ty');
 if (heroTy) {
   const roles = [
-    'Senior AI Engineer',
+    'AI Engineer',
     'LLMs & Agentic AI',
     'Multimodal & Vision-Language AI',
     'Document Intelligence',
@@ -401,6 +399,38 @@ async function fetchDynamicStats() {
   }
 }
 
+// ===== Citation Growth Sparkline =====
+async function renderCitationSparkline() {
+  const spark = document.getElementById('citation-spark');
+  const svg = document.getElementById('spark-svg');
+  if (!spark || !svg) return;
+  try {
+    const res = await fetch('citations-history.json');
+    const history = await res.json();
+    if (!Array.isArray(history) || history.length < 2) return;
+    const pts = history.map(h => h.citations);
+    const min = Math.min(...pts), max = Math.max(...pts);
+    const range = (max - min) || 1;
+    const W = 120, H = 32, pad = 3;
+    const x = (i) => pad + (i / (pts.length - 1)) * (W - 2 * pad);
+    const y = (v) => H - pad - ((v - min) / range) * (H - 2 * pad);
+    const line = pts.map((v, i) => `${i === 0 ? 'M' : 'L'} ${x(i).toFixed(1)} ${y(v).toFixed(1)}`).join(' ');
+    const area = `${line} L ${x(pts.length - 1).toFixed(1)} ${H} L ${x(0).toFixed(1)} ${H} Z`;
+    svg.innerHTML = `
+      <defs><linearGradient id="spark-grad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="var(--accent)"/>
+        <stop offset="1" stop-color="var(--accent)" stop-opacity="0"/>
+      </linearGradient></defs>
+      <path class="spark-area" d="${area}"/>
+      <path class="spark-line" d="${line}"/>
+    `;
+    spark.hidden = false;
+  } catch (e) {
+    // No history yet — silently hide the widget
+  }
+}
+renderCitationSparkline();
+
 // ===== HuggingFace Stats =====
 async function fetchHuggingFaceStats() {
   const hfDownloadsEl = document.getElementById('hf-downloads');
@@ -411,7 +441,7 @@ async function fetchHuggingFaceStats() {
   
   try {
     const hfUsername = 'pritamdeka';
-    const response = await fetch(`https://huggingface.co/api/models?author=${hfUsername}`);
+    const response = await fetchWithTimeout(`https://huggingface.co/api/models?author=${hfUsername}`, 5000);
     const models = await response.json();
     
     const totalDownloads = models.reduce((sum, model) => {
@@ -436,12 +466,15 @@ async function fetchHuggingFaceStats() {
   } catch (error) {
     if (hfDownloadsEl) {
       hfDownloadsEl.classList.remove('skeleton');
-      hfDownloadsEl.textContent = 'N/A';
+      hfDownloadsEl.textContent = '—';
+      hfDownloadsEl.title = 'HuggingFace API unavailable';
     }
     if (hfModelsEl) {
       hfModelsEl.classList.remove('skeleton');
-      hfModelsEl.textContent = 'N/A';
+      hfModelsEl.textContent = '—';
+      hfModelsEl.title = 'HuggingFace API unavailable';
     }
+    if (osModelsEl) { osModelsEl.textContent = '50+'; }
     console.log('HuggingFace API unavailable');
   }
 }
@@ -523,6 +556,61 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.fade-in').forEach(section => {
   observer.observe(section);
 });
+
+// ===== Spotlight Hover (cards) =====
+document.querySelectorAll('.spotlight').forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--mx', ((e.clientX - r.left) / r.width) * 100 + '%');
+    card.style.setProperty('--my', ((e.clientY - r.top) / r.height) * 100 + '%');
+  });
+});
+
+// ===== Experience Filters =====
+const expFilters = document.getElementById('exp-filters');
+if (expFilters) {
+  expFilters.addEventListener('click', (e) => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    expFilters.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const cat = btn.dataset.cat;
+    document.querySelectorAll('#experience .timeline-item').forEach(item => {
+      if (cat === 'all' || item.dataset.cat === cat) {
+        item.style.display = '';
+        item.style.opacity = '1';
+      } else {
+        item.style.display = 'none';
+        item.style.opacity = '0';
+      }
+    });
+  });
+}
+
+// ===== Scroll-Spy Nav (index only) =====
+(function setupScrollSpy() {
+  const isIndex = /index\.html$|\/$/.test(location.pathname);
+  if (!isIndex) return;
+  const navLinks = document.querySelectorAll('#main-nav a[href^="#"]');
+  if (!navLinks.length) return;
+  const sections = [];
+  navLinks.forEach(a => {
+    const id = a.getAttribute('href').slice(1);
+    const sec = document.getElementById(id);
+    if (sec) sections.push({ link: a, el: sec });
+  });
+  if (!sections.length) return;
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        sections.forEach(s => s.link.classList.remove('spy-active'));
+        const match = sections.find(s => s.el === entry.target);
+        if (match) match.link.classList.add('spy-active');
+      }
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  sections.forEach(s => spy.observe(s.el));
+})();
 
 // ===== Console Easter Egg =====
 console.log('%c👋 Hello, fellow developer!', 'font-size: 20px; color: #667eea; font-weight: bold;');
@@ -835,3 +923,21 @@ if (networkContainer) {
   input.addEventListener('input', () => { selected = 0; render(filter(input.value)); });
   palette.addEventListener('click', (e) => { if (e.target === palette) closePalette(); });
 })();
+
+// ===== Service Worker Registration =====
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch((err) => {
+      console.warn('SW registration failed:', err);
+    });
+  });
+}
+
+// ===== Fetch with timeout helper =====
+function fetchWithTimeout(url, ms) {
+  return Promise.race([
+    fetch(url),
+    new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), ms))
+  ]);
+}
+

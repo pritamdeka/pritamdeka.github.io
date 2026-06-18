@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pritam Deka | Weekly AI Digest</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A weekly auto-generated digest of AI & NLP research news, LLMs, vision-language models, agentic AI and document intelligence.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Pritam Deka | Weekly AI Digest">
+  <meta property="og:description" content="Weekly auto-generated digest of AI & NLP research news.">
+  <meta property="og:url" content="https://pritamdeka.github.io/blog.html">
+  <meta name="twitter:card" content="summary">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="favicon.svg">
+  <link rel="stylesheet" href="style-dynamic.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
+</head>
+<body class="light-mode">
+<!-- Search Bar -->
+<div class="search-container" id="search-container">
+  <div class="search-box">
+    <input type="text" id="search-input" placeholder="Search papers, skills, experience..." aria-label="Search">
+    <button id="search-close" class="search-close"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="search-results" id="search-results"></div>
+</div>
+
+<!-- Mobile Menu Toggle -->
+<button class="mobile-menu-toggle" id="mobile-menu-btn">
+  <i class="fas fa-bars"></i>
+</button>
+
+<!-- Mobile Breadcrumb -->
+<div class="mobile-breadcrumb">
+ <a href="index.html">Home</a>
+ <span class="separator">/</span>
+ <span class="current">Blog</span>
+</div>
+
+<!-- Mobile Quick Nav -->
+<div class="mobile-quick-nav">
+ <a href="#latest">Latest</a>
+ <a href="#archive">Archive</a>
+</div>
+  <nav id="main-nav">
+    <a href="index.html">About</a>
+    <a href="education.html">Education</a>
+    <a href="papers.html">Papers</a>
+    <a href="activities.html">Activities</a>
+    <a href="blog.html" class="active">Blog</a>
+    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+      <i class="fas fa-moon"></i>
+    </button>
+    <button id="search-toggle" class="search-toggle" aria-label="Search">
+      <i class="fas fa-search"></i>
+    </button>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="page-header-inner">
+      <span class="ph-eyebrow">Auto-Generated Weekly</span>
+      <h1>AI &amp; NLP Digest</h1>
+      <p class="ph-subtitle">A weekly synthesis of notable AI research news, LLM/VLM releases, agentic AI and document-intelligence developments — sourced from Hacker News &amp; arXiv, written by an AI agent.</p>
+      <div class="page-header-stats">
+        <div class="ph-stat"><span class="ph-num" id="blog-count">—</span><span class="ph-label">Posts</span></div>
+        <div class="ph-stat"><span class="ph-num">Weekly</span><span class="ph-label">Cadence</span></div>
+        <div class="ph-stat"><span class="ph-num">HN + arXiv</span><span class="ph-label">Sources</span></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="main-container">
+    <section class="fade-in" id="latest">
+      <h2><i class="fas fa-rss"></i> Latest Post</h2>
+      <div id="blog-latest" class="blog-post">
+        <p style="color: var(--text-muted)">Loading latest post…</p>
+      </div>
+    </section>
+
+    <section class="fade-in" id="archive">
+      <h2><i class="fas fa-archive"></i> Archive</h2>
+      <ul class="papers-list" id="blog-archive">
+        <li class="paper-item" style="color: var(--text-muted)">Loading archive…</li>
+      </ul>
+    </section>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <footer>
+    <div class="container">
+      <div class="view-counter">
+        <i class="fas fa-eye"></i> Page views: <span id="view-count" class="skeleton">Loading...</span>
+      </div>
+      <p>&copy; <span id="current-year">2025</span> Pritam Deka · <a href="feed.xml" style="color:var(--accent)">RSS</a></p>
+    </div>
+  </footer>
+
+  <script src="dynamic.js"></script>
+  <script>
+  // ===== Blog page renderer =====
+  (async function renderBlog() {
+    const latestEl = document.getElementById('blog-latest');
+    const archiveEl = document.getElementById('blog-archive');
+    const countEl = document.getElementById('blog-count');
+    let manifest = [];
+    try {
+      const res = await fetch('blog/index.json');
+      manifest = await res.json();
+    } catch (e) {
+      if (latestEl) latestEl.innerHTML = '<p style="color: var(--text-muted)">No posts yet — the first weekly digest will appear here automatically on Monday.</p>';
+      if (archiveEl) archiveEl.innerHTML = '';
+      if (countEl) countEl.textContent = '0';
+      return;
+    }
+    if (countEl) countEl.textContent = manifest.length;
+    if (!manifest.length) {
+      if (latestEl) latestEl.innerHTML = '<p style="color: var(--text-muted)">No posts yet — check back after the next Monday run.</p>';
+      return;
+    }
+    // Latest post
+    const latest = manifest[0];
+    if (latestEl) {
+      try {
+        const mdRes = await fetch(latest.file);
+        const md = await mdRes.text();
+        latestEl.innerHTML = '<div class="blog-meta">' + new Date(latest.date).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' }) + '</div>' + (window.marked ? marked.parse(md) : '<pre>' + md + '</pre>');
+      } catch (e) {
+        latestEl.innerHTML = '<p style="color: var(--text-muted)">Could not load latest post.</p>';
+      }
+    }
+    // Archive
+    if (archiveEl) {
+      archiveEl.innerHTML = manifest.map(p => `
+        <li class="paper-item" data-year="${p.date.slice(0,4)}">
+          <span class="paper-year">${p.date.slice(5)}</span>
+          <span class="paper-title">${p.title}</span>
+          <span class="paper-venue">${p.date}</span>
+          <a href="#" class="paper-link" onclick="loadPost('${p.file}');return false;"><i class="fas fa-book-open"></i> Read</a>
+        </li>`).join('');
+    }
+  })();
+
+  async function loadPost(file) {
+    const latestEl = document.getElementById('blog-latest');
+    if (!latestEl) return;
+    try {
+      const mdRes = await fetch(file);
+      const md = await mdRes.text();
+      latestEl.innerHTML = (window.marked ? marked.parse(md) : '<pre>' + md + '</pre>');
+      latestEl.scrollIntoView({ behavior: 'smooth' });
+    } catch (e) {
+      latestEl.innerHTML = '<p style="color: var(--text-muted)">Could not load post.</p>';
+    }
+  }
+  </script>
+</body>
+</html>

@@ -30,6 +30,9 @@
   --radius-lg: 18px;
   --font-display: 'Sora', 'Segoe UI', sans-serif;
   --font-body: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur: 0.25s;
+  --dur-slow: 0.4s;
 }
 
 .dark-mode {
@@ -112,7 +115,7 @@ html {
   color: var(--text-secondary);
   font-size: 1.2rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--dur) var(--ease);
 }
 
 .mobile-menu-toggle:hover {
@@ -165,7 +168,7 @@ nav a {
   text-decoration: none;
   padding: 0.2em 0.3em 0.15em 0.3em;
   border-bottom: 2.5px solid transparent;
-  transition: all 0.2s ease;
+  transition: all var(--dur) var(--ease);
   position: relative;
 }
 
@@ -199,7 +202,7 @@ nav a.active, nav a:focus, nav a:hover {
   cursor: pointer;
   color: var(--text-secondary);
   font-size: 1.1rem;
-  transition: all 0.2s ease;
+  transition: all var(--dur) var(--ease);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -343,6 +346,43 @@ nav a.active, nav a:focus, nav a:hover {
   font-size: 0.75rem;
   color: var(--text-muted);
   margin-top: 0.2rem;
+}
+
+/* Citation Growth Sparkline */
+.citation-spark {
+  width: 100%;
+  padding: 0.4rem 0.5rem 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.citation-spark svg {
+  width: 100%;
+  height: 32px;
+  display: block;
+}
+
+.citation-spark .spark-line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.citation-spark .spark-area {
+  fill: url(#spark-grad);
+  opacity: 0.25;
+}
+
+.citation-spark .spark-label {
+  display: block;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 0.2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 /* Profile Pic */
@@ -510,7 +550,7 @@ h2 i {
   border-radius: 20px;
   font-size: 0.9rem;
   font-weight: 500;
-  transition: all 0.2s ease;
+  transition: all var(--dur) var(--ease);
   border: 2px solid transparent;
 }
 
@@ -636,7 +676,7 @@ h2 i {
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--dur-slow) var(--ease);
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -698,7 +738,7 @@ footer {
 .social-footer a {
   color: #cfd2e2;
   font-size: 1.5rem;
-  transition: all 0.2s ease;
+  transition: all var(--dur) var(--ease);
 }
 
 .social-footer a:hover {
@@ -876,7 +916,7 @@ footer {
  font-size: 0.85rem;
  text-decoration: none;
  cursor: pointer;
- transition: all 0.2s ease;
+ transition: all var(--dur) var(--ease);
 }
 
 .mobile-quick-nav button:hover,
@@ -953,7 +993,7 @@ footer {
   margin-bottom: 1.5rem;
   border: 1px solid var(--border);
   border-left: 4px solid var(--accent);
-  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  transition: all var(--dur-slow) var(--ease);
   box-shadow: var(--shadow-sm);
 }
 
@@ -1030,7 +1070,7 @@ footer {
   font-family: var(--font-body);
   font-weight: 600;
   font-size: 0.85rem;
-  transition: all 0.2s ease;
+  transition: all var(--dur) var(--ease);
 }
 
 .filter-btn:hover, .filter-btn.active {
@@ -1055,7 +1095,7 @@ footer {
   margin-bottom: 1rem;
   background: var(--bg-secondary);
   border-radius: var(--radius);
-  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  transition: all var(--dur-slow) var(--ease);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
 }
@@ -1121,7 +1161,7 @@ footer {
   border-radius: 10px;
   background: var(--bg-primary);
   border: 1px solid var(--border-strong);
-  transition: all 0.2s ease;
+  transition: all var(--dur) var(--ease);
   font-size: 0.85rem;
   text-decoration: none;
 }
@@ -1146,7 +1186,7 @@ footer {
   border-radius: var(--radius);
   padding: 1.8rem 1.5rem;
   text-align: center;
-  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  transition: all var(--dur-slow) var(--ease);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
   position: relative;
@@ -1226,7 +1266,7 @@ footer {
   padding: 0.5rem 1rem;
   border-radius: 15px;
   margin: 0.3rem 0.4rem 0.3rem 0;
-  transition: all 0.2s ease;
+  transition: all var(--dur) var(--ease);
   font-size: 0.85rem;
   background: var(--nav-hover);
 }
@@ -1326,7 +1366,7 @@ footer {
   font-size: 1rem;
   background: var(--bg-primary);
   color: var(--text-primary);
-  transition: all 0.2s ease;
+  transition: all var(--dur) var(--ease);
 }
 
 #search-input:focus {
@@ -1344,7 +1384,7 @@ footer {
   border-radius: 50%;
   cursor: pointer;
   font-size: 1.1rem;
-  transition: all 0.2s ease;
+  transition: all var(--dur) var(--ease);
 }
 
 .search-close:hover {
@@ -1372,7 +1412,7 @@ footer {
   border-radius: 8px;
   background: var(--bg-secondary);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--dur) var(--ease);
 }
 
 .search-result-item:hover {
@@ -1401,7 +1441,7 @@ footer {
   cursor: pointer;
   color: var(--text-secondary);
   font-size: 1.1rem;
-  transition: all 0.2s ease;
+  transition: all var(--dur) var(--ease);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1440,7 +1480,7 @@ footer {
   border-radius: 8px;
   cursor: pointer;
   font-size: 0.9rem;
-  transition: all 0.2s ease;
+  transition: all var(--dur) var(--ease);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1483,7 +1523,7 @@ footer {
   text-decoration: none;
   font-weight: 600;
   margin: 0.8rem 0;
-  transition: all 0.3s ease;
+  transition: all var(--dur-slow) var(--ease);
   position: relative;
 }
 
@@ -1557,7 +1597,7 @@ footer {
   font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--dur-slow) var(--ease);
   animation: float 3s ease-in-out infinite;
 }
 
@@ -1593,7 +1633,7 @@ footer {
   background: var(--bg-primary);
   border-radius: 10px;
   border-left: 4px solid var(--accent);
-  transition: all 0.2s ease;
+  transition: all var(--dur) var(--ease);
 }
 
 .news-item:hover {
@@ -1686,7 +1726,7 @@ footer {
   padding: 1.4rem 1.6rem;
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
-  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  transition: all var(--dur-slow) var(--ease);
 }
 
 .journey-card:hover {
@@ -1759,7 +1799,7 @@ footer {
   opacity: 0;
   visibility: hidden;
   transform: translateY(20px);
-  transition: all 0.3s ease;
+  transition: all var(--dur-slow) var(--ease);
   z-index: 999;
 }
 
@@ -1937,6 +1977,17 @@ footer {
   letter-spacing: -0.02em;
   line-height: 1.1;
   margin: 0 0 0.6rem 0;
+  background: linear-gradient(90deg, #ffffff, #d6dcff, #f0c4ff, #ffffff, #d6dcff);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: hero-name-shift 8s ease-in-out infinite;
+}
+
+@keyframes hero-name-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 .hero-roles {
@@ -2090,6 +2141,45 @@ footer {
   margin-top: 1.5rem;
 }
 
+/* Spotlight hover glow (cards) */
+.spotlight {
+  position: relative;
+  --mx: 50%;
+  --my: 50%;
+}
+
+.spotlight::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(220px circle at var(--mx) var(--my), rgba(91,110,245,0.14), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.spotlight > * { position: relative; z-index: 1; }
+
+.spotlight:hover::after {
+  opacity: 1;
+}
+
+/* Experience filter chips (reuse .filter-controls) */
+.exp-filters {
+  margin-top: 1.2rem;
+  margin-bottom: 1.2rem;
+}
+
+/* Scroll-spy active nav link */
+nav a.spy-active {
+  color: var(--text-primary);
+}
+nav a.spy-active::after {
+  width: 100%;
+}
+
 .project-card {
   display: flex;
   flex-direction: column;
@@ -2097,7 +2187,7 @@ footer {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.5rem;
-  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  transition: all var(--dur-slow) var(--ease);
   box-shadow: var(--shadow-sm);
   position: relative;
   overflow: hidden;
@@ -2187,7 +2277,7 @@ footer {
   padding: 0.45rem 0.9rem;
   border-radius: 10px;
   border: 1px solid var(--border-strong);
-  transition: all 0.2s ease;
+  transition: all var(--dur) var(--ease);
 }
 
 .project-link:hover {
@@ -2363,6 +2453,7 @@ footer {
   .hero::before, .hero::after { animation: none; }
   .pulse-dot::after { animation: none; }
   .hero-roles .ty-text::after { animation: none; }
+  .hero-name { animation: none; }
 }
 
 /* ===== Page Header (secondary pages) ===== */
@@ -2615,7 +2706,7 @@ footer {
   border-radius: 10px;
   background: var(--bg-primary);
   border: 1px solid var(--border);
-  transition: all 0.2s ease;
+  transition: all var(--dur) var(--ease);
 }
 
 .activity-row:hover {
@@ -2735,3 +2826,57 @@ footer {
 
 
 
+
+/* ===== Blog Post ===== */
+.blog-post {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  line-height: 1.7;
+}
+
+.blog-post .blog-meta {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 1rem;
+}
+
+.blog-post h1, .blog-post h2, .blog-post h3 {
+  font-family: var(--font-display);
+  color: var(--text-primary);
+  margin-top: 1.6rem;
+}
+
+.blog-post h1 { font-size: 1.5rem; }
+.blog-post h2 { font-size: 1.25rem; }
+.blog-post h3 { font-size: 1.1rem; }
+
+.blog-post p { color: var(--text-primary); margin: 0.8rem 0; }
+
+.blog-post ul, .blog-post ol {
+  padding-left: 1.4rem;
+  margin: 0.8rem 0;
+}
+
+.blog-post li { margin-bottom: 0.4rem; }
+
+.blog-post a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-soft);
+}
+
+.blog-post a:hover { border-bottom-color: var(--accent); }
+
+.blog-post strong { color: var(--text-primary); font-weight: 700; }
+
+.blog-post code {
+  background: var(--nav-hover);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}

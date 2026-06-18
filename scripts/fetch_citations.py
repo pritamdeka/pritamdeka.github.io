@@ -55,8 +55,26 @@ def main():
     
     with open('citations.json', 'w') as f:
         json.dump(data, f, indent=2)
+
+    # Append a timestamped snapshot to the history file (for the growth sparkline)
+    today = datetime.now(timezone.utc).strftime('%Y-%m-%d')
+    history = []
+    try:
+        with open('citations-history.json') as f:
+            history = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        history = []
+
+    # Replace any existing entry for today, else append
+    history = [h for h in history if h.get('date') != today]
+    history.append({'date': today, 'citations': citations, 'papers': papers})
+    # Keep last 180 days
+    history = history[-180:]
+
+    with open('citations-history.json', 'w') as f:
+        json.dump(history, f, indent=2)
     
-    print(f"📊 Updated: {citations} citations, {papers} papers")
+    print(f"📊 Updated: {citations} citations, {papers} papers (history: {len(history)} points)")
 
 if __name__ == '__main__':
     main()

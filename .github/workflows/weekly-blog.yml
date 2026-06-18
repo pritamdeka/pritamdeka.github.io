@@ -1,0 +1,34 @@
+name: Weekly AI Blog Digest
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # 09:00 UTC every Monday
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate-post:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Generate weekly blog post
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python scripts/generate_blog.py
+
+      - name: Commit and push if changed
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add blog/
+          git diff --staged --quiet || git commit -m "📝 Weekly AI digest [skip ci]"
+          git push

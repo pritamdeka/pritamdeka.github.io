@@ -26,11 +26,14 @@ jobs:
         env:
           SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
         run: python scripts/fetch_citations.py
-      
+
+      - name: Regenerate Atom feed
+        run: python scripts/generate_feed.py
+
       - name: Commit and push if changed
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add citations.json
+          git add citations.json citations-history.json feed.xml
           git diff --staged --quiet || git commit -m "📊 Auto-update citation count [skip ci]"
           git push
