@@ -60,57 +60,104 @@
     </button>
   </nav>
 
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="page-header-inner">
+      <span class="ph-eyebrow">Academic Background</span>
+      <h1>Education</h1>
+      <p class="ph-subtitle">Government of India sponsored PhD scholar with a research career spanning NLP, probabilistic modelling and applied AI.</p>
+      <div class="page-header-stats">
+        <div class="ph-stat"><span class="ph-num">1</span><span class="ph-label">PhD</span></div>
+        <div class="ph-stat"><span class="ph-num">2</span><span class="ph-label">Postgrad Degrees</span></div>
+        <div class="ph-stat"><span class="ph-num">£100k+</span><span class="ph-label">PhD Funding</span></div>
+        <div class="ph-stat"><span class="ph-num">15</span><span class="ph-label">Years</span></div>
+      </div>
+    </div>
+  </header>
+
   <div class="main-container">
     <section class="fade-in">
-      <h2><i class="fas fa-graduation-cap"></i> Education</h2>
+      <h2><i class="fas fa-graduation-cap"></i> Academic Qualifications</h2>
       
-      <div class="degree-card" id="phd">
-        <div class="degree-header">
-          <h3>PhD, Computer Science</h3>
-          <span class="edu-meta">
-            <i class="fas fa-university"></i> Queen's University Belfast, UK
-            <span class="edu-date"><i class="fas fa-calendar"></i> Oct 2019 – Dec 2024</span>
-          </span>
+      <div class="edu-timeline">
+        <div class="degree-card" id="phd">
+          <div class="edu-pin"><i class="fas fa-database"></i></div>
+          <div class="degree-header">
+            <h3>PhD, Computer Science</h3>
+            <span class="edu-meta">
+              <i class="fas fa-university"></i> Queen's University Belfast, UK
+              <span class="edu-date"><i class="fas fa-calendar"></i> Oct 2019 – Dec 2024</span>
+            </span>
+          </div>
+          <div class="edu-thesis-callout">
+            <span class="thesis-label"><i class="fas fa-quote-left"></i> Thesis</span>
+            <span class="thesis-title">Evidence-Based Approach to Verification of Online Health-Related Content</span>
+          </div>
+          <ul class="edu-bullets">
+            <li>Government of India sponsored QUB–Tezpur University Collaborative PhD Programme scholar.</li>
+            <li>Developed an automated pipeline for verifying online health information using transformer models (BERT, SBERT).</li>
+            <li>Specialized in unsupervised algorithms for data-scarce settings, enabling verification with minimal labeled data.</li>
+            <li>Implemented custom NLP modules with Huggingface, NLTK, spaCy, and scispaCy.</li>
+            <li>Published research in peer-reviewed journals and conferences (see <a href="papers.html">Papers</a> tab).</li>
+            <li>Open-sourced fine-tuned models on HuggingFace for public use.</li>
+          </ul>
+          <div class="edu-funding-badge"><i class="fas fa-award"></i> £100,000+ Govt of India scholarship (tuition, accommodation, subsistence, conference support)</div>
+          <div class="edu-tags">
+            <span class="edu-tag"><i class="fas fa-brain"></i> BERT</span>
+            <span class="edu-tag"><i class="fas fa-brain"></i> SBERT</span>
+            <span class="edu-tag"><i class="fab fa-python"></i> HuggingFace</span>
+            <span class="edu-tag"><i class="fas fa-language"></i> NLTK</span>
+            <span class="edu-tag"><i class="fas fa-language"></i> spaCy</span>
+            <span class="edu-tag"><i class="fas fa-flask"></i> scispaCy</span>
+            <span class="edu-tag"><i class="fas fa-search"></i> Weak Supervision</span>
+          </div>
         </div>
-        <ul class="edu-bullets">
-          <li><strong>Thesis:</strong> Evidence-Based Approach to Verification of Online Health-Related Content</li>
-          <li>Developed an automated pipeline for verifying online health information using transformer models (BERT, SBERT).</li>
-          <li>Specialized in unsupervised algorithms for data-scarce settings, enabling verification with minimal labeled data.</li>
-          <li>Implemented custom NLP modules with Huggingface, NLTK, spaCy, and scispaCy.</li>
-          <li>Published research in peer-reviewed journals and conferences (see <a href="papers.html">Papers</a> tab).</li>
-          <li>Open-sourced fine-tuned models on HuggingFace for public use.</li>
-        </ul>
-      </div>
 
-      <div class="degree-card" id="mtech">
-        <div class="degree-header">
-          <h3>MTech, Information Technology</h3>
-          <span class="edu-meta">
-            <i class="fas fa-university"></i> Tezpur University, Assam, India
-            <span class="edu-date"><i class="fas fa-calendar"></i> Jun 2014 – Jul 2016</span>
-          </span>
+        <div class="degree-card" id="mtech">
+          <div class="edu-pin"><i class="fas fa-chart-line"></i></div>
+          <div class="degree-header">
+            <h3>MTech, Information Technology</h3>
+            <span class="edu-meta">
+              <i class="fas fa-university"></i> Tezpur University, Assam, India
+              <span class="edu-date"><i class="fas fa-calendar"></i> Jun 2014 – Jul 2016</span>
+            </span>
+          </div>
+          <ul class="edu-bullets">
+            <li><strong>Dissertation:</strong> Probabilistic Modeling of Language Competition and Extinction</li>
+            <li>Developed a probabilistic model to study the dynamics between coexisting and endangered languages.</li>
+            <li>Extended the model with Markov Chain analysis to predict language fate under various scenarios.</li>
+            <li>Designed and ran experiments using Matlab; interpreted results to support language preservation research.</li>
+          </ul>
+          <div class="edu-tags">
+            <span class="edu-tag"><i class="fas fa-chart-line"></i> Probabilistic Models</span>
+            <span class="edu-tag"><i class="fas fa-project-diagram"></i> Markov Chains</span>
+            <span class="edu-tag"><i class="fas fa-calculator"></i> Matlab</span>
+            <span class="edu-tag"><i class="fas fa-language"></i> Language Modelling</span>
+          </div>
         </div>
-        <ul class="edu-bullets">
-          <li><strong>Dissertation:</strong> Probabilistic Modeling of Language Competition and Extinction</li>
-          <li>Developed a probabilistic model to study the dynamics between coexisting and endangered languages.</li>
-          <li>Extended the model with Markov Chain analysis to predict language fate under various scenarios.</li>
-          <li>Designed and ran experiments using Matlab; interpreted results to support language preservation research.</li>
-        </ul>
-      </div>
 
-      <div class="degree-card" id="be">
-        <div class="degree-header">
-          <h3>BE, Computer Science & Engineering</h3>
-          <span class="edu-meta">
-            <i class="fas fa-university"></i> Gauhati University, Assam, India
-            <span class="edu-date"><i class="fas fa-calendar"></i> Jun 2009 – Jul 2013</span>
-          </span>
+        <div class="degree-card" id="be">
+          <div class="edu-pin"><i class="fas fa-code"></i></div>
+          <div class="degree-header">
+            <h3>BE, Computer Science &amp; Engineering</h3>
+            <span class="edu-meta">
+              <i class="fas fa-university"></i> Gauhati University, Assam, India
+              <span class="edu-date"><i class="fas fa-calendar"></i> Jun 2009 – Jul 2013</span>
+            </span>
+          </div>
+          <ul class="edu-bullets">
+            <li><strong>Major Project:</strong> Android Notepad Application with Reminder and To-Do Features (Java)</li>
+            <li>Completed comprehensive coursework in algorithms, data structures, and programming languages (C, C++, Java).</li>
+            <li>Engaged in practical learning through coding assignments, projects, and team collaborations.</li>
+          </ul>
+          <div class="edu-tags">
+            <span class="edu-tag"><i class="fab fa-java"></i> Java</span>
+            <span class="edu-tag"><i class="fab fa-android"></i> Android</span>
+            <span class="edu-tag"><i class="fab fa-cuttlefish"></i> C/C++</span>
+            <span class="edu-tag"><i class="fas fa-project-diagram"></i> Data Structures</span>
+            <span class="edu-tag"><i class="fas fa-calculator"></i> Algorithms</span>
+          </div>
         </div>
-        <ul class="edu-bullets">
-          <li><strong>Major Project:</strong> Android Notepad Application with Reminder and To-Do Features (Java)</li>
-          <li>Completed comprehensive coursework in algorithms, data structures, and programming languages (C, C++, Java).</li>
-          <li>Engaged in practical learning through coding assignments, projects, and team collaborations.</li>
-        </ul>
       </div>
     </section>
   </div>

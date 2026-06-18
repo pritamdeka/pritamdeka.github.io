@@ -372,6 +372,7 @@ function whenVisible(el, cb) {
 async function fetchDynamicStats() {
   const paperCountEl = document.getElementById('paper-count');
   const citationCountEl = document.getElementById('citation-count');
+  const phCitationsEl = document.getElementById('ph-citations');
   
   try {
     const response = await fetch('citations.json');
@@ -385,6 +386,10 @@ async function fetchDynamicStats() {
       citationCountEl.classList.remove('skeleton');
       whenVisible(citationCountEl, () => animateCounter(citationCountEl, data.citations));
       citationCountEl.title = `Updated: ${new Date(data.updated).toLocaleDateString()}`;
+    }
+
+    if (phCitationsEl) {
+      whenVisible(phCitationsEl, () => animateCounter(phCitationsEl, data.citations));
     }
   } catch (error) {
     console.error('Stats fetch error:', error);
@@ -400,8 +405,9 @@ async function fetchDynamicStats() {
 async function fetchHuggingFaceStats() {
   const hfDownloadsEl = document.getElementById('hf-downloads');
   const hfModelsEl = document.getElementById('hf-models');
+  const osModelsEl = document.getElementById('os-models');
   
-  if (!hfDownloadsEl && !hfModelsEl) return;
+  if (!hfDownloadsEl && !hfModelsEl && !osModelsEl) return;
   
   try {
     const hfUsername = 'pritamdeka';
@@ -422,6 +428,10 @@ async function fetchHuggingFaceStats() {
     if (hfModelsEl) {
       hfModelsEl.classList.remove('skeleton');
       whenVisible(hfModelsEl, () => animateCounter(hfModelsEl, totalModels));
+    }
+
+    if (osModelsEl) {
+      whenVisible(osModelsEl, () => animateCounter(osModelsEl, totalModels));
     }
   } catch (error) {
     if (hfDownloadsEl) {

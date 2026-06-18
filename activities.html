@@ -43,7 +43,7 @@
 <!-- Mobile Quick Nav (Jump to Sections) -->
 <div class="mobile-quick-nav">
  <a href="#opensource">Open Source</a>
- <a href="#demos">Demos</a>
+ <a href="#recognition">Recognition</a>
  <a href="#reviewing">Reviewing</a>
  <a href="#speaking">Speaking</a>
  <a href="#teaching">Teaching</a>
@@ -61,64 +61,131 @@
     </button>
   </nav>
 
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="page-header-inner">
+      <span class="ph-eyebrow">Beyond Research</span>
+      <h1>Academic Activities</h1>
+      <p class="ph-subtitle">Open-source contributions, peer review, invited talks, teaching and recognition across the AI &amp; NLP community.</p>
+      <div class="page-header-stats">
+        <div class="ph-stat"><span class="ph-num">50+</span><span class="ph-label">HF Models</span></div>
+        <div class="ph-stat"><span class="ph-num">20+</span><span class="ph-label">Datasets</span></div>
+        <div class="ph-stat"><span class="ph-num">4</span><span class="ph-label">Review Roles</span></div>
+        <div class="ph-stat"><span class="ph-num">4+</span><span class="ph-label">Invited Talks</span></div>
+      </div>
+    </div>
+  </header>
+
   <div class="main-container">
     <section class="fade-in">
-      <h2><i class="fas fa-trophy"></i> Academic Activities</h2>
-      
+      <h2><i class="fas fa-trophy"></i> Activities</h2>
+
       <div class="activity-grid">
         <div class="activity-card" id="opensource">
           <div class="activity-icon"><i class="fas fa-robot"></i></div>
           <h3>Open Source</h3>
-          <p>Released fine-tuned language models in HuggingFace repository</p>
+          <p>Released fine-tuned language models and datasets on the HuggingFace hub for document intelligence, retrieval, classification, biomedical NLP and multimodal reasoning.</p>
+          <div class="os-stats">
+            <div class="os-stat"><span class="os-num" id="os-models">50+</span><span class="os-label">Models</span></div>
+            <div class="os-stat"><span class="os-num">20+</span><span class="os-label">Datasets</span></div>
+          </div>
           <a href="https://huggingface.co/pritamdeka" target="_blank" class="activity-link">
-            <i class="fas fa-external-link-alt"></i> View Models
+            <i class="fas fa-external-link-alt"></i> View on HuggingFace
           </a>
         </div>
-        
-        <div class="activity-card" id="demos">
-          <div class="activity-icon"><i class="fas fa-laptop-code"></i></div>
-          <h3>Live Demos</h3>
-          <p>Created interactive demos based on PhD work using Python, Gradio, and SOTA NLP libraries</p>
-          <div class="demo-links">
-            <a href="https://shorturl.at/DX347" target="_blank" class="activity-link">
-              <i class="fas fa-play"></i> Demo 1
-            </a>
-            <a href="https://shorturl.at/eimuz" target="_blank" class="activity-link">
-              <i class="fas fa-play"></i> Demo 2
-            </a>
-          </div>
+
+        <div class="activity-card recognition-card" id="recognition">
+          <div class="activity-icon"><i class="fas fa-award"></i></div>
+          <h3>Recognition</h3>
+          <div class="recognition-item"><i class="fas fa-trophy"></i><span><strong>Best Paper Award</strong> — iiWAS 2021</span></div>
+          <div class="recognition-item"><i class="fas fa-medal"></i><span><strong>£100k+ Govt of India PhD scholarship</strong> — QUB–Tezpur University collaborative programme</span></div>
+          <div class="recognition-item"><i class="fas fa-money-check-alt"></i><span><strong>£3,200 ARC dissemination support</strong> — IEEE Access publication costs</span></div>
+          <div class="recognition-item"><i class="fas fa-plane"></i><span><strong>Funded travel to ACM SAC 2026</strong> — Greece, to present process-diagram extraction work</span></div>
         </div>
-        
+
         <div class="activity-card" id="reviewing">
           <div class="activity-icon"><i class="fas fa-gavel"></i></div>
           <h3>Reviewing</h3>
-          <ul class="activity-list">
-            <li>Reviewer for ICON 2021 (NIT Silchar, Assam, India)</li>
-            <li>Reviewer for ACM/SIGAPP Symposium on Applied Computing 2024</li>
-            <li>Program Committee member, ICON 2023</li>
-            <li>Program Committee member, GPTMB 2024</li>
+          <ul class="activity-rows">
+            <li class="activity-row">
+              <span class="row-year">2024</span>
+              <i class="fas fa-check-circle row-icon"></i>
+              <div class="row-body"><span class="row-title">Reviewer</span><span class="row-venue">ACM/SIGAPP Symposium on Applied Computing 2024</span></div>
+            </li>
+            <li class="activity-row">
+              <span class="row-year">2024</span>
+              <i class="fas fa-users row-icon"></i>
+              <div class="row-body"><span class="row-title">Program Committee member</span><span class="row-venue">GPTMB 2024</span></div>
+            </li>
+            <li class="activity-row">
+              <span class="row-year">2023</span>
+              <i class="fas fa-users row-icon"></i>
+              <div class="row-body"><span class="row-title">Program Committee member</span><span class="row-venue">ICON 2023</span></div>
+            </li>
+            <li class="activity-row">
+              <span class="row-year">2021</span>
+              <i class="fas fa-check-circle row-icon"></i>
+              <div class="row-body"><span class="row-title">Reviewer</span><span class="row-venue">ICON 2021 (NIT Silchar, Assam, India)</span></div>
+            </li>
           </ul>
         </div>
-        
+
         <div class="activity-card" id="speaking">
           <div class="activity-icon"><i class="fas fa-microphone-alt"></i></div>
           <h3>Speaking</h3>
-          <ul class="activity-list">
-            <li>Speaker for webinar on "Research and Innovation on Information Technology" at Universitas Islam Negeri Walisongo, Indonesia</li>
-            <li>Radio talk at University of Calicut on fake health information</li>
-            <li>Main speaker for ElevateNI 2023, QUB: "The role of large language models in AI"</li>
-            <li>Speaker at AICON 2024, Titanic Belfast: "AI-Powered Information Extraction"</li>
+          <ul class="activity-rows">
+            <li class="activity-row">
+              <span class="row-year">2025</span>
+              <i class="fas fa-chalkboard-teacher row-icon"></i>
+              <div class="row-body"><span class="row-title">Vision and Language Symposium speaker</span><span class="row-venue">Queen's University Belfast</span></div>
+            </li>
+            <li class="activity-row">
+              <span class="row-year">2024</span>
+              <i class="fas fa-microphone row-icon"></i>
+              <div class="row-body"><span class="row-title">"AI-Powered Information Extraction"</span><span class="row-venue">AICON 2024, Titanic Belfast</span></div>
+            </li>
+            <li class="activity-row">
+              <span class="row-year">2023</span>
+              <i class="fas fa-star row-icon"></i>
+              <div class="row-body"><span class="row-title">"The role of large language models in AI"</span><span class="row-venue">Main speaker, ElevateNI 2023, QUB</span></div>
+            </li>
+            <li class="activity-row">
+              <span class="row-year">—</span>
+              <i class="fas fa-broadcast-tower row-icon"></i>
+              <div class="row-body"><span class="row-title">Radio talk on fake health information</span><span class="row-venue">University of Calicut</span></div>
+            </li>
+            <li class="activity-row">
+              <span class="row-year">—</span>
+              <i class="fas fa-globe row-icon"></i>
+              <div class="row-body"><span class="row-title">"Research and Innovation on Information Technology"</span><span class="row-venue">Universitas Islam Negeri Walisongo, Indonesia</span></div>
+            </li>
           </ul>
         </div>
-        
+
         <div class="activity-card" id="teaching">
           <div class="activity-icon"><i class="fas fa-chalkboard-teacher"></i></div>
           <h3>Teaching</h3>
-          <ul class="activity-list">
-            <li>Guest lecturer for Deep Learning module at QUB</li>
-            <li>Subject Teacher — INTO Queen's University Belfast (C++ OOP)</li>
-            <li>Lab Demonstrator / Teaching Assistant at QUB (2021–2022)</li>
-            <li>Lecturer at Royal Global University, Assam (2018–2019)</li>
+          <ul class="activity-rows">
+            <li class="activity-row">
+              <span class="row-year">2025</span>
+              <i class="fas fa-code row-icon"></i>
+              <div class="row-body"><span class="row-title">Subject Teacher — C++ OOP</span><span class="row-venue">INTO Queen's University Belfast</span></div>
+            </li>
+            <li class="activity-row">
+              <span class="row-year">—</span>
+              <i class="fas fa-brain row-icon"></i>
+              <div class="row-body"><span class="row-title">Guest lecturer, Deep Learning module</span><span class="row-venue">Queen's University Belfast</span></div>
+            </li>
+            <li class="activity-row">
+              <span class="row-year">21-22</span>
+              <i class="fas fa-flask row-icon"></i>
+              <div class="row-body"><span class="row-title">Lab Demonstrator / Teaching Assistant</span><span class="row-venue">Queen's University Belfast</span></div>
+            </li>
+            <li class="activity-row">
+              <span class="row-year">18-19</span>
+              <i class="fas fa-university row-icon"></i>
+              <div class="row-body"><span class="row-title">Lecturer — Python, C++, DSA</span><span class="row-venue">Royal Global University, Assam</span></div>
+            </li>
           </ul>
         </div>
       </div>

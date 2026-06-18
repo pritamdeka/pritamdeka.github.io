@@ -2348,6 +2348,15 @@ footer {
   .currently-strip { margin-top: -1.2rem; }
   .currently-card { padding: 0.8rem 1rem; }
   .projects-grid { grid-template-columns: 1fr; }
+  .page-header { padding: 2.6rem 1.2rem 2.2rem; }
+  .page-header-stats { gap: 1rem; }
+  .ph-stat { min-width: auto; }
+  .edu-timeline { padding-left: 2.2rem; }
+  .edu-pin { width: 38px; height: 38px; font-size: 0.9rem; left: -2.2rem; }
+  .act-stats { flex-wrap: wrap; gap: 0.8rem; }
+  .act-stat { flex: 1 1 40%; }
+  .activity-row { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+  .activity-row .row-year { margin-bottom: 0.2rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2355,5 +2364,374 @@ footer {
   .pulse-dot::after { animation: none; }
   .hero-roles .ty-text::after { animation: none; }
 }
+
+/* ===== Page Header (secondary pages) ===== */
+.page-header {
+  position: relative;
+  background: var(--gradient-hero);
+  color: #fff;
+  padding: 3.4rem 1.5rem 3rem;
+  text-align: center;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.page-header::before {
+  content: '';
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.14);
+  filter: blur(60px);
+  top: -120px;
+  right: -60px;
+  pointer-events: none;
+}
+
+.page-header-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.page-header .ph-eyebrow {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: rgba(255,255,255,0.15);
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  margin-bottom: 1rem;
+  backdrop-filter: blur(6px);
+}
+
+.page-header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4.5vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0 0 0.6rem 0;
+}
+
+.page-header .ph-subtitle {
+  font-size: 1rem;
+  opacity: 0.92;
+  margin: 0 0 1.6rem 0;
+  line-height: 1.55;
+}
+
+.page-header-stats {
+  display: flex;
+  justify-content: center;
+  gap: 2.2rem;
+  flex-wrap: wrap;
+}
+
+.ph-stat {
+  text-align: center;
+  min-width: 90px;
+}
+
+.ph-stat .ph-num {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 800;
+  display: block;
+  line-height: 1;
+}
+
+.ph-stat .ph-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.85;
+  margin-top: 0.35rem;
+  display: block;
+}
+
+/* ===== Education Timeline ===== */
+.edu-timeline {
+  position: relative;
+  padding-left: 3rem;
+  margin-top: 1.5rem;
+}
+
+.edu-timeline::before {
+  content: '';
+  position: absolute;
+  left: 19px;
+  top: 28px;
+  bottom: 28px;
+  width: 3px;
+  background: linear-gradient(var(--accent), var(--accent-violet), var(--accent-soft));
+  border-radius: 3px;
+}
+
+.degree-card {
+  position: relative;
+  margin-bottom: 1.6rem;
+}
+
+.edu-pin {
+  position: absolute;
+  left: -3rem;
+  top: 0.4rem;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--gradient-1);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0 4px 14px rgba(91,110,245,0.3);
+  z-index: 1;
+}
+
+.edu-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 1rem;
+}
+
+.edu-tag {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--accent-soft);
+  padding: 0.25rem 0.65rem;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.edu-tag i {
+  font-size: 0.7rem;
+}
+
+.edu-funding-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, rgba(245,158,11,0.14), rgba(240,147,251,0.12));
+  color: var(--warning);
+  border: 1px solid rgba(245,158,11,0.3);
+  padding: 0.5rem 0.9rem;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-top: 1rem;
+}
+
+.edu-thesis-callout {
+  margin-top: 1rem;
+  padding: 1rem 1.2rem;
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+}
+
+.edu-thesis-callout .thesis-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.edu-thesis-callout .thesis-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 0.98rem;
+  line-height: 1.45;
+}
+
+/* ===== Activities Stats Strip ===== */
+.act-stats {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.4rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.act-stat {
+  flex: 1;
+  text-align: center;
+  padding: 0.4rem 0.6rem;
+}
+
+.act-stat + .act-stat {
+  border-left: 1px solid var(--border);
+}
+
+.act-stat .act-num {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--accent);
+  display: block;
+  line-height: 1;
+}
+
+.act-stat .act-label {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 0.4rem;
+  display: block;
+}
+
+/* ===== Activity Year-Badged Rows ===== */
+.activity-rows {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.activity-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 0.85rem 0.9rem;
+  margin-bottom: 0.5rem;
+  border-radius: 10px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  transition: all 0.2s ease;
+}
+
+.activity-row:hover {
+  transform: translateX(4px);
+  border-color: var(--accent);
+  background: var(--bg-secondary);
+}
+
+.row-year {
+  flex-shrink: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.78rem;
+  color: #fff;
+  background: var(--gradient-1);
+  padding: 0.3rem 0.55rem;
+  border-radius: 8px;
+  min-width: 52px;
+  text-align: center;
+  margin-top: 0.1rem;
+}
+
+.row-year.tier-best {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.row-body {
+  flex: 1;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.row-body .row-title {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.row-body .row-venue {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-top: 0.15rem;
+}
+
+.row-icon {
+  flex-shrink: 0;
+  color: var(--accent);
+  font-size: 0.95rem;
+  margin-top: 0.2rem;
+  width: 1.2em;
+  text-align: center;
+}
+
+/* Open Source card enrichment */
+.os-stats {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 0.8rem 0 1rem 0;
+}
+
+.os-stat {
+  text-align: center;
+}
+
+.os-stat .os-num {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--accent);
+  display: block;
+  line-height: 1;
+}
+
+.os-stat .os-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.3rem;
+  display: block;
+}
+
+/* Recognition card */
+.recognition-card {
+  background: linear-gradient(135deg, rgba(245,158,11,0.08), rgba(240,147,251,0.08));
+  border-color: rgba(245,158,11,0.25);
+}
+
+.recognition-card .activity-icon {
+  background: linear-gradient(135deg, rgba(245,158,11,0.18), rgba(240,147,251,0.18));
+  color: var(--warning);
+}
+
+.recognition-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  margin-bottom: 0.7rem;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  text-align: left;
+  color: var(--text-primary);
+}
+
+.recognition-item i {
+  color: var(--warning);
+  margin-top: 0.25rem;
+  flex-shrink: 0;
+}
+
+.recognition-item:last-child {
+  margin-bottom: 0;
+}
+
 
 
