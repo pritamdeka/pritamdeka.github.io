@@ -1,5 +1,5 @@
 // Service Worker — offline-first shell caching for pritamdeka.github.io
-const CACHE = 'pd-site-v1';
+const CACHE = 'pd-site-v2';
 const SHELL = [
   './',
   './index.html',
