@@ -2881,42 +2881,156 @@ nav a.spy-active::after {
   font-size: 0.9em;
 }
 
-/* ===== Mobile Navigation (simple, reliable top nav) ===== */
+/* ===== Mobile App Tab Bar + Drawer (CSS-only, no JS) ===== */
+.m-tabbar { display: none; }
+.m-drawer-toggle { position: absolute; opacity: 0; pointer-events: none; }
+.m-drawer-backdrop { display: none; }
+.m-drawer { display: none; }
+
 @media (max-width: 700px) {
-  /* Show the top nav (it was hidden behind a hamburger before) */
-  nav#main-nav {
-    display: flex !important;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.4rem 1rem;
-    padding: 0.6rem 0.5rem;
-    font-size: 0.9rem;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: var(--bg-secondary);
-    border-bottom: 1px solid var(--border);
-  }
-
-  nav#main-nav a {
-    padding: 0.4rem 0.2rem;
-    font-size: 0.9rem;
-  }
-
-  /* Theme + search buttons slightly smaller on mobile */
-  nav#main-nav .theme-toggle,
-  nav#main-nav .search-toggle {
-    width: 34px;
-    height: 34px;
-    font-size: 0.95rem;
-  }
-
-  /* Keep the hamburger hidden — top nav handles everything */
+  /* Hide top nav — tab bar replaces it */
+  nav#main-nav { display: none !important; }
   .mobile-menu-toggle { display: none !important; }
-
-  /* Mobile breadcrumb + quick-nav are redundant with the visible top nav */
   .mobile-breadcrumb { display: none !important; }
   .mobile-quick-nav { display: none !important; }
+
+  body { padding-bottom: 68px; }
+  .back-to-top { bottom: 82px; }
+
+  /* Bottom tab bar */
+  .m-tabbar {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border);
+    padding: 0.3rem 0.2rem;
+    padding-bottom: calc(0.3rem + env(safe-area-inset-bottom, 0px));
+    z-index: 999;
+    justify-content: space-around;
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
+  }
+
+  .m-tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.15rem;
+    padding: 0.35rem 0.1rem;
+    min-height: 52px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.62rem;
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+    -webkit-tap-highlight-color: rgba(91,110,245,0.12);
+  }
+
+  .m-tab i { font-size: 1.15rem; }
+
+  .m-tab.active { color: var(--accent); }
+
+  .m-tab.active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 26px;
+    height: 3px;
+    border-radius: 0 0 3px 3px;
+    background: var(--gradient-1);
+  }
+
+  /* Drawer backdrop */
+  .m-drawer-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .m-drawer-toggle:checked ~ .m-drawer-backdrop {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Drawer sheet */
+  .m-drawer {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-secondary);
+    border-radius: 16px 16px 0 0;
+    padding: 0.5rem 1rem calc(1rem + env(safe-area-inset-bottom, 0px));
+    z-index: 1001;
+    max-height: 72vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+    box-shadow: 0 -4px 24px rgba(0,0,0,0.15);
+  }
+
+  .m-drawer-toggle:checked ~ .m-drawer {
+    transform: translateY(0);
+  }
+
+  .m-drawer-grip {
+    width: 40px;
+    height: 4px;
+    background: var(--border-strong);
+    border-radius: 4px;
+    margin: 0.4rem auto 0.8rem;
+  }
+
+  .m-drawer-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin: 0 0 0.5rem 0.5rem;
+  }
+
+  .m-drawer-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.85rem 0.7rem;
+    border-radius: 10px;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    font-family: var(--font-body);
+    -webkit-tap-highlight-color: rgba(91,110,245,0.12);
+  }
+
+  .m-drawer-item:active { background: var(--accent-soft); }
+
+  .m-drawer-item i {
+    color: var(--accent);
+    font-size: 1.05rem;
+    width: 1.4em;
+    text-align: center;
+  }
 
   /* Card tap feedback */
   .paper-item, .project-card, .activity-card, .degree-card, .news-item, .journey-card {
@@ -2943,7 +3057,7 @@ nav a.spy-active::after {
   .ph-stat { min-width: 80px; }
   .ph-stat .ph-num { font-size: 1.4rem; }
 
-  /* Sidebar becomes a compact hero-ish card on mobile */
+  /* Sidebar becomes a compact card on mobile */
   .sidebar {
     border-radius: 0 0 var(--radius-lg) var(--radius-lg);
     margin: -1rem 0 1.5rem;
@@ -2951,9 +3065,12 @@ nav a.spy-active::after {
   }
 }
 
+/* Desktop: hide tab bar + drawer */
 @media (min-width: 701px) {
-  /* Desktop: top nav is always visible (existing styles) */
-  nav#main-nav {
-    display: flex !important;
-  }
+  .m-tabbar, .m-drawer-toggle, .m-drawer-backdrop, .m-drawer { display: none !important; }
+  nav#main-nav { display: flex !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .m-drawer, .m-drawer-backdrop { transition: none; }
 }
