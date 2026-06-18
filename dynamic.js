@@ -1021,61 +1021,66 @@ function fetchWithTimeout(url, ms) {
     document.body.classList.remove('drawer-open');
   }
 
-  // Tab bar — delegated click for reliability
-  tabbar.addEventListener('click', (e) => {
-    const tabMore = e.target.closest('#tab-more');
-    if (tabMore) {
+  // Tab bar — direct click listeners on each tab for maximum reliability
+  tabbar.querySelectorAll('a.tab').forEach(tab => {
+    tab.addEventListener('click', (e) => {
+      const href = tab.getAttribute('data-href') || tab.getAttribute('href');
+      if (!href) return;
+      // Visual feedback
+      tab.style.background = 'var(--accent-soft)';
+      setTimeout(() => { tab.style.background = ''; }, 150);
+      // Let the <a href> navigate naturally — do NOT preventDefault.
+      // Belt-and-suspenders: also force navigation after a microtask.
+      Promise.resolve().then(() => { window.location.href = href; });
+    });
+  });
+
+  // "More" button — direct listener
+  const tabMoreBtn = document.getElementById('tab-more');
+  if (tabMoreBtn) {
+    tabMoreBtn.addEventListener('click', (e) => {
       e.preventDefault();
       if (drawer.classList.contains('active')) closeDrawer();
       else openDrawer();
-      return;
-    }
-    const tab = e.target.closest('a.tab');
-    if (!tab) return;
-    const href = tab.getAttribute('data-href') || tab.getAttribute('href');
-    if (!href) return;
-    // Let the browser navigate via the anchor; do NOT preventDefault.
-    // As a safety net, if the anchor doesn't navigate within a tick, force it.
-    setTimeout(() => { window.location.href = href; }, 0);
-  });
+    });
+  }
 
-  // Backdrop closes drawer
+  // Backdrop closes drawer — direct listener
   backdrop.addEventListener('click', closeDrawer);
 
-  // Drawer — single delegated click handler on the drawer
-  drawer.addEventListener('click', (e) => {
-    const item = e.target.closest('.drawer-item');
-    if (!item) return;
-    const action = item.dataset.action;
-    if (action === 'theme') {
-      e.preventDefault();
-      if (typeof themeToggle !== 'undefined' && themeToggle) themeToggle.click();
-      closeDrawer();
-      return;
-    }
-    if (action === 'search') {
-      e.preventDefault();
-      closeDrawer();
-      const st = document.getElementById('search-toggle');
-      if (st) st.click();
-      return;
-    }
-    // For anchors with # hrefs, do smooth scroll; close drawer
-    const href = item.getAttribute('href');
-    if (href && href.startsWith('#')) {
-      e.preventDefault();
-      const el = document.querySelector(href);
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-      closeDrawer();
-      // Safety net for same-page anchors
-      setTimeout(() => { window.location.hash = href; }, 0);
-      return;
-    }
-    // For other hrefs (education.html, cv/..., feed.xml): let the anchor navigate.
-    // Safety net in case the browser doesn't follow the link.
-    if (href) {
-      setTimeout(() => { window.location.href = href; }, 0);
-    }
+  // Drawer items — direct click listeners
+  drawer.querySelectorAll('.drawer-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      const action = item.dataset.action;
+      if (action === 'theme') {
+        e.preventDefault();
+        if (typeof themeToggle !== 'undefined' && themeToggle) themeToggle.click();
+        closeDrawer();
+        return;
+      }
+      if (action === 'search') {
+        e.preventDefault();
+        closeDrawer();
+        const st = document.getElementById('search-toggle');
+        if (st) st.click();
+        return;
+      }
+      const href = item.getAttribute('href');
+      if (!href) return;
+      // Visual feedback
+      item.style.background = 'var(--accent-soft)';
+      setTimeout(() => { item.style.background = ''; }, 150);
+      if (href.startsWith('#')) {
+        e.preventDefault();
+        const el = document.querySelector(href);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+        closeDrawer();
+        setTimeout(() => { window.location.hash = href; }, 50);
+        return;
+      }
+      // For other hrefs: let the anchor navigate naturally. Force as backup.
+      Promise.resolve().then(() => { window.location.href = href; });
+    });
   });
 
   // Close drawer on Escape

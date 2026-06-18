@@ -2889,9 +2889,7 @@ nav a.spy-active::after {
   left: 0;
   right: 0;
   z-index: 9998;
-  background: rgba(255,255,255,0.94);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: var(--bg-secondary);
   border-top: 1px solid var(--border);
   padding: 0.35rem 0.2rem;
   padding-bottom: calc(0.35rem + env(safe-area-inset-bottom, 0px));
@@ -2969,9 +2967,7 @@ body.drawer-open .tabbar {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: rgba(10,12,30,0.5);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
+  background: rgba(10,12,30,0.55);
   opacity: 0;
   visibility: hidden;
   transition: opacity var(--dur) var(--ease), visibility 0s linear var(--dur);
