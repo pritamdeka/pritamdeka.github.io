@@ -947,33 +947,40 @@ function fetchWithTimeout(url, ms) {
   const isMobile = window.matchMedia('(max-width: 700px)').matches;
   if (!isMobile) return;
 
-  const page = location.pathname.split('/').pop() || 'index.html';
+  const page = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
 
-  // Determine active tab
+  // Tabs
   const tabs = [
     { href: 'index.html', icon: 'fa-user', label: 'About' },
     { href: 'papers.html', icon: 'fa-file-alt', label: 'Papers' },
     { href: 'activities.html', icon: 'fa-trophy', label: 'Activity' },
     { href: 'blog.html', icon: 'fa-rss', label: 'Blog' },
   ];
-  const activeTab = tabs.find(t => t.href === page) ? page : 'more';
+  const isMoreActive = !tabs.some(t => t.href === page);
 
   const tabbar = document.createElement('nav');
   tabbar.className = 'tabbar';
+  tabbar.id = 'tabbar';
+  tabbar.setAttribute('role', 'navigation');
+  tabbar.setAttribute('aria-label', 'Primary');
   tabbar.innerHTML = tabs.map(t => `
-    <a href="${t.href}" class="tab${t.href === page ? ' active' : ''}">
-      <i class="fas ${t.icon}"></i><span>${t.label}</span>
+    <a href="${t.href}" class="tab${t.href === page ? ' active' : ''}" data-href="${t.href}">
+      <i class="fas ${t.icon}" aria-hidden="true"></i><span>${t.label}</span>
     </a>`).join('') + `
-    <button class="tab${activeTab === 'more' ? ' active' : ''}" id="tab-more">
-      <i class="fas fa-ellipsis-h"></i><span>More</span>
+    <button type="button" class="tab${isMoreActive ? ' active' : ''}" id="tab-more" aria-label="More options">
+      <i class="fas fa-ellipsis-h" aria-hidden="true"></i><span>More</span>
     </button>`;
   document.body.appendChild(tabbar);
 
   // Drawer for secondary items
   const backdrop = document.createElement('div');
   backdrop.className = 'drawer-backdrop';
+  backdrop.id = 'drawer-backdrop';
   const drawer = document.createElement('div');
   drawer.className = 'drawer';
+  drawer.id = 'drawer';
+  drawer.setAttribute('role', 'dialog');
+  drawer.setAttribute('aria-label', 'More options');
 
   const isIndex = page === 'index.html';
   const moreItems = [];
@@ -992,63 +999,88 @@ function fetchWithTimeout(url, ms) {
   moreItems.push({ icon: 'fa-rss', label: 'RSS Feed', href: 'feed.xml' });
 
   drawer.innerHTML = `
-    <div class="drawer-grip"></div>
+    <div class="drawer-grip" aria-hidden="true"></div>
     <p class="drawer-title">More</p>
     ${moreItems.map(it => {
       if (it.href) {
-        return `<a href="${it.href}" class="drawer-item"><i class="fas ${it.icon}"></i><span>${it.label}</span></a>`;
+        return `<a href="${it.href}" class="drawer-item" data-href="${it.href}"><i class="fas ${it.icon}" aria-hidden="true"></i><span>${it.label}</span></a>`;
       }
-      return `<button class="drawer-item" data-action="${it.action}"><i class="fas ${it.icon}"></i><span>${it.label}</span></button>`;
+      return `<button type="button" class="drawer-item" data-action="${it.action}"><i class="fas ${it.icon}" aria-hidden="true"></i><span>${it.label}</span></button>`;
     }).join('')}`;
   document.body.appendChild(backdrop);
   document.body.appendChild(drawer);
 
-  const tabMore = document.getElementById('tab-more');
-
   function openDrawer() {
-    backdrop.classList.add('active');
     drawer.classList.add('active');
+    backdrop.classList.add('active');
     document.body.classList.add('drawer-open');
   }
   function closeDrawer() {
-    backdrop.classList.remove('active');
     drawer.classList.remove('active');
+    backdrop.classList.remove('active');
     document.body.classList.remove('drawer-open');
   }
 
-  if (tabMore) {
-    tabMore.addEventListener('click', () => {
+  // Tab bar — delegated click for reliability
+  tabbar.addEventListener('click', (e) => {
+    const tabMore = e.target.closest('#tab-more');
+    if (tabMore) {
+      e.preventDefault();
       if (drawer.classList.contains('active')) closeDrawer();
       else openDrawer();
-    });
-  }
+      return;
+    }
+    const tab = e.target.closest('a.tab');
+    if (!tab) return;
+    const href = tab.getAttribute('data-href') || tab.getAttribute('href');
+    if (!href) return;
+    // Let the browser navigate via the anchor; do NOT preventDefault.
+    // As a safety net, if the anchor doesn't navigate within a tick, force it.
+    setTimeout(() => { window.location.href = href; }, 0);
+  });
+
+  // Backdrop closes drawer
   backdrop.addEventListener('click', closeDrawer);
 
-  // Drawer item actions
-  drawer.querySelectorAll('.drawer-item').forEach(item => {
-    item.addEventListener('click', (e) => {
-      const action = item.dataset.action;
-      if (action === 'theme') {
-        e.preventDefault();
-        themeToggle && themeToggle.click();
-        closeDrawer();
-      } else if (action === 'search') {
-        e.preventDefault();
-        closeDrawer();
-        const st = document.getElementById('search-toggle');
-        if (st) st.click();
-      } else if (item.getAttribute('href') && item.getAttribute('href').startsWith('#')) {
-        e.preventDefault();
-        const el = document.querySelector(item.getAttribute('href'));
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-        closeDrawer();
-      }
-    });
+  // Drawer — single delegated click handler on the drawer
+  drawer.addEventListener('click', (e) => {
+    const item = e.target.closest('.drawer-item');
+    if (!item) return;
+    const action = item.dataset.action;
+    if (action === 'theme') {
+      e.preventDefault();
+      if (typeof themeToggle !== 'undefined' && themeToggle) themeToggle.click();
+      closeDrawer();
+      return;
+    }
+    if (action === 'search') {
+      e.preventDefault();
+      closeDrawer();
+      const st = document.getElementById('search-toggle');
+      if (st) st.click();
+      return;
+    }
+    // For anchors with # hrefs, do smooth scroll; close drawer
+    const href = item.getAttribute('href');
+    if (href && href.startsWith('#')) {
+      e.preventDefault();
+      const el = document.querySelector(href);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+      closeDrawer();
+      // Safety net for same-page anchors
+      setTimeout(() => { window.location.hash = href; }, 0);
+      return;
+    }
+    // For other hrefs (education.html, cv/..., feed.xml): let the anchor navigate.
+    // Safety net in case the browser doesn't follow the link.
+    if (href) {
+      setTimeout(() => { window.location.href = href; }, 0);
+    }
   });
 
   // Close drawer on Escape
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeDrawer();
+    if (e.key === 'Escape' && drawer.classList.contains('active')) closeDrawer();
   });
 })();
 

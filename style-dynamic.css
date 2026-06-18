@@ -2888,8 +2888,8 @@ nav a.spy-active::after {
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 1001;
-  background: rgba(255,255,255,0.92);
+  z-index: 9998;
+  background: rgba(255,255,255,0.94);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-top: 1px solid var(--border);
@@ -2898,11 +2898,10 @@ nav a.spy-active::after {
   justify-content: space-around;
   align-items: center;
   box-shadow: 0 -4px 24px rgba(30,32,80,0.08);
-  transition: transform var(--dur-slow) var(--ease);
 }
 
 .dark-mode .tabbar {
-  background: rgba(22,24,48,0.92);
+  background: rgba(22,24,48,0.94);
 }
 
 .tab {
@@ -2912,24 +2911,27 @@ nav a.spy-active::after {
   align-items: center;
   justify-content: center;
   gap: 0.18rem;
-  padding: 0.3rem 0.1rem;
-  min-height: 48px;
+  padding: 0.4rem 0.1rem;
+  min-height: 52px;
   background: none;
   border: none;
   color: var(--text-muted);
   font-family: var(--font-body);
-  font-size: 0.62rem;
+  font-size: 0.65rem;
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
-  transition: color var(--dur) var(--ease);
-  -webkit-tap-highlight-color: transparent;
   position: relative;
+  pointer-events: auto;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(91,110,245,0.15);
+  z-index: 1;
 }
 
 .tab i {
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   transition: transform var(--dur) var(--ease);
+  pointer-events: none;
 }
 
 .tab.active {
@@ -2943,39 +2945,43 @@ nav a.spy-active::after {
 .tab.active::before {
   content: '';
   position: absolute;
-  top: -0.35rem;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 24px;
+  width: 28px;
   height: 3px;
   border-radius: 0 0 3px 3px;
   background: var(--gradient-1);
+  pointer-events: none;
 }
 
-.tab:active i {
-  transform: scale(0.88);
+.tab:active {
+  background: var(--accent-soft);
 }
 
-/* Hide bottom tab bar when drawer is open */
+/* Hide bottom tab bar when drawer is open (use visibility, not transform) */
 body.drawer-open .tabbar {
-  transform: translateY(100%);
+  display: none !important;
 }
 
 /* ===== Mobile Drawer (slide-in for secondary items) ===== */
 .drawer-backdrop {
-  display: none;
   position: fixed;
   inset: 0;
-  z-index: 1002;
-  background: rgba(10,12,30,0.4);
-  backdrop-filter: blur(2px);
+  z-index: 9999;
+  background: rgba(10,12,30,0.5);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
   opacity: 0;
-  transition: opacity var(--dur) var(--ease);
+  visibility: hidden;
+  transition: opacity var(--dur) var(--ease), visibility 0s linear var(--dur);
+  pointer-events: auto;
 }
 
 .drawer-backdrop.active {
-  display: block;
   opacity: 1;
+  visibility: visible;
+  transition: opacity var(--dur) var(--ease), visibility 0s linear 0s;
 }
 
 .drawer {
@@ -2983,19 +2989,24 @@ body.drawer-open .tabbar {
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 1003;
+  z-index: 10000;
   background: var(--bg-secondary);
   border-radius: 20px 20px 0 0;
   padding: 0.6rem 1rem calc(1.2rem + env(safe-area-inset-bottom, 0px));
   transform: translateY(100%);
   transition: transform var(--dur-slow) var(--ease);
-  box-shadow: 0 -8px 32px rgba(10,12,30,0.18);
-  max-height: 70vh;
+  box-shadow: 0 -8px 40px rgba(10,12,30,0.25);
+  max-height: 75vh;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  pointer-events: auto;
+  touch-action: manipulation;
+  visibility: hidden;
 }
 
 .drawer.active {
   transform: translateY(0);
+  visibility: visible;
 }
 
 .drawer-grip {
@@ -3004,6 +3015,7 @@ body.drawer-open .tabbar {
   border-radius: 4px;
   background: var(--border-strong);
   margin: 0.3rem auto 1rem;
+  pointer-events: none;
 }
 
 .drawer-title {
@@ -3014,43 +3026,52 @@ body.drawer-open .tabbar {
   letter-spacing: 0.08em;
   color: var(--text-muted);
   margin: 0 0 0.6rem 0.5rem;
+  pointer-events: none;
 }
 
 .drawer-item {
   display: flex;
   align-items: center;
   gap: 0.9rem;
-  padding: 0.85rem 0.8rem;
+  padding: 0.95rem 0.8rem;
   border-radius: 12px;
   color: var(--text-primary);
   text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 0.98rem;
   font-weight: 500;
   background: none;
   border: none;
   width: 100%;
+  text-align: left;
   cursor: pointer;
   font-family: var(--font-body);
-  -webkit-tap-highlight-color: transparent;
-  transition: background var(--dur) var(--ease);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(91,110,245,0.15);
+  pointer-events: auto;
+  position: relative;
+  z-index: 1;
 }
 
 .drawer-item:active {
   background: var(--accent-soft);
-  transform: scale(0.98);
 }
 
 .drawer-item i {
   color: var(--accent);
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   width: 1.4em;
   text-align: center;
+  pointer-events: none;
+}
+
+.drawer-item span {
+  pointer-events: none;
 }
 
 /* ===== Mobile app-like enhancements ===== */
 @media (max-width: 700px) {
   /* Show bottom tab bar, hide old hamburger toggle */
-  .tabbar { display: flex; }
+  .tabbar { display: flex !important; }
   .mobile-menu-toggle { display: none !important; }
 
   /* Keep top nav for scroll-spy but hide its links on mobile (tab bar owns nav) */
@@ -3062,7 +3083,7 @@ body.drawer-open .tabbar {
   }
 
   /* Add bottom padding so content isn't hidden behind the tab bar */
-  body { padding-bottom: 70px; }
+  body { padding-bottom: 72px; }
   .back-to-top { bottom: 86px; }
   footer { padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px) + 60px); }
 
@@ -3072,11 +3093,10 @@ body.drawer-open .tabbar {
 
   /* Card tap feedback */
   .paper-item, .project-card, .activity-card, .degree-card, .news-item, .journey-card {
-    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: rgba(91,110,245,0.12);
   }
   .paper-item:active, .project-card:active, .activity-card:active, .news-item:active {
-    transform: scale(0.985);
-    transition: transform 0.1s ease;
+    background: var(--bg-secondary);
   }
 
   /* Larger tap targets for filter chips */
