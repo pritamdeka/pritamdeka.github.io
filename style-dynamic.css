@@ -80,17 +80,40 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-@keyframes mesh-drift {
-  0%, 100% { background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
-  50% { background-position: 4% 6%, -3% 4%, 2% -4%, -4% -2%; }
+/* Smooth color-shifting overlay (hue-rotate on the mesh gradient) */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: var(--gradient-mesh);
+  background-size: 200% 200%;
+  z-index: -2;
+  pointer-events: none;
+  animation: mesh-hue 60s ease-in-out infinite, mesh-drift 30s ease-in-out infinite;
 }
 
-body {
-  animation: mesh-drift 30s ease-in-out infinite;
+@keyframes mesh-hue {
+  0%, 100% { filter: hue-rotate(0deg); }
+  50% { filter: hue-rotate(40deg); }
+}
+
+.dark-mode::before {
+  animation: mesh-hue-dark 80s ease-in-out infinite, mesh-drift 40s ease-in-out infinite;
+}
+
+@keyframes mesh-hue-dark {
+  0%, 100% { filter: hue-rotate(0deg); }
+  50% { filter: hue-rotate(20deg); }
+}
+
+@keyframes mesh-drift {
+  0%, 100% { background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
+  50% { background-position: 15% 18%, -12% 10%, 8% -15%, -18% -8%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  body { animation: none; }
+  body::before { animation: none; }
+  h2 { animation: none; }
 }
 
 /* Anchor scroll offset so in-page links clear the sticky nav */
@@ -517,6 +540,17 @@ h2 {
   font-weight: 700;
   letter-spacing: -0.01em;
   position: relative;
+  background: linear-gradient(90deg, var(--text-primary), var(--accent), var(--accent-violet), var(--text-primary));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: heading-gradient 6s ease-in-out infinite;
+}
+
+@keyframes heading-gradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 200% 50%; }
 }
 
 h2::after {
@@ -532,6 +566,8 @@ h2::after {
 
 h2 i {
   margin-right: 0.5em;
+  -webkit-text-fill-color: var(--accent);
+  color: var(--accent);
   color: var(--accent);
 }
 
@@ -1598,26 +1634,40 @@ footer {
   font-weight: 500;
   cursor: pointer;
   transition: all var(--dur-slow) var(--ease);
-  animation: float 3s ease-in-out infinite;
+  animation: float 3s ease-in-out infinite, tag-hue 8s ease-in-out infinite;
 }
 
 .interest-tag:hover {
   background: var(--gradient-1);
   color: #fff;
   transform: translateY(-3px) scale(1.05);
+  animation-play-state: paused;
 }
 
 .interest-tag:nth-child(odd) {
-  animation-delay: 0.5s;
+  animation-delay: 0.5s, 1s;
 }
 
 .interest-tag:nth-child(even) {
-  animation-delay: 1s;
+  animation-delay: 1s, 2s;
+}
+
+.interest-tag:nth-child(3n) {
+  animation-delay: 1.5s, 3s;
+}
+
+.interest-tag:nth-child(4n) {
+  animation-delay: 2s, 4s;
 }
 
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-5px); }
+}
+
+@keyframes tag-hue {
+  0%, 100% { filter: hue-rotate(0deg); }
+  50% { filter: hue-rotate(15deg); }
 }
 
 /* News Timeline */
@@ -1785,8 +1835,8 @@ footer {
 /* Back to Top Button */
 .back-to-top {
   position: fixed;
-  bottom: 30px;
-  right: 30px;
+  bottom: 90px;
+  right: 24px;
   width: 50px;
   height: 50px;
   background: var(--gradient-1);
@@ -1812,6 +1862,12 @@ footer {
 .back-to-top:hover {
   transform: translateY(-5px);
   box-shadow: 0 6px 25px rgba(102, 126, 234, 0.6);
+}
+
+/* Hide back-to-top when chat panel is open */
+body:has(.chat-panel.active) .back-to-top {
+  opacity: 0 !important;
+  visibility: hidden !important;
 }
 
 /* Responsive for New Features */
@@ -1855,8 +1911,8 @@ footer {
   }
   
   .back-to-top {
-    bottom: 20px;
-    right: 20px;
+    bottom: 80px;
+    right: 16px;
     width: 45px;
     height: 45px;
   }
@@ -2883,7 +2939,7 @@ nav a.spy-active::after {
 
 /* ===== Mobile App Bar + Full-Screen Overlay Menu ===== */
 .appbar { display: none; }
-.appmenu-toggle { position: absolute; opacity: 0; width: 0; height: 0; }
+.appmenu-toggle { position: fixed; top: 0; left: 0; opacity: 0; width: 0; height: 0; pointer-events: none; }
 .appmenu { display: none; }
 
 @media (max-width: 700px) {
