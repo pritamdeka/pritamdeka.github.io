@@ -3375,10 +3375,15 @@ nav a.spy-active::after {
   cursor: pointer;
   z-index: 998;
   box-shadow: 0 4px 20px rgba(91,110,245,0.35);
-  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), bottom 0.3s var(--ease);
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* When back-to-top is visible (scrolled down), move chat FAB above it */
+body:has(.back-to-top.visible) .chat-fab {
+  bottom: 90px;
 }
 
 .chat-fab:hover {
@@ -3623,6 +3628,10 @@ nav a.spy-active::after {
   .chat-fab {
     bottom: 16px;
     right: 16px;
+  }
+  /* On mobile, move chat FAB above back-to-top when scrolled */
+  body:has(.back-to-top.visible) .chat-fab {
+    bottom: 80px;
   }
 }
 
