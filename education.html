@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -16,7 +16,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="apple-touch-icon" href="favicon.svg">
+  <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style-dynamic.css">
+  <!-- Umami Analytics -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="64321948-50ef-4c25-a960-5e7bdd9b838a"></script>
 </head>
 <body class="light-mode">
 <!-- Search Bar -->
@@ -175,25 +178,35 @@
       <p>&copy; <span id="current-year">2025</span> Pritam Deka</p>
     </div>
   </footer>
-
-  <nav class="m-tabbar">
-    <a href="index.html" class="m-tab"><i class="fas fa-user"></i><span>About</span></a>
-    <a href="papers.html" class="m-tab"><i class="fas fa-file-alt"></i><span>Papers</span></a>
-    <a href="activities.html" class="m-tab"><i class="fas fa-trophy"></i><span>Activity</span></a>
-    <a href="blog.html" class="m-tab"><i class="fas fa-rss"></i><span>Blog</span></a>
-    <label class="m-tab active" for="m-drawer-toggle"><i class="fas fa-ellipsis-h"></i><span>More</span></label>
-  </nav>
-  <input type="checkbox" id="m-drawer-toggle" class="m-drawer-toggle" aria-hidden="true">
-  <label class="m-drawer-backdrop" for="m-drawer-toggle" aria-hidden="true"></label>
-  <aside class="m-drawer">
-    <div class="m-drawer-grip"></div>
-    <p class="m-drawer-title">More</p>
-    <a href="education.html" class="m-drawer-item" style="color:var(--accent)"><i class="fas fa-graduation-cap"></i><span>Education</span></a>
-    <button class="m-drawer-item" onclick="document.getElementById('m-drawer-toggle').checked=false;document.getElementById('search-toggle').click()"><i class="fas fa-search"></i><span>Search</span></button>
-    <button class="m-drawer-item" onclick="document.getElementById('m-drawer-toggle').checked=false;document.getElementById('theme-toggle').click()"><i class="fas fa-moon"></i><span>Dark mode</span></button>
-    <a href="cv/Pritam_Deka_CV.pdf" class="m-drawer-item"><i class="fas fa-download"></i><span>Download CV</span></a>
-    <a href="feed.xml" class="m-drawer-item"><i class="fas fa-rss"></i><span>RSS Feed</span></a>
-  </aside>
+<!-- Mobile App Bar -->
+<header class="appbar">
+  <a href="index.html" class="appbar-brand">Dr. Pritam Deka</a>
+  <label class="appbar-btn" for="appmenu-toggle"><i class="fas fa-bars"></i> Menu</label>
+</header>
+<input type="checkbox" id="appmenu-toggle" class="appmenu-toggle" aria-hidden="true">
+<nav class="appmenu">
+  <div class="appmenu-header">
+    <h2>Menu</h2>
+    <label class="appmenu-close" for="appmenu-toggle"><i class="fas fa-times"></i></label>
+  </div>
+  <p class="appmenu-section">Pages</p>
+  <ul class="appmenu-list">
+    <li><a href="index.html" class="appmenu-link"><i class="fas fa-user"></i> About</a></li>
+    <li><a href="education.html" class="appmenu-link active"><i class="fas fa-graduation-cap"></i> Education</a></li>
+    <li><a href="papers.html" class="appmenu-link"><i class="fas fa-file-alt"></i> Papers</a></li>
+    <li><a href="activities.html" class="appmenu-link"><i class="fas fa-trophy"></i> Activities</a></li>
+    <li><a href="blog.html" class="appmenu-link"><i class="fas fa-rss"></i> Blog</a></li>
+  </ul>
+  <div class="appmenu-divider"></div>
+  <p class="appmenu-section">Actions</p>
+  <ul class="appmenu-list">
+
+    <li><button class="appmenu-link" onclick="document.getElementById('appmenu-toggle').checked=false;document.getElementById('search-toggle').click()"><i class="fas fa-search"></i> Search</button></li>
+    <li><button class="appmenu-link" onclick="document.getElementById('appmenu-toggle').checked=false;document.getElementById('theme-toggle').click()"><i class="fas fa-moon"></i> Dark mode</button></li>
+    <li><a href="cv/Pritam_Deka_CV.pdf" class="appmenu-link"><i class="fas fa-download"></i> Download CV</a></li>
+    <li><a href="feed.xml" class="appmenu-link"><i class="fas fa-rss"></i> RSS Feed</a></li>
+  </ul>
+</nav>
 
   <script src="dynamic.js"></script>
 </body>

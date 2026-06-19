@@ -1,0 +1,17 @@
+{
+  "name": "Dr. Pritam Deka — AI Engineer & NLP Researcher",
+  "short_name": "Pritam Deka",
+  "description": "AI Engineer & Research Fellow specialising in LLMs, VLMs, agentic AI and document intelligence.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4f5fb",
+  "theme_color": "#5b6ef5",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

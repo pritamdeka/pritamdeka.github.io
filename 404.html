@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>404 — Page Not Found | Dr. Pritam Deka</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style-dynamic.css">
+  <style>
+    .not-found {
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+    .nf-code {
+      font-family: var(--font-display);
+      font-size: clamp(4rem, 15vw, 8rem);
+      font-weight: 800;
+      background: var(--gradient-hero);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+      margin: 0;
+    }
+    .nf-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.3rem, 4vw, 1.8rem);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 1rem 0 0.5rem;
+    }
+    .nf-msg {
+      color: var(--text-muted);
+      font-size: 1rem;
+      max-width: 420px;
+      margin: 0 auto 2rem;
+      line-height: 1.6;
+    }
+    .nf-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+      max-width: 500px;
+      width: 100%;
+    }
+    .nf-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1.5rem 1rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all var(--dur) var(--ease);
+      box-shadow: var(--shadow-sm);
+    }
+    .nf-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--accent);
+    }
+    .nf-card i {
+      font-size: 1.8rem;
+      color: var(--accent);
+    }
+  </style>
+  <!-- Umami Analytics -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="64321948-50ef-4c25-a960-5e7bdd9b838a"></script>
+</head>
+<body class="light-mode">
+  <div class="not-found">
+    <p class="nf-code">404</p>
+    <h1 class="nf-title">Page Not Found</h1>
+    <p class="nf-msg">The page you're looking for doesn't exist or has moved. Let's get you back on track.</p>
+    <div class="nf-links">
+      <a href="index.html" class="nf-card"><i class="fas fa-home"></i> Home</a>
+      <a href="papers.html" class="nf-card"><i class="fas fa-file-alt"></i> Papers</a>
+      <a href="blog.html" class="nf-card"><i class="fas fa-rss"></i> Blog</a>
+      <a href="index.html#contact" class="nf-card"><i class="fas fa-paper-plane"></i> Contact</a>
+    </div>
+  </div>
+  <script src="dynamic.js"></script>
+</body>
+</html>

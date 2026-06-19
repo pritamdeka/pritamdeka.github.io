@@ -1030,7 +1030,7 @@ function fetchWithTimeout(url, ms) {
 // ===== Chat Widget =====
 (function setupChatWidget() {
   // CONFIG: Replace this with your Cloudflare Worker URL after deploying chat-worker.js
-  const CHAT_WORKER_URL = 'https://pritam-chat.pritam26491.workers.dev/'; // e.g., 'https://pritam-chat.your-subdomain.workers.dev'
+  const CHAT_WORKER_URL = ''; // e.g., 'https://pritam-chat.your-subdomain.workers.dev'
 
   const fab = document.createElement('button');
   fab.className = 'chat-fab';

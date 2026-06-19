@@ -19,8 +19,8 @@
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style-dynamic.css">
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
-  <!-- Umami Analytics -->
-  <script defer src="https://cloud.umami.is/script.js" data-website-id="64321948-50ef-4c25-a960-5e7bdd9b838a"></script>
+  <!-- Umami Analytics — replace src and data-website-id with your instance -->
+  <script async defer src='https://umami.example.com/script.js' data-website-id='UMAMI_SITE_ID'></script>
 </head>
 <body class="light-mode">
 <!-- Search Bar -->
@@ -207,9 +207,9 @@
     const script = document.createElement('script');
     script.src = 'https://giscus.app/client.js';
     script.setAttribute('data-repo', 'pritamdeka/pritamdeka.github.io');
-    script.setAttribute('data-repo-id', 'R_kgDOPCSTtw');
+    script.setAttribute('data-repo-id', 'REPO_ID_PLACEHOLDER');
     script.setAttribute('data-category', 'Announcements');
-    script.setAttribute('data-category-id', 'DIC_kwDOPCSTt84C_fQV');
+    script.setAttribute('data-category-id', 'CATEGORY_ID_PLACEHOLDER');
     script.setAttribute('data-mapping', 'pathname');
     script.setAttribute('data-strict', '0');
     script.setAttribute('data-reactions-enabled', '1');
