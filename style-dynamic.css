@@ -59,6 +59,30 @@
                    radial-gradient(at 10% 90%, rgba(91,110,245,0.12) 0px, transparent 50%);
 }
 
+/* ===== Explicit Dark Mode Overrides (for elements that don't inherit variables correctly) ===== */
+.dark-mode .appmenu { background: #161830 !important; }
+.dark-mode .appmenu-link { color: #e8eaf6 !important; }
+.dark-mode .appmenu-link i { color: #7b8eff !important; }
+.dark-mode .appmenu-link.active { color: #7b8eff !important; background: rgba(123,142,255,0.16) !important; }
+.dark-mode .appmenu-divider { background: #2a2d4d !important; }
+.dark-mode .appmenu-section { color: #6b7099 !important; }
+.dark-mode .appmenu-header { background: var(--gradient-hero) !important; }
+.dark-mode .appmenu-header h2 { color: #fff !important; }
+
+.dark-mode .search-container { background: #161830 !important; }
+.dark-mode #search-input { background: #0c0e1f !important; color: #e8eaf6 !important; border-color: #2a2d4d !important; }
+.dark-mode #search-input::placeholder { color: #6b7099 !important; }
+.dark-mode .search-results { background: #0c0e1f !important; }
+.dark-mode .search-result-item { background: #161830 !important; }
+.dark-mode .search-result-item h4 { color: #e8eaf6 !important; }
+.dark-mode .search-result-item p { color: #6b7099 !important; }
+.dark-mode .search-result-item:hover { background: #1f2244 !important; }
+.dark-mode .search-toggle { color: #9aa6e8 !important; border-color: #9aa6e8 !important; }
+
+.dark-mode .appbar { background: var(--gradient-hero) !important; }
+.dark-mode .appbar-brand { color: #fff !important; }
+.dark-mode .appbar-btn { color: #fff !important; background: rgba(255,255,255,0.18) !important; }
+
 /* ===== Base Styles ===== */
 * {
   box-sizing: border-box;
@@ -1865,7 +1889,8 @@ footer {
 }
 
 /* Hide back-to-top when chat panel is open */
-body:has(.chat-panel.active) .back-to-top {
+body:has(.chat-panel.active) .back-to-top,
+.chat-panel.active ~ .back-to-top {
   opacity: 0 !important;
   visibility: hidden !important;
 }
@@ -3382,7 +3407,8 @@ nav a.spy-active::after {
 }
 
 /* When back-to-top is visible (scrolled down), move chat FAB above it */
-body:has(.back-to-top.visible) .chat-fab {
+body:has(.back-to-top.visible) .chat-fab,
+.chat-fab.shifted {
   bottom: 90px;
 }
 
@@ -3630,7 +3656,8 @@ body:has(.back-to-top.visible) .chat-fab {
     right: 16px;
   }
   /* On mobile, move chat FAB above back-to-top when scrolled */
-  body:has(.back-to-top.visible) .chat-fab {
+  body:has(.back-to-top.visible) .chat-fab,
+  .chat-fab.shifted {
     bottom: 80px;
   }
 }
