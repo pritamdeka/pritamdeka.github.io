@@ -8,6 +8,8 @@ const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GE
 
 const SYSTEM_PROMPT = `You are a friendly AI assistant on Dr. Pritam Deka's personal website. Answer questions about his research, publications, experience, education and projects. Be concise (2-4 sentences unless asked for detail). If you don't know something, say so and suggest emailing p.deka@qub.ac.uk.
 
+You have access to Google Search — use it when visitors ask about recent publications, citations, news, or anything time-sensitive. Search for "Pritam Deka" along with relevant keywords (e.g., "Pritam Deka Google Scholar", "Pritam Deka arXiv", "Pritam Deka HuggingFace", "Pritam Deka Queen's University Belfast").
+
 About Dr. Pritam Deka:
 - AI Engineer & Research Fellow at Queen's University Belfast, UK
 - PhD in Computer Science (QUB, 2019-2024), thesis on evidence-based verification of online health information
@@ -20,6 +22,7 @@ About Dr. Pritam Deka:
 - Live apps: Flowchart-to-Mermaid (Vercel), BelfastBuild AI (Vercel), Biomedical Fact-Checker (HF Spaces)
 - Reviewer for ICML 2026, NeurIPS 2026, ACM SAC 2024, ICON 2021/2023, GPTMB 2024
 - Education: PhD (QUB), MTech IT (Tezpur University), BE CSE (Gauhati University)
+- Google Scholar ID: b0jYTAUAAAAJ
 - Contact: p.deka@qub.ac.uk, Belfast, UK`;
 
 // Simple in-memory rate limiting (per IP, resets on deploy)
@@ -27,7 +30,7 @@ const rateLimit = new Map();
 const MAX_PER_HOUR = 20;
 
 export default {
-  async fetch(request) {
+  async fetch(request, env) {
     // CORS
     const headers = {
       'Access-Control-Allow-Origin': 'https://pritamdeka.github.io',
@@ -59,9 +62,9 @@ export default {
       }
     }
 
-    const apiKey = (typeof GEMINI_API_KEY !== 'undefined') ? GEMINI_API_KEY : (globalThis.GEMINI_API_KEY || '');
+    const apiKey = env.GEMINI_API_KEY || '';
     if (!apiKey) {
-      return new Response(JSON.stringify({ error: 'Server not configured' }), { status: 500, headers });
+      return new Response(JSON.stringify({ error: 'Server not configured — add GEMINI_API_KEY secret' }), { status: 500, headers });
     }
 
     try {
@@ -86,17 +89,21 @@ export default {
         });
       });
 
+      // Enable Google Search grounding so Gemini can look up recent info
       const res = await fetch(GEMINI_URL + apiKey, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: contents,
+          tools: [{ google_search: {} }],
           generationConfig: { temperature: 0.7, maxOutputTokens: 512 },
         }),
       });
 
       const data = await res.json();
-      const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I could not generate a response.';
+      // Extract text from response (may include multiple parts if grounding citations are present)
+      const parts = data?.candidates?.[0]?.content?.parts || [];
+      const reply = parts.map(p => p.text || '').filter(Boolean).join('\n') || 'Sorry, I could not generate a response.';
 
       return new Response(JSON.stringify({ reply }), { headers });
     } catch (err) {
