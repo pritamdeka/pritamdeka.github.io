@@ -934,9 +934,9 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
 }
 
 // ===== Fetch with timeout helper =====
-function fetchWithTimeout(url, ms) {
+function fetchWithTimeout(url, ms, options) {
   return Promise.race([
-    fetch(url),
+    fetch(url, options),
     new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), ms))
   ]);
 }
@@ -1115,12 +1115,22 @@ function fetchWithTimeout(url, ms) {
 
     addTyping();
     try {
-      const res = await fetchWithTimeout(CHAT_WORKER_URL, 15000);
+      const res = await fetchWithTimeout(
+        CHAT_WORKER_URL,
+        15000,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: msg, history: history.slice(-4) }),
+        }
+      );
       const data = await res.json();
       removeTyping();
       if (data.reply) {
         addMsg(data.reply, 'bot');
         history.push({ role: 'bot', text: data.reply });
+      } else if (data.error) {
+        addMsg(data.error, 'error');
       } else {
         addMsg("Sorry, I couldn't generate a response. Please try again.", 'error');
       }

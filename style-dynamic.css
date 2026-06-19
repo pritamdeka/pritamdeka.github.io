@@ -2893,11 +2893,16 @@ nav a.spy-active::after {
   .mobile-breadcrumb { display: none !important; }
   .mobile-quick-nav { display: none !important; }
 
-  /* Sticky gradient top app bar */
+  /* Add top padding so content isn't hidden behind the fixed app bar */
+  body { padding-top: 56px; }
+
+  /* Fixed gradient top app bar */
   .appbar {
     display: flex;
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
     z-index: 100;
     background: var(--gradient-hero);
     color: #fff;
