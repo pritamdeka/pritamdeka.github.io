@@ -1,3 +1,10 @@
+// Force-unregister any old service workers from the cache-first era
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(function(regs) {
+    regs.forEach(function(r) { r.unregister(); });
+  });
+}
+
 // ===== Theme Toggle =====
 const themeToggle = document.getElementById('theme-toggle');
 const body = document.body;

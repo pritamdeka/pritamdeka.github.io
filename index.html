@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style-dynamic.css">
+  <link rel="stylesheet" href="style-dynamic.css?v=14">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="apple-touch-icon" href="favicon.svg">
   <link rel="alternate" type="application/atom+xml" title="Pritam Deka — News" href="feed.xml">
@@ -115,30 +115,73 @@
   </div>
 </section>
 
-<!-- ============ RESEARCH AREAS ============ -->
-<section class="landing-section reveal" id="research">
-  <h2><i class="fas fa-lightbulb"></i> Research Areas</h2>
-  <div class="research-grid">
-    <a href="about.html#interests" class="research-card">
-      <div class="research-icon"><i class="fas fa-brain"></i></div>
-      <h3>Large Language Models</h3>
-      <p>Applied LLM engineering, RAG systems, prompt & context engineering, structured output generation with frontier APIs.</p>
-    </a>
-    <a href="about.html#interests" class="research-card">
-      <div class="research-icon"><i class="fas fa-eye"></i></div>
-      <h3>Vision-Language Models</h3>
-      <p>Fine-tuning open-source VLMs (Qwen2.5-VL, Qwen3-VL, Gemma 3) for document understanding and process diagram extraction.</p>
-    </a>
-    <a href="about.html#interests" class="research-card">
-      <div class="research-icon"><i class="fas fa-robot"></i></div>
-      <h3>Agentic AI</h3>
-      <p>Agentic workflows with CrewAI for synthetic data generation, human-in-the-loop refinement, and process automation.</p>
-    </a>
-    <a href="about.html#interests" class="research-card">
-      <div class="research-icon"><i class="fas fa-file-alt"></i></div>
-      <h3>Document Intelligence</h3>
-      <p>Converting unstructured visual artefacts (flowcharts, BPMN, org charts) into structured, editable representations.</p>
-    </a>
+<!-- ============ WHAT I DO ============ -->
+<section class="landing-section reveal" id="what-i-do">
+  <h2><i class="fas fa-cogs"></i> What I Do</h2>
+  <div class="what-i-do-grid">
+    <div class="what-i-do-card">
+      <div class="what-i-do-icon"><i class="fas fa-flask"></i></div>
+      <h3>Research &amp; Prototyping</h3>
+      <p>Turning research ideas into working AI systems, demos and reusable pipelines. From paper to prototype to deployed application.</p>
+    </div>
+    <div class="what-i-do-card">
+      <div class="what-i-do-icon"><i class="fas fa-microchip"></i></div>
+      <h3>Applied AI Engineering</h3>
+      <p>Building production-ready LLM/VLM pipelines with frontier APIs and fine-tuned open-source models. RAG, agentic workflows, structured output generation.</p>
+    </div>
+    <div class="what-i-do-card">
+      <div class="what-i-do-icon"><i class="fab fa-github"></i></div>
+      <h3>Open-Source &amp; Community</h3>
+      <p>50+ models and 20+ datasets on HuggingFace. Reviewer for ICML &amp; NeurIPS 2026. Best Paper at iiWAS 2021. Mentoring the next generation of AI engineers.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TECH STACK ============ -->
+<section class="landing-section reveal" id="tech-stack">
+  <h2><i class="fas fa-layer-group"></i> Tech Stack</h2>
+  <p style="color: var(--text-muted); margin-bottom: 1.5rem;">The models, frameworks and tools I use day-to-day.</p>
+  <div class="tech-stack-grid">
+    <div class="tech-group">
+      <span class="tech-group-label">Frontier APIs</span>
+      <div class="tech-pills">
+        <span class="tech-pill">GPT-4o / GPT-5</span>
+        <span class="tech-pill">Gemini 2.5 Flash</span>
+        <span class="tech-pill">Claude</span>
+      </div>
+    </div>
+    <div class="tech-group">
+      <span class="tech-group-label">Open-Source VLMs</span>
+      <div class="tech-pills">
+        <span class="tech-pill">Qwen2.5-VL</span>
+        <span class="tech-pill">Qwen3-VL</span>
+        <span class="tech-pill">Gemma 3</span>
+        <span class="tech-pill">LLaMA</span>
+        <span class="tech-pill">Mistral</span>
+      </div>
+    </div>
+    <div class="tech-group">
+      <span class="tech-group-label">Frameworks</span>
+      <div class="tech-pills">
+        <span class="tech-pill"><i class="fab fa-python"></i> Python</span>
+        <span class="tech-pill">PyTorch</span>
+        <span class="tech-pill">HuggingFace</span>
+        <span class="tech-pill">CrewAI</span>
+        <span class="tech-pill">FastAPI</span>
+        <span class="tech-pill">Gradio</span>
+        <span class="tech-pill">Rasa</span>
+        <span class="tech-pill">LoRA / PEFT</span>
+      </div>
+    </div>
+    <div class="tech-group">
+      <span class="tech-group-label">Deployment</span>
+      <div class="tech-pills">
+        <span class="tech-pill">Vercel</span>
+        <span class="tech-pill">HF Spaces</span>
+        <span class="tech-pill">Netlify</span>
+        <span class="tech-pill"><i class="fab fa-github"></i> GitHub</span>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -164,51 +207,6 @@
       <p>PhD-derived demo verifying health claims against biomedical evidence. Retrieval + claim classification + explanations.</p>
       <span class="featured-link"><i class="fas fa-external-link-alt"></i> Demo</span>
     </a>
-  </div>
-</section>
-
-<!-- ============ LATEST NEWS ============ -->
-<section class="landing-section reveal" id="news">
-  <h2><i class="fas fa-newspaper"></i> Latest News</h2>
-  <div class="landing-news">
-    <div class="landing-news-item">
-      <span class="landing-news-date">Jan 2026</span>
-      <div><strong>Co-Founded Khyontek AI</strong> — Building SME-focused AI products in Guwahati, Assam.</div>
-    </div>
-    <div class="landing-news-item">
-      <span class="landing-news-date">Mar 2026</span>
-      <div><strong>Paper at ACM SAC 2026</strong> — Structured Extraction from Business Process Diagrams Using VLMs.</div>
-    </div>
-    <div class="landing-news-item">
-      <span class="landing-news-date">2026</span>
-      <div><strong>Paper in IEEE Access</strong> — Agentic Prompting for Business Process Diagram Understanding with VLMs.</div>
-    </div>
-    <div class="landing-news-item">
-      <span class="landing-news-date">2026</span>
-      <div><strong>Reviewer for ICML 2026 & NeurIPS 2026</strong></div>
-    </div>
-  </div>
-  <a href="about.html#news" class="landing-more">View all updates <i class="fas fa-arrow-right"></i></a>
-</section>
-
-<!-- ============ MINI ABOUT ============ -->
-<section class="landing-section reveal" id="about">
-  <h2><i class="fas fa-user"></i> About</h2>
-  <div class="mini-about">
-    <img src="profile.jpg" alt="Dr. Pritam Deka" class="mini-about-photo">
-    <div class="mini-about-text">
-      <p>
-        I'm an AI Engineer and Research Fellow at Queen's University Belfast, specialising in practical AI systems
-        across LLMs, RAG, agentic AI, multimodal AI and document intelligence. I turn research ideas into working
-        systems, demos and reusable pipelines. I also co-founded <strong>Khyontek AI</strong>, building SME-focused
-        AI products.
-      </p>
-      <p>
-        PhD in Computer Science from QUB (evidence-based verification of online health information).
-        12+ publications, Best Paper at iiWAS 2021, 50+ models on HuggingFace. Reviewer for ICML & NeurIPS 2026.
-      </p>
-      <a href="about.html" class="landing-btn primary"><i class="fas fa-arrow-right"></i> Full Profile</a>
-    </div>
   </div>
 </section>
 
@@ -276,7 +274,7 @@
   </ul>
 </nav>
 
-<script src="dynamic.js"></script>
+<script src="dynamic.js?v=14"></script>
 <script>
 // Landing page stats — fetch from citations.json + HuggingFace API
 (async function loadLandingStats() {
