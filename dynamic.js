@@ -53,15 +53,16 @@ window.addEventListener('scroll', () => {
 
 // ===== Back to Top Button =====
 const backToTop = document.getElementById('back-to-top');
-const chatFab = document.querySelector('.chat-fab');
 
 window.addEventListener('scroll', () => {
   if (window.scrollY > 500) {
     backToTop.classList.add('visible');
-    if (chatFab) chatFab.classList.add('shifted');
+    const fab = document.querySelector('.chat-fab');
+    if (fab) fab.classList.add('shifted');
   } else {
     backToTop.classList.remove('visible');
-    if (chatFab) chatFab.classList.remove('shifted');
+    const fab = document.querySelector('.chat-fab');
+    if (fab) fab.classList.remove('shifted');
   }
 });
 
