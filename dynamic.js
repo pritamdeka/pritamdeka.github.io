@@ -5,29 +5,79 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-// ===== Theme Toggle =====
-const themeToggle = document.getElementById('theme-toggle');
-const body = document.body;
-
-const savedTheme = localStorage.getItem('theme') || 'light';
-if (savedTheme === 'dark') {
-  body.classList.remove('light-mode');
-  body.classList.add('dark-mode');
-  themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+// ===== Privacy-Safe Analytics =====
+function trackEvent(name, data = {}) {
+  try {
+    if (window.umami && typeof window.umami.track === 'function') {
+      window.umami.track(name, {
+        page: location.pathname.split('/').pop() || 'index.html',
+        ...data,
+      });
+    }
+  } catch (_) {
+    // Analytics must never interrupt the visitor experience.
+  }
 }
 
-themeToggle.addEventListener('click', () => {
-  if (body.classList.contains('light-mode')) {
-    body.classList.remove('light-mode');
-    body.classList.add('dark-mode');
-    themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-    localStorage.setItem('theme', 'dark');
-  } else {
-    body.classList.remove('dark-mode');
-    body.classList.add('light-mode');
-    themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-    localStorage.setItem('theme', 'light');
+function lengthBucket(length) {
+  if (length <= 3) return '2-3';
+  if (length <= 7) return '4-7';
+  if (length <= 15) return '8-15';
+  return '16+';
+}
+
+function latencyBucket(ms) {
+  if (ms < 1000) return '<1s';
+  if (ms < 3000) return '1-3s';
+  if (ms < 7000) return '3-7s';
+  return '7s+';
+}
+
+// ===== Theme Toggle =====
+const themeToggle = document.getElementById('theme-toggle');
+const themeActionButtons = document.querySelectorAll('[data-theme-action]');
+const body = document.body;
+
+function syncThemeUI() {
+  const isDark = body.classList.contains('dark-mode');
+  const actionLabel = isDark ? 'Light mode' : 'Dark mode';
+  const actionIcon = isDark ? 'fa-sun' : 'fa-moon';
+
+  if (themeToggle) {
+    themeToggle.innerHTML = `<i class="fas ${actionIcon}"></i>`;
+    themeToggle.setAttribute('aria-label', `Switch to ${actionLabel.toLowerCase()}`);
+    themeToggle.title = `Switch to ${actionLabel.toLowerCase()}`;
   }
+
+  themeActionButtons.forEach((button) => {
+    button.innerHTML = `<i class="fas ${actionIcon}"></i> ${actionLabel}`;
+    button.setAttribute('aria-label', `Switch to ${actionLabel.toLowerCase()}`);
+  });
+}
+
+function setTheme(theme, source = 'unknown', shouldTrack = true) {
+  const nextTheme = theme === 'dark' ? 'dark' : 'light';
+  body.classList.toggle('dark-mode', nextTheme === 'dark');
+  body.classList.toggle('light-mode', nextTheme === 'light');
+  localStorage.setItem('theme', nextTheme);
+  syncThemeUI();
+  if (shouldTrack) trackEvent('theme_change', { theme: nextTheme, source });
+}
+
+setTheme(localStorage.getItem('theme') || 'light', 'saved', false);
+
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => {
+    setTheme(body.classList.contains('dark-mode') ? 'light' : 'dark', 'desktop');
+  });
+}
+
+themeActionButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    const menuToggle = document.getElementById('appmenu-toggle');
+    if (menuToggle) menuToggle.checked = false;
+    setTheme(body.classList.contains('dark-mode') ? 'light' : 'dark', 'mobile');
+  });
 });
 
 // ===== Mobile Menu Toggle =====
@@ -86,9 +136,14 @@ const searchClose = document.getElementById('search-close');
 const searchResults = document.getElementById('search-results');
 
 if (searchToggle) {
-  searchToggle.addEventListener('click', () => {
+  searchToggle.addEventListener('click', (event) => {
     searchContainer.classList.toggle('active');
-    searchInput.focus();
+    if (searchContainer.classList.contains('active')) {
+      searchInput.focus();
+      trackEvent('search_open', { source: event.isTrusted ? 'desktop' : 'mobile' });
+    } else {
+      trackEvent('search_close', { source: event.isTrusted ? 'desktop' : 'mobile' });
+    }
   });
 }
 
@@ -97,6 +152,7 @@ if (searchClose) {
     searchContainer.classList.remove('active');
     searchResults.classList.remove('active');
     searchInput.value = '';
+    trackEvent('search_close', { source: 'close_button' });
   });
 }
 
@@ -120,6 +176,7 @@ const searchData = [
   { title: 'Education', type: 'Navigation', href: 'education.html' },
 ];
 
+let searchTrackTimer;
 if (searchInput) {
   searchInput.addEventListener('input', (e) => {
     const query = e.target.value.toLowerCase();
@@ -146,10 +203,23 @@ if (searchInput) {
       searchResults.innerHTML = '<div class="search-result-item"><p>No results found</p></div>';
       searchResults.classList.add('active');
     }
+
+    clearTimeout(searchTrackTimer);
+    searchTrackTimer = setTimeout(() => {
+      trackEvent('search_results', {
+        length_bucket: lengthBucket(query.length),
+        result_count: results.length,
+      });
+    }, 350);
   });
 }
 
 function navigateTo(target) {
+  const selectedItem = searchData.find(item => (item.section || item.href) === target);
+  trackEvent('search_result_select', {
+    destination_type: selectedItem ? selectedItem.type : 'unknown',
+    destination_kind: target.endsWith('.html') ? 'page' : 'section',
+  });
   if (target.startsWith('http') || target.endsWith('.html')) {
     window.location.href = target;
   } else {
@@ -528,13 +598,16 @@ if (contactForm) {
         formStatus.textContent = '✅ Message sent successfully!';
         formStatus.className = 'success';
         contactForm.reset();
+        trackEvent('contact_form_submit', { outcome: 'success' });
       } else {
         formStatus.textContent = '❌ Something went wrong. Please email me directly.';
         formStatus.className = 'error';
+        trackEvent('contact_form_submit', { outcome: 'service_error' });
       }
     } catch (error) {
       formStatus.textContent = '❌ Network error. Please email me directly.';
       formStatus.className = 'error';
+      trackEvent('contact_form_submit', { outcome: 'network_error' });
     }
     
     setTimeout(() => { formStatus.style.display = 'none'; }, 5000);
@@ -831,13 +904,32 @@ if (networkContainer) {
   function isIndex() { return /index\.html$|\/$/.test(location.pathname); }
 
   function buildCommands() {
+    const isDark = body.classList.contains('dark-mode');
     const c = [
       { group: 'Navigate', icon: 'fa-user', label: 'About', hint: 'index.html', run: () => go('index.html') },
       { group: 'Navigate', icon: 'fa-graduation-cap', label: 'Education', hint: 'education.html', run: () => go('education.html') },
       { group: 'Navigate', icon: 'fa-file-alt', label: 'Papers', hint: 'papers.html', run: () => go('papers.html') },
       { group: 'Navigate', icon: 'fa-trophy', label: 'Activities', hint: 'activities.html', run: () => go('activities.html') },
-      { group: 'Navigate', icon: 'fa-download', label: 'Download CV', hint: 'PDF', run: () => go('cv/Pritam_Deka_CV.pdf') },
-      { group: 'Action', icon: 'fa-moon', label: 'Toggle dark / light mode', hint: 'theme', run: () => { themeToggle.click(); closePalette(); } },
+      {
+        group: 'Navigate',
+        icon: 'fa-download',
+        label: 'Download CV',
+        hint: 'PDF',
+        run: () => {
+          trackEvent('cv_download', { source: 'command_palette' });
+          go('cv/Pritam_Deka_CV.pdf');
+        }
+      },
+      {
+        group: 'Action',
+        icon: isDark ? 'fa-sun' : 'fa-moon',
+        label: isDark ? 'Switch to light mode' : 'Switch to dark mode',
+        hint: 'theme',
+        run: () => {
+          setTheme(isDark ? 'light' : 'dark', 'command_palette');
+          closePalette();
+        }
+      },
     ];
     if (isIndex()) {
       c.push(
@@ -885,9 +977,17 @@ if (networkContainer) {
       const item = document.createElement('div');
       item.className = 'cmd-item' + (i === selected ? ' selected' : '');
       item.innerHTML = `<i class="fas ${cmd.icon}"></i><span>${cmd.label}</span>${cmd.hint ? '<span class="cmd-hint">' + cmd.hint + '</span>' : ''}`;
-      item.addEventListener('click', () => { cmd.run(); });
+      item.addEventListener('click', () => { runCommand(cmd); });
       results.appendChild(item);
     });
+  }
+
+  function runCommand(command) {
+    trackEvent('command_action', {
+      group: command.group.toLowerCase().replace(/\s+/g, '_'),
+      action: command.label.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, ''),
+    });
+    command.run();
   }
 
   function filter(q) {
@@ -901,6 +1001,7 @@ if (networkContainer) {
     input.value = '';
     render(filter(''));
     setTimeout(() => input.focus(), 30);
+    trackEvent('command_palette_open');
   }
 
   function closePalette() {
@@ -928,7 +1029,7 @@ if (networkContainer) {
     } else if (e.key === 'Enter') {
       e.preventDefault();
       const f = filter(input.value);
-      if (f[selected]) f[selected].run();
+      if (f[selected]) runCommand(f[selected]);
     }
   });
 
@@ -1084,13 +1185,15 @@ function fetchWithTimeout(url, ms, options) {
   const closeBtn = panel.querySelector('.chat-close');
   let history = [];
 
-  function toggle() {
+  function toggle(source = 'button') {
     panel.classList.toggle('active');
     fab.classList.toggle('hidden');
-    if (panel.classList.contains('active')) input.focus();
+    const isOpen = panel.classList.contains('active');
+    if (isOpen) input.focus();
+    trackEvent(isOpen ? 'chat_open' : 'chat_close', { source });
   }
-  fab.addEventListener('click', toggle);
-  closeBtn.addEventListener('click', toggle);
+  fab.addEventListener('click', () => toggle('floating_button'));
+  closeBtn.addEventListener('click', () => toggle('close_button'));
 
   function addMsg(text, type) {
     const div = document.createElement('div');
@@ -1114,18 +1217,24 @@ function fetchWithTimeout(url, ms, options) {
     if (t) t.remove();
   }
 
-  async function send(msg) {
+  async function send(msg, source = 'typed') {
     if (!msg.trim()) return;
     addMsg(msg, 'user');
     input.value = '';
     history.push({ role: 'user', text: msg });
+    trackEvent('chat_question', {
+      source,
+      length_bucket: lengthBucket(msg.trim().length),
+    });
 
     if (!CHAT_WORKER_URL) {
       addMsg("I'm not connected to the AI service yet. Please email p.deka@qub.ac.uk or check back after the chat proxy is deployed.", 'error');
+      trackEvent('chat_response', { outcome: 'not_configured', latency_bucket: '<1s' });
       return;
     }
 
     addTyping();
+    const startedAt = Date.now();
     try {
       const res = await fetchWithTimeout(
         CHAT_WORKER_URL,
@@ -1141,20 +1250,74 @@ function fetchWithTimeout(url, ms, options) {
       if (data.reply) {
         addMsg(data.reply, 'bot');
         history.push({ role: 'bot', text: data.reply });
+        trackEvent('chat_response', {
+          outcome: 'success',
+          latency_bucket: latencyBucket(Date.now() - startedAt),
+        });
       } else if (data.error) {
         addMsg(data.error, 'error');
+        trackEvent('chat_response', {
+          outcome: 'service_error',
+          latency_bucket: latencyBucket(Date.now() - startedAt),
+        });
       } else {
         addMsg("Sorry, I couldn't generate a response. Please try again.", 'error');
+        trackEvent('chat_response', {
+          outcome: 'empty_response',
+          latency_bucket: latencyBucket(Date.now() - startedAt),
+        });
       }
     } catch (err) {
       removeTyping();
       addMsg("Connection error. Please email p.deka@qub.ac.uk directly.", 'error');
+      trackEvent('chat_response', {
+        outcome: 'network_error',
+        latency_bucket: latencyBucket(Date.now() - startedAt),
+      });
     }
   }
 
-  sendBtn.addEventListener('click', () => send(input.value));
-  input.addEventListener('keydown', (e) => { if (e.key === 'Enter') send(input.value); });
+  sendBtn.addEventListener('click', () => send(input.value, 'typed'));
+  input.addEventListener('keydown', (e) => { if (e.key === 'Enter') send(input.value, 'typed'); });
   document.querySelectorAll('.chat-quick').forEach(btn => {
-    btn.addEventListener('click', () => send(btn.dataset.q));
+    btn.addEventListener('click', () => {
+      trackEvent('chat_quick_reply', {
+        category: btn.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g, '_'),
+      });
+      send(btn.dataset.q, 'quick_reply');
+    });
   });
 })();
+
+// ===== Conversion and Content-Link Analytics =====
+document.addEventListener('click', (event) => {
+  const link = event.target.closest('a[href]');
+  if (!link) return;
+
+  const href = link.getAttribute('href') || '';
+  const heading = link.querySelector('h3, h4') || link.closest('.project-card, .paper-item')?.querySelector('h3, h4, .paper-title');
+  const labelText = heading ? heading.textContent : link.textContent;
+  const label = labelText.trim().toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+
+  if (/Pritam_Deka_CV\.pdf/i.test(href)) {
+    trackEvent('cv_download', { source: link.closest('.appmenu') ? 'mobile_menu' : 'page' });
+    return;
+  }
+
+  if (link.matches('.paper-link')) {
+    trackEvent('content_link_open', { content_type: 'publication', label });
+    return;
+  }
+
+  if (link.matches('.project-link, .project-card, .featured-card')) {
+    trackEvent('content_link_open', { content_type: 'project', label });
+    return;
+  }
+
+  if (link.matches('.landing-btn, .hero-btn, .cta-button, .cv-download-btn') || href.startsWith('mailto:')) {
+    trackEvent('primary_cta', {
+      action: href.startsWith('mailto:') ? 'email' : label,
+      destination: href.startsWith('http') ? 'external' : 'internal',
+    });
+  }
+});
