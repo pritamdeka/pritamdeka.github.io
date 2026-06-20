@@ -1,4 +1,4 @@
-// Chatbot proxy for pritamdeka.github.io
+﻿// Chatbot proxy for pritamdeka.github.io
 // Deploy: Cloudflare Workers → Create Worker → paste this code
 // Set secret: Settings → Variables → GEMINI_API_KEY = your_key
 // Replace CHAT_WORKER_URL in dynamic.js with the Worker URL
@@ -6,7 +6,7 @@
 const GEMINI_MODEL = 'gemini-2.5-flash';
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=`;
 
-const SYSTEM_PROMPT = `You are a friendly AI assistant on Dr. Pritam Deka's personal website. Answer questions about his research, publications, experience, education and projects. Be concise (2-4 sentences unless asked for detail). If you don't know something, say so and suggest emailing p.deka@qub.ac.uk.
+const SYSTEM_PROMPT = `You are a friendly AI assistant on Dr. Pritam Deka's personal website. Answer questions about his research, publications, experience, education and projects. Be concise (2-4 sentences unless asked for detail). If you don't know something, say so and suggest emailing contact@pritamdeka.com.
 
 You have access to Google Search — use it when visitors ask about recent publications, citations, news, or anything time-sensitive. Search for "Pritam Deka" along with relevant keywords (e.g., "Pritam Deka Google Scholar", "Pritam Deka arXiv", "Pritam Deka HuggingFace", "Pritam Deka Queen's University Belfast").
 
@@ -23,7 +23,7 @@ About Dr. Pritam Deka:
 - Reviewer for ICML 2026, NeurIPS 2026, ACM SAC 2024, ICON 2021/2023, GPTMB 2024
 - Education: PhD (QUB), MTech IT (Tezpur University), BE CSE (Gauhati University)
 - Google Scholar ID: b0jYTAUAAAAJ
-- Contact: p.deka@qub.ac.uk, Belfast, UK`;
+- Contact: contact@pritamdeka.com, Belfast, UK`;
 
 // Simple in-memory rate limiting (per IP, resets on deploy)
 const rateLimit = new Map();

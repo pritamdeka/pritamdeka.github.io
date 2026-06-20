@@ -1,4 +1,4 @@
-// Force-unregister any old service workers from the cache-first era
+﻿// Force-unregister any old service workers from the cache-first era
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.getRegistrations().then(function(regs) {
     regs.forEach(function(r) { r.unregister(); });
@@ -1231,7 +1231,7 @@ function fetchWithTimeout(url, ms, options) {
     });
 
     if (!CHAT_WORKER_URL) {
-      addMsg("I'm not connected to the AI service yet. Please email p.deka@qub.ac.uk or check back after the chat proxy is deployed.", 'error');
+      addMsg("I'm not connected to the AI service yet. Please email contact@pritamdeka.com or check back after the chat proxy is deployed.", 'error');
       trackEvent('chat_response', { outcome: 'not_configured', latency_bucket: '<1s' });
       return;
     }
@@ -1272,7 +1272,7 @@ function fetchWithTimeout(url, ms, options) {
       }
     } catch (err) {
       removeTyping();
-      addMsg("Connection error. Please email p.deka@qub.ac.uk directly.", 'error');
+      addMsg("Connection error. Please email contact@pritamdeka.com directly.", 'error');
       trackEvent('chat_response', {
         outcome: 'network_error',
         latency_bucket: latencyBucket(Date.now() - startedAt),
