@@ -61,6 +61,10 @@
 
 /* ===== Dark Mode Safety-Net Overrides (outside media query) ===== */
 /* These ensure dark mode colors are correct regardless of media query evaluation */
+.dark-mode nav#main-nav {
+  background: rgba(22, 24, 48, 0.9);
+}
+
 .dark-mode .appmenu { background: #161830; }
 .dark-mode .appmenu-link { color: #e8eaf6; }
 .dark-mode .appmenu-link i { color: #7b8eff; }
@@ -3101,14 +3105,21 @@ nav a.spy-active::after {
     display: flex;
     align-items: center;
     gap: 1rem;
+    width: 100%;
     padding: 1.1rem 1rem;
+    background: transparent;
     color: var(--text-primary);
     text-decoration: none;
+    text-align: left;
     font-size: 1.05rem;
     font-weight: 600;
+    font-family: var(--font-body);
     border-radius: 12px;
     margin-bottom: 0.3rem;
     border: 1px solid transparent;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
     -webkit-tap-highlight-color: rgba(91,110,245,0.12);
     transition: background 0.15s ease;
   }
@@ -3119,8 +3130,8 @@ nav a.spy-active::after {
 
   .appmenu-link.active {
     background: var(--accent-soft);
-    border-color: var(--accent);
-    color: var(--accent);
+    border-color: var(--accent-hover);
+    color: var(--accent-hover);
   }
 
   .appmenu-link i {
@@ -3130,7 +3141,7 @@ nav a.spy-active::after {
     text-align: center;
   }
 
-  .appmenu-link.active i { color: var(--accent); }
+  .appmenu-link.active i { color: var(--accent-hover); }
 
   .appmenu-divider {
     height: 1px;
@@ -3143,7 +3154,7 @@ nav a.spy-active::after {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: var(--text-muted);
+    color: #62678f;
     padding: 0.8rem 1.2rem 0.3rem;
   }
 
@@ -3198,7 +3209,7 @@ nav a.spy-active::after {
     background: #2a2d4d !important;
   }
   .dark-mode .appmenu-section {
-    color: #6b7099 !important;
+    color: #9aa0c7 !important;
   }
 
   .dark-mode .search-container {
@@ -3510,10 +3521,10 @@ nav a.spy-active::after {
 
 /* When back-to-top is visible (scrolled down), move chat FAB above it */
 body:has(.back-to-top.visible) .chat-fab {
-  bottom: 90px;
+  bottom: 156px;
 }
 .chat-fab.shifted {
-  bottom: 90px;
+  bottom: 156px;
 }
 
 .chat-fab:hover {
@@ -3761,10 +3772,10 @@ body:has(.back-to-top.visible) .chat-fab {
   }
   /* On mobile, move chat FAB above back-to-top when scrolled */
   body:has(.back-to-top.visible) .chat-fab {
-    bottom: 80px;
+    bottom: 141px;
   }
   .chat-fab.shifted {
-    bottom: 80px;
+    bottom: 141px;
   }
 }
 

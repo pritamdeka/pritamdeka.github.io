@@ -52,9 +52,10 @@ if (mobileMenuBtn && mainNav) {
 const scrollProgress = document.getElementById('scroll-progress');
 
 window.addEventListener('scroll', () => {
+  if (!scrollProgress) return;
   const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
   const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-  const scrollPercentage = (scrollTop / scrollHeight) * 100;
+  const scrollPercentage = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
   scrollProgress.style.width = scrollPercentage + '%';
 });
 

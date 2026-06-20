@@ -17,7 +17,7 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="apple-touch-icon" href="favicon.svg">
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style-dynamic.css?v=14">
+  <link rel="stylesheet" href="style-dynamic.css?v=15">
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
   <!-- Umami Analytics -->
   <script defer src="https://cloud.umami.is/script.js" data-website-id="64321948-50ef-4c25-a960-5e7bdd9b838a"></script>
@@ -166,7 +166,7 @@
 </nav>
 
 
-  <script src="dynamic.js?v=14"></script>
+  <script src="dynamic.js?v=15"></script>
   <script>
   // ===== Blog page renderer =====
   (async function renderBlog() {
@@ -218,9 +218,19 @@
         '<div class="blog-share">' +
           '<a class="blog-share-btn" target="_blank" href="https://twitter.com/intent/tweet?text=' + encodeURIComponent(md.split('\n')[0].replace('#','').trim()) + '&url=' + encodeURIComponent(postUrl) + '"><i class="fab fa-x-twitter"></i> Share on X</a>' +
           '<a class="blog-share-btn" target="_blank" href="https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(postUrl) + '"><i class="fab fa-linkedin"></i> LinkedIn</a>' +
-          '<button class="blog-share-btn" onclick="navigator.clipboard.writeText(\'' + postUrl + '\');this.innerHTML=\'<i class=\\'fas fa-check\\'></i> Copied!\';setTimeout(()=>{this.innerHTML=\'<i class=\\'fas fa-link\\'></i> Copy link\'},2000)"><i class="fas fa-link"></i> Copy link</button>' +
+          '<button class="blog-share-btn" id="copy-blog-link"><i class="fas fa-link"></i> Copy link</button>' +
         '</div>' +
         '<div class="giscus" id="giscus-container"></div>';
+      const copyButton = document.getElementById('copy-blog-link');
+      if (copyButton) {
+        copyButton.addEventListener('click', async () => {
+          await navigator.clipboard.writeText(postUrl);
+          copyButton.innerHTML = '<i class="fas fa-check"></i> Copied!';
+          setTimeout(() => {
+            copyButton.innerHTML = '<i class="fas fa-link"></i> Copy link';
+          }, 2000);
+        });
+      }
       latestEl.scrollIntoView({ behavior: 'smooth' });
       // Load giscus comments
       loadGiscus();
