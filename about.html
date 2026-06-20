@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
   <!-- Vis.js for Network Graph -->
   <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
-  <link rel="stylesheet" href="style-dynamic.css?v=16">
+  <link rel="stylesheet" href="style-dynamic.css?v=17">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="apple-touch-icon" href="favicon.svg">
   <link rel="alternate" type="application/atom+xml" title="Pritam Deka — News" href="feed.xml">
@@ -570,7 +570,10 @@
 
   <a href="index.html" class="appbar-brand">Dr. Pritam Deka</a>
 
-  <label class="appbar-btn" for="appmenu-toggle"><i class="fas fa-bars"></i> Menu</label>
+  <div class="appbar-actions">
+    <button class="appbar-theme-toggle" data-theme-action aria-label="Switch to dark mode"><i class="fas fa-moon"></i></button>
+    <label class="appbar-btn" for="appmenu-toggle"><i class="fas fa-bars"></i> Menu</label>
+  </div>
 
 </header>
 
@@ -622,7 +625,6 @@
 
     <li><button class="appmenu-link" onclick="document.getElementById('appmenu-toggle').checked=false;document.getElementById('search-toggle').click()"><i class="fas fa-search"></i> Search</button></li>
 
-    <li><button class="appmenu-link" data-theme-action><i class="fas fa-moon"></i> Dark mode</button></li>
 
     <li><a href="cv/Pritam_Deka_CV.pdf" class="appmenu-link"><i class="fas fa-download"></i> Download CV</a></li>
 
@@ -633,6 +635,6 @@
 </nav>
 
 
-  <script src="dynamic.js?v=16"></script>
+  <script src="dynamic.js?v=17"></script>
 </body>
 </html>

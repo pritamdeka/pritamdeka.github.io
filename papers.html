@@ -17,7 +17,7 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="apple-touch-icon" href="favicon.svg">
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style-dynamic.css?v=16">
+  <link rel="stylesheet" href="style-dynamic.css?v=17">
   <!-- Umami Analytics -->
   <script defer src="https://cloud.umami.is/script.js" data-website-id="64321948-50ef-4c25-a960-5e7bdd9b838a"></script>
 </head>
@@ -193,7 +193,10 @@
 
   <a href="index.html" class="appbar-brand">Dr. Pritam Deka</a>
 
-  <label class="appbar-btn" for="appmenu-toggle"><i class="fas fa-bars"></i> Menu</label>
+  <div class="appbar-actions">
+    <button class="appbar-theme-toggle" data-theme-action aria-label="Switch to dark mode"><i class="fas fa-moon"></i></button>
+    <label class="appbar-btn" for="appmenu-toggle"><i class="fas fa-bars"></i> Menu</label>
+  </div>
 
 </header>
 
@@ -235,7 +238,6 @@
 
     <li><button class="appmenu-link" onclick="document.getElementById('appmenu-toggle').checked=false;document.getElementById('search-toggle').click()"><i class="fas fa-search"></i> Search</button></li>
 
-    <li><button class="appmenu-link" data-theme-action><i class="fas fa-moon"></i> Dark mode</button></li>
 
     <li><a href="cv/Pritam_Deka_CV.pdf" class="appmenu-link"><i class="fas fa-download"></i> Download CV</a></li>
 
@@ -246,7 +248,7 @@
 </nav>
 
 
-  <script src="dynamic.js?v=16"></script>
+  <script src="dynamic.js?v=17"></script>
   <script>
     // Paper filter functionality
 	function setupPaperFilters() {

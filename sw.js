@@ -1,5 +1,5 @@
 // Service Worker — network-first for ALL resources (always fresh, offline fallback)
-const CACHE = 'pd-site-v16';
+const CACHE = 'pd-site-v17';
 
 self.addEventListener('install', (e) => {
   self.skipWaiting();

@@ -50,8 +50,11 @@ function syncThemeUI() {
   }
 
   themeActionButtons.forEach((button) => {
-    button.innerHTML = `<i class="fas ${actionIcon}"></i> ${actionLabel}`;
+    button.innerHTML = button.classList.contains('appbar-theme-toggle')
+      ? `<i class="fas ${actionIcon}"></i>`
+      : `<i class="fas ${actionIcon}"></i> ${actionLabel}`;
     button.setAttribute('aria-label', `Switch to ${actionLabel.toLowerCase()}`);
+    button.title = `Switch to ${actionLabel.toLowerCase()}`;
   });
 }
 

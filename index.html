@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style-dynamic.css?v=16">
+<link rel="stylesheet" href="style-dynamic.css?v=17">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="apple-touch-icon" href="favicon.svg">
   <link rel="alternate" type="application/atom+xml" title="Pritam Deka — News" href="feed.xml">
@@ -281,7 +281,10 @@
 <input type="checkbox" id="appmenu-toggle" class="appmenu-toggle" aria-hidden="true">
 <header class="appbar">
   <a href="index.html" class="appbar-brand">Dr. Pritam Deka</a>
-  <label class="appbar-btn" for="appmenu-toggle"><i class="fas fa-bars"></i> Menu</label>
+  <div class="appbar-actions">
+    <button class="appbar-theme-toggle" data-theme-action aria-label="Switch to dark mode"><i class="fas fa-moon"></i></button>
+    <label class="appbar-btn" for="appmenu-toggle"><i class="fas fa-bars"></i> Menu</label>
+  </div>
 </header>
 <nav class="appmenu">
   <div class="appmenu-header">
@@ -305,13 +308,12 @@
     <li><a href="#news" class="appmenu-link" onclick="document.getElementById('appmenu-toggle').checked=false"><i class="fas fa-newspaper"></i> News</a></li>
     <li><a href="#contact" class="appmenu-link" onclick="document.getElementById('appmenu-toggle').checked=false"><i class="fas fa-paper-plane"></i> Contact</a></li>
     <li><button class="appmenu-link" onclick="document.getElementById('appmenu-toggle').checked=false;document.getElementById('search-toggle').click()"><i class="fas fa-search"></i> Search</button></li>
-    <li><button class="appmenu-link" data-theme-action><i class="fas fa-moon"></i> Dark mode</button></li>
     <li><a href="cv/Pritam_Deka_CV.pdf" class="appmenu-link"><i class="fas fa-download"></i> Download CV</a></li>
     <li><a href="feed.xml" class="appmenu-link"><i class="fas fa-rss"></i> RSS Feed</a></li>
   </ul>
 </nav>
 
-<script src="dynamic.js?v=16"></script>
+<script src="dynamic.js?v=17"></script>
 <script>
 // Landing page stats — fetch from citations.json + HuggingFace API
 (async function loadLandingStats() {

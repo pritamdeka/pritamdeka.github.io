@@ -3011,6 +3011,13 @@ nav a.spy-active::after {
     box-shadow: 0 2px 12px rgba(0,0,0,0.15);
   }
 
+  .appbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
   .appbar-brand {
     font-family: var(--font-display);
     font-size: 1.05rem;
@@ -3038,6 +3045,53 @@ nav a.spy-active::after {
   }
 
   .appbar-btn i { font-size: 1rem; }
+
+  .appbar-theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    flex-shrink: 0;
+    font-family: var(--font-body);
+    -webkit-tap-highlight-color: rgba(255,255,255,0.2);
+    transition: background var(--dur) var(--ease), transform var(--dur) var(--ease);
+  }
+
+  .appbar-theme-toggle:hover,
+  .appbar-theme-toggle:focus-visible {
+    background: rgba(255,255,255,0.28);
+  }
+
+  .appbar-theme-toggle:active {
+    transform: scale(0.94);
+  }
+
+  @media (max-width: 360px) {
+    .appbar {
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+    }
+
+    .appbar-brand {
+      font-size: 0.95rem;
+    }
+
+    .appbar-actions {
+      gap: 0.35rem;
+    }
+
+    .appbar-btn {
+      padding: 0.5rem 0.7rem;
+    }
+  }
 
   /* Full-screen overlay menu */
   .appmenu {
