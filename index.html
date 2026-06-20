@@ -4,27 +4,27 @@
   <meta charset="UTF-8">
   <title>Dr. Pritam Deka | AI Engineer & NLP Researcher</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="AI Engineer & AI Research Fellow at Queen's University Belfast. Specializing in LLMs, VLMs, agentic AI and document intelligence.">
+  <meta name="description" content="AI Engineer & Research Fellow at Queen's University Belfast. LLMs, VLMs, agentic AI, document intelligence. Co-founder of Khyontek AI.">
   <meta property="og:type" content="profile">
   <meta property="og:title" content="Dr. Pritam Deka | AI Engineer & NLP Researcher">
-  <meta property="og:description" content="AI Engineer & AI Research Fellow at Queen's University Belfast. LLMs, VLMs, agentic AI and document intelligence.">
+  <meta property="og:description" content="AI Engineer & Research Fellow at Queen's University Belfast. LLMs, VLMs, agentic AI, document intelligence.">
   <meta property="og:image" content="https://pritamdeka.github.io/profile.jpg">
   <meta property="og:url" content="https://pritamdeka.github.io/">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Dr. Pritam Deka | AI Engineer & NLP Researcher">
-  <meta name="twitter:description" content="AI Engineer & AI Research Fellow at Queen's University Belfast. LLMs, VLMs, agentic AI and document intelligence.">
+  <meta name="twitter:description" content="AI Engineer & Research Fellow at Queen's University Belfast. LLMs, VLMs, agentic AI, document intelligence.">
   <meta name="twitter:image" content="https://pritamdeka.github.io/profile.jpg">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
-  <!-- Vis.js for Network Graph -->
-  <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
   <link rel="stylesheet" href="style-dynamic.css">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="apple-touch-icon" href="favicon.svg">
   <link rel="alternate" type="application/atom+xml" title="Pritam Deka — News" href="feed.xml">
   <link rel="manifest" href="manifest.json">
+  <!-- Umami Analytics -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="64321948-50ef-4c25-a960-5e7bdd9b838a"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -34,21 +34,13 @@
     "url": "https://pritamdeka.github.io/",
     "image": "https://pritamdeka.github.io/profile.jpg",
     "email": "mailto:p.deka@qub.ac.uk",
-    "worksFor": {
-      "@type": "CollegeOrUniversity",
-      "name": "Queen's University Belfast"
-    },
+    "worksFor": { "@type": "CollegeOrUniversity", "name": "Queen's University Belfast" },
     "alumniOf": [
       { "@type": "CollegeOrUniversity", "name": "Queen's University Belfast" },
       { "@type": "CollegeOrUniversity", "name": "Tezpur University" },
       { "@type": "CollegeOrUniversity", "name": "Gauhati University" }
     ],
-    "knowsAbout": [
-      "Natural Language Processing", "Large Language Models", "Vision-Language Models",
-      "Agentic AI", "Document Intelligence", "Information Extraction",
-      "Fact-Checking", "RAG", "Multimodal AI", "Named Entity Recognition",
-      "Process Mining", "Cybersecurity AI", "Health AI"
-    ],
+    "knowsAbout": ["NLP", "LLMs", "VLMs", "Agentic AI", "Document Intelligence", "RAG", "Fact-Checking"],
     "sameAs": [
       "https://github.com/pritamdeka",
       "https://scholar.google.com/citations?user=b0jYTAUAAAAJ",
@@ -57,580 +49,273 @@
     ]
   }
   </script>
-  
-  <!-- Umami Analytics -->
-  <script defer src="https://cloud.umami.is/script.js" data-website-id="64321948-50ef-4c25-a960-5e7bdd9b838a"></script>
 </head>
 <body class="light-mode">
-  <!-- Scroll Progress Bar -->
-  <div class="scroll-progress" id="scroll-progress"></div>
-  
-  <!-- Search Bar -->
-  <div class="search-container" id="search-container">
-    <div class="search-box">
-      <input type="text" id="search-input" placeholder="Search papers, skills, experience..." aria-label="Search">
-      <button id="search-close" class="search-close"><i class="fas fa-times"></i></button>
-    </div>
-    <div class="search-results" id="search-results"></div>
-  </div>
 
-  <!-- Mobile Menu Toggle -->
-  <button class="mobile-menu-toggle" id="mobile-menu-btn">
-    <i class="fas fa-bars"></i>
+<!-- Search Bar -->
+<div class="search-container" id="search-container">
+  <div class="search-box">
+    <input type="text" id="search-input" placeholder="Search papers, skills, experience..." aria-label="Search">
+    <button id="search-close" class="search-close"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="search-results" id="search-results"></div>
+</div>
+
+<!-- Mobile Menu Toggle -->
+<button class="mobile-menu-toggle" id="mobile-menu-btn">
+  <i class="fas fa-bars"></i>
+</button>
+
+<!-- Desktop Nav -->
+<nav id="main-nav">
+  <a href="index.html" class="active">Home</a>
+  <a href="about.html">About</a>
+  <a href="education.html">Education</a>
+  <a href="papers.html">Papers</a>
+  <a href="activities.html">Activities</a>
+  <a href="blog.html">Blog</a>
+  <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+    <i class="fas fa-moon"></i>
   </button>
-
-  <nav id="main-nav">
-    <a href="index.html" class="active">About</a>
-    <a href="education.html">Education</a>
-    <a href="papers.html">Papers</a>
-    <a href="activities.html">Activities</a>
-    <a href="blog.html">Blog</a>
-    <a href="#news">News</a>
-    <a href="#contact">Contact</a>
-    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
-      <i class="fas fa-moon"></i>
-    </button>
-    <button id="search-toggle" class="search-toggle" aria-label="Search">
-      <i class="fas fa-search"></i>
-    </button>
-  </nav>
-  
-  <!-- Hero -->
-  <header class="hero">
-    <div class="hero-inner">
-      <span class="hero-eyebrow">AI Engineer · Co-founder, Khyontek AI</span>
-      <h1 class="hero-name">Dr. Pritam Deka</h1>
-      <div class="hero-roles"><span class="ty-text" id="hero-ty"></span></div>
-      <div class="hero-cta">
-        <a href="papers.html" class="primary"><i class="fas fa-file-alt"></i> View Publications</a>
-        <a href="cv/Pritam_Deka_CV.pdf" download class="ghost"><i class="fas fa-download"></i> Download CV</a>
-        <a href="#contact" class="ghost"><i class="fas fa-paper-plane"></i> Get in Touch</a>
-      </div>
-    </div>
-  </header>
-
-  <!-- Currently -->
-  <div class="currently-strip">
-    <div class="currently-card">
-      <span class="currently-label"><span class="pulse-dot"></span> Now</span>
-      <div class="currently-items">
-        <span><i class="fas fa-rocket"></i> Co-founding Khyontek AI (Guwahati)</span>
-        <span><i class="fas fa-microchip"></i> ARC research: agentic process extraction with VLMs</span>
-        <span><i class="fas fa-file-contract"></i> 2 new papers at ACM SAC 2026 &amp; IEEE Access</span>
-      </div>
-    </div>
-  </div>
-  
-  <div class="container main-flex">
-    <aside class="sidebar">
-		<div class="sidebar-content">
-		  <img src="profile.jpg" alt="Pritam Deka" class="profile-pic-tiny">
-		  <div>
-			<div class="sidebar-name">Dr. Pritam Deka</div>
-		  <div class="sidebar-title typing-text">
-		  <span class="typing-line">AI Engineer</span>
-		  <span class="typing-line">Research Fellow, Queen's University Belfast</span>
-		</div>
-			
-			<!-- Quick Stats -->
-			<div class="quick-stats">
-			  <div class="stat-item">
-				<span class="stat-number" id="paper-count">10+</span>
-				<span class="stat-label">Publications</span>
-			  </div>
-			  <div class="stat-item">
-				<span class="stat-number skeleton" id="citation-count">Loading...</span>
-				<span class="stat-label">Citations</span>
-			  </div>
-			</div>
-
-			<!-- Citation Growth Sparkline -->
-			<div class="citation-spark" id="citation-spark" hidden>
-			  <svg id="spark-svg" viewBox="0 0 120 32" preserveAspectRatio="none" aria-label="Citation growth trend"></svg>
-			  <span class="spark-label">Citation growth</span>
-			</div>
-			
-			<!-- Email Copy Button -->
-			<div class="email-copy-wrapper">
-			  <div class="email-address" id="email-text">p.deka@qub.ac.uk</div>
-			  <button class="copy-email-btn" id="copy-email-btn" title="Copy email">
-				<i class="fas fa-copy"></i>
-			  </button>
-			  <div class="copy-toast" id="copy-toast">Copied!</div>
-			</div>
-			
-			<!-- CV Download -->
-			<a href="cv/Pritam_Deka_CV.pdf" download class="cv-download-btn" id="cv-download">
-			  <i class="fas fa-download"></i> Download CV
-			  <span class="download-count skeleton" id="download-count">Loading...</span>
-			</a>
-			
-			
-			<!-- HuggingFace Stats -->
-			<div class="hf-stats" id="hf-stats">
-			  <div class="hf-stat-item">
-				<i class="fas fa-download"></i>
-				<span id="hf-downloads" class="skeleton">Loading...</span>
-				<span class="hf-stat-label">Huggingface Model Downloads</span>
-			  </div>
-			  <div class="hf-stat-item">
-				<i class="fas fa-box"></i>
-				<span id="hf-models" class="skeleton">Loading...</span>
-				<span class="hf-stat-label">Huggingface Models</span>
-			  </div>
-			</div>
-			
-			
-			
-			
-			<div class="sidebar-contact">
-			  <div><i class="fas fa-map-marker-alt"></i> Belfast, UK</div>
-			  <div><i class="fas fa-envelope"></i> <a href="mailto:p.deka@qub.ac.uk">p.deka@qub.ac.uk</a></div>
-			  <div><i class="fas fa-envelope"></i> <a href="mailto:pritam26491@gmail.com">pritam26491@gmail.com</a></div>
-			  <div><i class="fab fa-github"></i> <a href="https://github.com/pritamdeka" target="_blank">GitHub</a></div>
-			  <div><span class="huggingface-emoji">🤗</span> <a href="https://huggingface.co/pritamdeka" target="_blank">HuggingFace</a></div>
-			  <div><i class="fab fa-linkedin"></i> <a href="https://www.linkedin.com/in/pritam-deka-phd-9158251b8/" target="_blank">LinkedIn</a></div>
-			  <div><i class="fab fa-google"></i> <a href="https://scholar.google.com/citations?user=b0jYTAUAAAAJ&hl=en" target="_blank">Google Scholar</a></div>
-			</div>
-		</div>
-      </div>
-    </aside>
-    
-    <main>
-	
-	  <section class="fade-in" id="about">
-        <h2><i class="fas fa-user"></i> About</h2>
-        <p>
-          I am an AI Engineer and AI Research Fellow specialising in practical AI systems across LLMs, RAG, agentic AI, multimodal AI and document intelligence. My research focuses on fact verification of health information, information extraction using large language and vision-language models, and AI for document and process understanding. I thrive on turning research ideas into working systems, demos and reusable pipelines, and on contributing to the open-source community. I also co-founded Khyontek AI, building SME-focused AI products.
-        </p>
-      </section>
-	
-	
-      <!-- Research Interests Cloud -->
-      <section class="fade-in" id="interests">
-        <h2><i class="fas fa-lightbulb"></i> Research Interests</h2>
-        <div class="interests-cloud">
-          <span class="interest-tag" data-weight="10">Natural Language Processing</span>
-          <span class="interest-tag" data-weight="9">Large Language Models</span>
-          <span class="interest-tag" data-weight="9">Vision-Language Models</span>
-          <span class="interest-tag" data-weight="8">Information Extraction</span>
-          <!-- <span class="interest-tag" data-weight="8">AI for Cybersecurity</span> -->
-          <span class="interest-tag" data-weight="7">Health Information Fact-Checking</span>
-          <span class="interest-tag" data-weight="7">Named Entity Recognition</span>
-          <span class="interest-tag" data-weight="6">Transformer Models</span>
-          <span class="interest-tag" data-weight="6">Prompt Engineering</span>
-          <span class="interest-tag" data-weight="5">Multimodal AI</span>
-          <span class="interest-tag" data-weight="5">Health Informatics</span>
-          <span class="interest-tag" data-weight="4">Code-Mixed NLP</span>
-          <span class="interest-tag" data-weight="4">AI for Business Process Mining</span>
-          <span class="interest-tag" data-weight="3">Language Endangerment</span>
-        </div>
-      </section>
-	  
-	  
-	  <!-- Research Topic Network -->
-		<section class="fade-in" id="research-network-section">
-		 <h2><i class="fas fa-project-diagram"></i> Research Topics Network</h2>
- 		 <p style="color: var(--text-muted); margin-bottom: 1rem;">
-		  Interactive map showing connections between my research areas and collaborators. Hover over nodes to explore, drag to rearrange.
- 		 </p>
- 		 <div id="research-network"></div>
- 		 <div class="network-legend">
- 		  <div class="legend-item">
- 		   <span class="legend-dot" style="background: #2d72d9;"></span>
- 		   <span>Core Research</span>
- 		  </div>
- 		  <div class="legend-item">
- 		   <span class="legend-dot" style="background: #10b981;"></span>
- 		   <span>Applications</span>
- 		  </div>
- 		  <div class="legend-item">
- 		   <span class="legend-dot" style="background: #f59e0b;"></span>
- 		   <span>Methods</span>
- 		  </div>
- 		  <div class="legend-item">
- 		   <span class="legend-dot" style="background: #8b5cf6;"></span>
- 		   <span>Domains</span>
- 		  </div>
- 		  <div class="legend-item">
- 		   <span class="legend-dot collab" style="background: #ec4899;"></span>
- 		   <span>Collaborators</span>
- 		  </div>
- 		 </div>
-		</section>
-		
-
-      
-
-      <!-- News/Updates Section -->
-      <section class="fade-in" id="news">
-        <h2><i class="fas fa-newspaper"></i> Latest News & Updates</h2>
-        <div class="news-timeline">
-          <div class="news-item">
-            <span class="news-date">January 2026</span>
-            <div class="news-content">
-              <h4><i class="fas fa-rocket"></i> Co-Founded Khyontek AI</h4>
-              <p>Co-founded Khyontek AI (Guwahati, Assam) as Co-Founder & AI Product Lead, building SME-focused AI products and leading product strategy, fundraising preparation and an AI internship programme.</p>
-            </div>
-          </div>
-          <div class="news-item">
-            <span class="news-date">March 2026</span>
-            <div class="news-content">
-              <h4><i class="fas fa-file-contract"></i> Paper Accepted at ACM SAC 2026</h4>
-              <p>Our work on "Structured Extraction from Business Process Diagrams Using Vision-Language Models" has been accepted for presentation at ACM SAC 2026.</p>
-            </div>
-          </div>
-          <div class="news-item">
-            <span class="news-date">January 2025</span>
-            <div class="news-content">
-              <h4><i class="fas fa-chalkboard-teacher"></i> Vision and Language Symposium Speaker</h4>
-              <p>Main speaker at the Vision and Language Symposium 2025 held at Queen's University Belfast.</p>
-            </div>
-          </div>
-          <div class="news-item">
-            <span class="news-date">May 2024</span>
-            <div class="news-content">
-              <h4><i class="fas fa-briefcase"></i> Started as Research Fellow at QUB</h4>
-              <p>Joined Queen's University Belfast as a Research Fellow in AI, focusing on corporate document understanding with LLMs and VLMs.</p>
-            </div>
-          </div>
-          <div class="news-item">
-            <span class="news-date">December 2024</span>
-            <div class="news-content">
-              <h4><i class="fas fa-graduation-cap"></i> PhD Completed</h4>
-              <p>Successfully defended PhD thesis on "Evidence-Based Approach to Verification of Online Health-Related Content" at Queen's University Belfast.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Academic Journey Map -->
-      <section class="fade-in" id="journey">
-        <h2><i class="fas fa-map-marked-alt"></i> Academic Journey</h2>
-        <div class="journey-map">
-          <div class="map-container" id="map-container">
-            <!-- Journey items will be populated by JS -->
-          </div>
-        </div>
-      </section>
-
-      <section class="fade-in" id="skills">
-        <h2><i class="fas fa-tools"></i> Skills</h2>
-        <div class="skills-grid">
-          <div class="skill-tag"><i class="fab fa-python"></i> Python</div>
-          <div class="skill-tag"><i class="fas fa-brain"></i> NLP</div>
-          <div class="skill-tag"><i class="fas fa-robot"></i> LLM/VLM</div>
-          <!-- <div class="skill-tag"><i class="fab fa-cuttlefish"></i> C++</div> -->
-          <div class="skill-tag"><i class="fas fa-database"></i> Data Pipelines</div>
-          <div class="skill-tag"><i class="fas fa-search"></i> Information Extraction</div>
-          <div class="skill-tag"><i class="fab fa-hackerrank"></i> Model Evaluation</div>
-          <div class="skill-tag"><i class="fas fa-flask"></i> Research</div>
-          <!-- <div class="skill-tag"><i class="fas fa-shield-alt"></i> AI Security</div> -->
-          <!-- <div class="skill-tag"><i class="fas fa-language"></i> Code-Mixed NLP</div> -->
-        </div>
-      </section>
-
-      <!-- Projects Showcase -->
-      <section class="fade-in" id="projects">
-        <h2><i class="fas fa-rocket"></i> Projects &amp; Live Demos</h2>
-        <div class="projects-grid">
-          <div class="project-card spotlight">
-            <div class="project-icon"><i class="fas fa-project-diagram"></i></div>
-            <h3>Flowchart2Mermaid</h3>
-            <p>Vision-Language Model powered app converting uploaded flowchart images into editable Mermaid code, with diagram preview, export and AI-assisted refinement.</p>
-            <div class="project-tags">
-              <span class="project-tag">VLMs</span>
-              <span class="project-tag">Vercel</span>
-              <span class="project-tag">Process Mining</span>
-            </div>
-            <div class="project-links">
-              <a href="https://flowchart-to-mermaid.vercel.app/" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i> Live app</a>
-              <a href="https://arxiv.org/abs/2512.02170" target="_blank" class="project-link"><i class="fas fa-file-alt"></i> Paper</a>
-            </div>
-          </div>
-
-          <div class="project-card spotlight">
-            <div class="project-icon"><i class="fas fa-building"></i></div>
-            <h3>BelfastBuild AI</h3>
-            <p>RAG-based planning-compliance pre-screener for Northern Ireland planning proposals. Cross-references policy sources, validates postcodes, flags conflicts and cites sources.</p>
-            <div class="project-tags">
-              <span class="project-tag">RAG</span>
-              <span class="project-tag">Vercel</span>
-              <span class="project-tag">Retrieval</span>
-            </div>
-            <div class="project-links">
-              <a href="https://belfastbuild.vercel.app/" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i> Live app</a>
-            </div>
-          </div>
-
-          <div class="project-card spotlight">
-            <div class="project-icon"><i class="fas fa-heartbeat"></i></div>
-            <h3>Biomedical Fact-Checker</h3>
-            <p>PhD-derived demo verifying health-related claims against biomedical evidence using retrieval, evidence extraction, claim classification and explanation generation.</p>
-            <div class="project-tags">
-              <span class="project-tag">BERT</span>
-              <span class="project-tag">Gradio</span>
-              <span class="project-tag">Health AI</span>
-            </div>
-            <div class="project-links">
-              <a href="https://huggingface.co/spaces/pritamdeka/Biomedical-Fact-Checker" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i> Demo</a>
-            </div>
-          </div>
-
-          <div class="project-card spotlight">
-            <span class="project-badge">Internal</span>
-            <div class="project-icon"><i class="fas fa-code-branch"></i></div>
-            <h3>BPMN Fullstack App</h3>
-            <p>Fullstack image-to-BPMN XML prototype with a FastAPI backend, OpenAI GPT-4o and a frontend editor for image upload and live BPMN rendering. Built for PwC ARC.</p>
-            <div class="project-tags">
-              <span class="project-tag">FastAPI</span>
-              <span class="project-tag">GPT-4o</span>
-              <span class="project-tag">BPMN</span>
-            </div>
-            <div class="project-links">
-              <a href="https://github.com/pritamdeka" target="_blank" class="project-link"><i class="fab fa-github"></i> GitHub</a>
-            </div>
-          </div>
-
-          <div class="project-card spotlight">
-            <div class="project-icon"><i class="fas fa-database"></i></div>
-            <h3>Cyber-Attack Attribution Dataset</h3>
-            <p>Publicly released labelled dataset for named entity recognition and predictive cyber-attack attribution, with preprocessing and evaluation workflows.</p>
-            <div class="project-tags">
-              <span class="project-tag">NER</span>
-              <span class="project-tag">Cybersecurity</span>
-              <span class="project-tag">Dataset</span>
-            </div>
-            <div class="project-links">
-              <a href="https://zenodo.org/records/10276922" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i> Zenodo</a>
-              <a href="https://doi.org/10.1007/978-981-96-0576-7_20" target="_blank" class="project-link"><i class="fas fa-file-alt"></i> Paper</a>
-            </div>
-          </div>
-
-          <div class="project-card spotlight">
-            <div class="project-icon"><i class="fas fa-robot"></i></div>
-            <h3>Open-Source AI Assets</h3>
-            <p>50+ fine-tuned models and 20+ datasets on Hugging Face across document intelligence, retrieval, classification, biomedical NLP and multimodal reasoning.</p>
-            <div class="project-tags">
-              <span class="project-tag">Hugging Face</span>
-              <span class="project-tag">Open Source</span>
-            </div>
-            <div class="project-links">
-              <a href="https://huggingface.co/pritamdeka" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i> Hugging Face</a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="fade-in" id="experience">
-        <h2><i class="fas fa-briefcase"></i> Experience</h2>
-        <div class="filter-controls exp-filters" id="exp-filters">
-          <button class="filter-btn active" data-cat="all">All</button>
-          <button class="filter-btn" data-cat="research">Research</button>
-          <button class="filter-btn" data-cat="industry">Industry</button>
-          <button class="filter-btn" data-cat="teaching">Teaching</button>
-        </div>
-        <div class="timeline">
-          <div class="timeline-item" data-cat="industry">
-            <div class="timeline-marker"></div>
-            <div class="timeline-content">
-              <h3>Co-Founder & AI Product Lead</h3>
-              <span class="timeline-date">Jan 2026–Ongoing | Khyontek AI, Guwahati, Assam</span>
-              <ul>
-                <li>Lead product strategy and hands-on AI engineering for SME-focused AI products, translating business problems into feasible solution concepts, prototypes and implementation plans</li>
-                <li>Built a structured AI internship programme and mentor students on practical AI workflows including problem scoping, dataset preparation, model experimentation and reproducible delivery</li>
-                <li>Lead fundraising preparation, product positioning and go-to-market planning, balancing technical ambition with customer value, implementation cost and commercial viability</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div class="timeline-item" data-cat="research">
-            <div class="timeline-marker"></div>
-            <div class="timeline-content">
-              <h3>Research Fellow (AI)</h3>
-              <span class="timeline-date">May 2024–Ongoing | Queen's University Belfast</span>
-              <ul>
-                <li>Focusing on AI for corporate document understanding with multimodal data processing</li>
-                <li>Investigating GPT-based models and open-source LLMs/VLMs for corporate data analysis</li>
-                <li>Integrating NLP and prompt engineering to streamline information extraction</li>
-                <li>Evaluating prompts and models on curated process diagram datasets</li>
-				<li>Developed agentic AI workflows converting flowchart and process diagram images into executable diagram code, supporting process standardisation and documentation.</li>
-				<li>Delivered high-accuracy multimodal AI pipelines by fine-tuning open-source VLMs (Qwen2.5-VL, Qwen3-VL, Gemma 3) and applying advanced prompt and context engineering with frontier LLM APIs (GPT-4.1, GPT-5.2, Gemini 2.5 Flash), outperforming OCR-centric approaches by a wide margin.</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div class="timeline-item" data-cat="teaching">
-            <div class="timeline-marker"></div>
-            <div class="timeline-content">
-              <h3>Subject Teacher</h3>
-              <span class="timeline-date">May 2025–August 2025 | INTO Queen's University Belfast</span>
-              <ul>
-                <li>Delivered lectures in Object-Oriented Programming using C++</li>
-                <li>Designed assignments, assessments, and practical coding labs</li>
-                <li>Implemented student engagement techniques and formative assessment tools</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div class="timeline-item" data-cat="research">
-            <div class="timeline-marker"></div>
-            <div class="timeline-content">
-              <h3>Senior Research Assistant (AI-Security)</h3>
-              <span class="timeline-date">Jul 2023–Jan 2024 | University of Southampton</span>
-              <ul>
-                <li>Led a team to create a NER dataset for cyber-attack attribution</li>
-                <li>Developed methods and metrics for dataset quality assessment</li>
-                <li>Ensured dataset suitability for training NER models in cybersecurity</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div class="timeline-item" data-cat="industry">
-            <div class="timeline-marker"></div>
-            <div class="timeline-content">
-              <h3>AI Intern</h3>
-              <span class="timeline-date">Mar 2022–Sep 2022 | Momentone</span>
-              <ul>
-                <li>Built a mental health chatbot using Rasa and HuggingFace transformers</li>
-                <li>Developed NLP solutions for mental health support</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div class="timeline-item" data-cat="teaching">
-            <div class="timeline-marker"></div>
-            <div class="timeline-content">
-              <h3>Lecturer</h3>
-              <span class="timeline-date">Aug 2018–Sep 2019 | Royal Global University, Assam</span>
-              <ul>
-                <li>Taught Python, C++ OOP, Data Structures, and Algorithms</li>
-                <li>Supervised undergraduate projects and contributed to curriculum development</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="fade-in" id="contact">
-        <h2><i class="fas fa-paper-plane"></i> Get In Touch</h2>
-        <div class="contact-form-wrapper">
-          <form id="contact-form" action="https://formspree.io/f/mzdjpyve" method="POST">
-            <div class="form-group">
-              <label for="name"><i class="fas fa-user"></i> Name</label>
-              <input type="text" id="name" name="name" required placeholder="Your name">
-            </div>
-            <div class="form-group">
-              <label for="email"><i class="fas fa-envelope"></i> Email</label>
-              <input type="email" id="email" name="email" required placeholder="your@email.com">
-            </div>
-            <div class="form-group">
-              <label for="subject"><i class="fas fa-tag"></i> Subject</label>
-              <input type="text" id="subject" name="subject" required placeholder="Research collaboration?">
-            </div>
-            <div class="form-group">
-              <label for="message"><i class="fas fa-comment"></i> Message</label>
-              <textarea id="message" name="message" rows="5" required placeholder="Your message..."></textarea>
-            </div>
-            <button type="submit" class="submit-btn">
-              <i class="fas fa-send"></i> Send Message
-            </button>
-          </form>
-          <div id="form-status"></div>
-        </div>
-      </section>
-    </main>
-  </div>
-  
-  <!-- Back to Top Button -->
-  <button class="back-to-top" id="back-to-top" aria-label="Back to top">
-    <i class="fas fa-arrow-up"></i>
+  <button id="search-toggle" class="search-toggle" aria-label="Search">
+    <i class="fas fa-search"></i>
   </button>
-  
-  <footer>
-    <div class="container">
-      <div class="view-counter">
-        <i class="fas fa-eye"></i> Page views: <span id="view-count" class="skeleton">Loading...</span>
-      </div>
-      <p>&copy; <span id="current-year">2025</span> Pritam Deka · Last updated: <span id="last-updated">Loading...</span></p>
-      <div class="social-footer">
-        <a href="https://github.com/pritamdeka" target="_blank"><i class="fab fa-github"></i></a>
-        <a href="https://huggingface.co/pritamdeka" target="_blank"><i class="fab fa-huggingface"></i></a>
-        <a href="https://www.linkedin.com/in/pritam-deka-phd-9158251b8/" target="_blank"><i class="fab fa-linkedin"></i></a>
-        <a href="https://scholar.google.com/citations?user=b0jYTAUAAAAJ&hl=en" target="_blank"><i class="fas fa-graduation-cap"></i></a>
-      </div>
+</nav>
+
+<!-- ============ LANDING HERO ============ -->
+<section class="landing-hero" id="home">
+  <div class="landing-hero-bg"></div>
+  <div class="landing-hero-inner">
+    <span class="landing-eyebrow"><i class="fas fa-brain"></i> AI Engineer · NLP Researcher · Co-founder Khyontek AI</span>
+    <h1 class="landing-name">Dr. Pritam Deka</h1>
+    <div class="landing-roles"><span class="ty-text" id="hero-ty"></span></div>
+    <p class="landing-tagline">
+      Building practical AI systems across LLMs, vision-language models, agentic AI and document intelligence.
+      Research Fellow at Queen's University Belfast · 12+ publications · 50+ open-source models.
+    </p>
+    <div class="landing-cta">
+      <a href="papers.html" class="landing-btn primary"><i class="fas fa-file-alt"></i> View Publications</a>
+      <a href="about.html" class="landing-btn ghost"><i class="fas fa-user"></i> Full Profile</a>
+      <a href="cv/Pritam_Deka_CV.pdf" download class="landing-btn ghost"><i class="fas fa-download"></i> CV</a>
     </div>
-  </footer>
+  </div>
+  <a href="#stats" class="scroll-indicator" aria-label="Scroll down">
+    <i class="fas fa-chevron-down"></i>
+  </a>
+</section>
+
+<!-- ============ STATS BAR ============ -->
+<section class="landing-stats reveal" id="stats">
+  <div class="landing-stats-inner">
+    <div class="lstat"><span class="lstat-num" id="l-citations">0</span><span class="lstat-label">Citations</span></div>
+    <div class="lstat"><span class="lstat-num" id="l-papers">0</span><span class="lstat-label">Publications</span></div>
+    <div class="lstat"><span class="lstat-num">6</span><span class="lstat-label">h-index</span></div>
+    <div class="lstat"><span class="lstat-num" id="l-models">0</span><span class="lstat-label">HF Models</span></div>
+    <div class="lstat"><span class="lstat-num">20+</span><span class="lstat-label">Datasets</span></div>
+  </div>
+</section>
+
+<!-- ============ RESEARCH AREAS ============ -->
+<section class="landing-section reveal" id="research">
+  <h2><i class="fas fa-lightbulb"></i> Research Areas</h2>
+  <div class="research-grid">
+    <a href="about.html#interests" class="research-card">
+      <div class="research-icon"><i class="fas fa-brain"></i></div>
+      <h3>Large Language Models</h3>
+      <p>Applied LLM engineering, RAG systems, prompt & context engineering, structured output generation with frontier APIs.</p>
+    </a>
+    <a href="about.html#interests" class="research-card">
+      <div class="research-icon"><i class="fas fa-eye"></i></div>
+      <h3>Vision-Language Models</h3>
+      <p>Fine-tuning open-source VLMs (Qwen2.5-VL, Qwen3-VL, Gemma 3) for document understanding and process diagram extraction.</p>
+    </a>
+    <a href="about.html#interests" class="research-card">
+      <div class="research-icon"><i class="fas fa-robot"></i></div>
+      <h3>Agentic AI</h3>
+      <p>Agentic workflows with CrewAI for synthetic data generation, human-in-the-loop refinement, and process automation.</p>
+    </a>
+    <a href="about.html#interests" class="research-card">
+      <div class="research-icon"><i class="fas fa-file-alt"></i></div>
+      <h3>Document Intelligence</h3>
+      <p>Converting unstructured visual artefacts (flowcharts, BPMN, org charts) into structured, editable representations.</p>
+    </a>
+  </div>
+</section>
+
+<!-- ============ FEATURED PROJECTS ============ -->
+<section class="landing-section reveal" id="projects">
+  <h2><i class="fas fa-rocket"></i> Featured Projects</h2>
+  <div class="featured-grid">
+    <a href="https://flowchart-to-mermaid.vercel.app/" target="_blank" class="featured-card">
+      <div class="featured-icon"><i class="fas fa-project-diagram"></i></div>
+      <h3>Flowchart2Mermaid</h3>
+      <p>VLM-powered app converting flowchart images into editable Mermaid code. Live on Vercel.</p>
+      <span class="featured-link"><i class="fas fa-external-link-alt"></i> Live app</span>
+    </a>
+    <a href="https://belfastbuild.vercel.app/" target="_blank" class="featured-card">
+      <div class="featured-icon"><i class="fas fa-building"></i></div>
+      <h3>BelfastBuild AI</h3>
+      <p>RAG-based planning-compliance pre-screener for Northern Ireland. Cross-references policy sources, flags conflicts.</p>
+      <span class="featured-link"><i class="fas fa-external-link-alt"></i> Live app</span>
+    </a>
+    <a href="https://huggingface.co/spaces/pritamdeka/Biomedical-Fact-Checker" target="_blank" class="featured-card">
+      <div class="featured-icon"><i class="fas fa-heartbeat"></i></div>
+      <h3>Biomedical Fact-Checker</h3>
+      <p>PhD-derived demo verifying health claims against biomedical evidence. Retrieval + claim classification + explanations.</p>
+      <span class="featured-link"><i class="fas fa-external-link-alt"></i> Demo</span>
+    </a>
+  </div>
+</section>
+
+<!-- ============ LATEST NEWS ============ -->
+<section class="landing-section reveal" id="news">
+  <h2><i class="fas fa-newspaper"></i> Latest News</h2>
+  <div class="landing-news">
+    <div class="landing-news-item">
+      <span class="landing-news-date">Jan 2026</span>
+      <div><strong>Co-Founded Khyontek AI</strong> — Building SME-focused AI products in Guwahati, Assam.</div>
+    </div>
+    <div class="landing-news-item">
+      <span class="landing-news-date">Mar 2026</span>
+      <div><strong>Paper at ACM SAC 2026</strong> — Structured Extraction from Business Process Diagrams Using VLMs.</div>
+    </div>
+    <div class="landing-news-item">
+      <span class="landing-news-date">2026</span>
+      <div><strong>Paper in IEEE Access</strong> — Agentic Prompting for Business Process Diagram Understanding with VLMs.</div>
+    </div>
+    <div class="landing-news-item">
+      <span class="landing-news-date">2026</span>
+      <div><strong>Reviewer for ICML 2026 & NeurIPS 2026</strong></div>
+    </div>
+  </div>
+  <a href="about.html#news" class="landing-more">View all updates <i class="fas fa-arrow-right"></i></a>
+</section>
+
+<!-- ============ MINI ABOUT ============ -->
+<section class="landing-section reveal" id="about">
+  <h2><i class="fas fa-user"></i> About</h2>
+  <div class="mini-about">
+    <img src="profile.jpg" alt="Dr. Pritam Deka" class="mini-about-photo">
+    <div class="mini-about-text">
+      <p>
+        I'm an AI Engineer and Research Fellow at Queen's University Belfast, specialising in practical AI systems
+        across LLMs, RAG, agentic AI, multimodal AI and document intelligence. I turn research ideas into working
+        systems, demos and reusable pipelines. I also co-founded <strong>Khyontek AI</strong>, building SME-focused
+        AI products.
+      </p>
+      <p>
+        PhD in Computer Science from QUB (evidence-based verification of online health information).
+        12+ publications, Best Paper at iiWAS 2021, 50+ models on HuggingFace. Reviewer for ICML & NeurIPS 2026.
+      </p>
+      <a href="about.html" class="landing-btn primary"><i class="fas fa-arrow-right"></i> Full Profile</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT CTA ============ -->
+<section class="landing-cta-section reveal" id="contact">
+  <div class="landing-cta-inner">
+    <h2>Let's Collaborate</h2>
+    <p>Open to research collaborations, AI consulting, and speaking opportunities.</p>
+    <a href="mailto:p.deka@qub.ac.uk" class="landing-btn primary large"><i class="fas fa-paper-plane"></i> p.deka@qub.ac.uk</a>
+    <div class="landing-social">
+      <a href="https://github.com/pritamdeka" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+      <a href="https://scholar.google.com/citations?user=b0jYTAUAAAAJ" target="_blank" aria-label="Google Scholar"><i class="fas fa-graduation-cap"></i></a>
+      <a href="https://huggingface.co/pritamdeka" target="_blank" aria-label="HuggingFace"><i class="fas fa-robot"></i></a>
+      <a href="https://www.linkedin.com/in/pritam-deka-phd-9158251b8/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="view-counter">
+      <i class="fas fa-eye"></i> Page views: <span id="view-count" class="skeleton">Loading...</span>
+    </div>
+    <p>&copy; <span id="current-year">2025</span> Pritam Deka · <a href="feed.xml" style="color:var(--accent)">RSS</a> · <a href="blog.html" style="color:var(--accent)">Blog</a></p>
+  </div>
+</footer>
+
+<!-- Back to Top -->
+<button class="back-to-top" id="back-to-top" aria-label="Back to top">
+  <i class="fas fa-arrow-up"></i>
+</button>
 
 <!-- Mobile App Bar -->
 <input type="checkbox" id="appmenu-toggle" class="appmenu-toggle" aria-hidden="true">
-
 <header class="appbar">
-
   <a href="index.html" class="appbar-brand">Dr. Pritam Deka</a>
-
   <label class="appbar-btn" for="appmenu-toggle"><i class="fas fa-bars"></i> Menu</label>
-
 </header>
-
-
 <nav class="appmenu">
-
   <div class="appmenu-header">
-
     <h2>Menu</h2>
-
     <label class="appmenu-close" for="appmenu-toggle"><i class="fas fa-times"></i></label>
-
   </div>
-
   <p class="appmenu-section">Pages</p>
-
   <ul class="appmenu-list">
-
-    <li><a href="index.html" class="appmenu-link active"><i class="fas fa-user"></i> About</a></li>
-
+    <li><a href="index.html" class="appmenu-link active"><i class="fas fa-home"></i> Home</a></li>
+    <li><a href="about.html" class="appmenu-link"><i class="fas fa-user"></i> About</a></li>
     <li><a href="education.html" class="appmenu-link"><i class="fas fa-graduation-cap"></i> Education</a></li>
-
     <li><a href="papers.html" class="appmenu-link"><i class="fas fa-file-alt"></i> Papers</a></li>
-
     <li><a href="activities.html" class="appmenu-link"><i class="fas fa-trophy"></i> Activities</a></li>
-
     <li><a href="blog.html" class="appmenu-link"><i class="fas fa-rss"></i> Blog</a></li>
-
   </ul>
-
   <div class="appmenu-divider"></div>
-
   <p class="appmenu-section">Actions</p>
-
   <ul class="appmenu-list">
-
+    <li><a href="#research" class="appmenu-link" onclick="document.getElementById('appmenu-toggle').checked=false"><i class="fas fa-lightbulb"></i> Research Areas</a></li>
+    <li><a href="#projects" class="appmenu-link" onclick="document.getElementById('appmenu-toggle').checked=false"><i class="fas fa-rocket"></i> Projects</a></li>
     <li><a href="#news" class="appmenu-link" onclick="document.getElementById('appmenu-toggle').checked=false"><i class="fas fa-newspaper"></i> News</a></li>
-
-    <li><a href="#research-network-section" class="appmenu-link" onclick="document.getElementById('appmenu-toggle').checked=false"><i class="fas fa-project-diagram"></i> Research Network</a></li>
-
-    <li><a href="#journey" class="appmenu-link" onclick="document.getElementById('appmenu-toggle').checked=false"><i class="fas fa-map-marked-alt"></i> Academic Journey</a></li>
-
-    <li><a href="#projects" class="appmenu-link" onclick="document.getElementById('appmenu-toggle').checked=false"><i class="fas fa-rocket"></i> Projects &amp; Demos</a></li>
-
-    <li><a href="#experience" class="appmenu-link" onclick="document.getElementById('appmenu-toggle').checked=false"><i class="fas fa-briefcase"></i> Experience</a></li>
-
     <li><a href="#contact" class="appmenu-link" onclick="document.getElementById('appmenu-toggle').checked=false"><i class="fas fa-paper-plane"></i> Contact</a></li>
-
     <li><button class="appmenu-link" onclick="document.getElementById('appmenu-toggle').checked=false;document.getElementById('search-toggle').click()"><i class="fas fa-search"></i> Search</button></li>
-
     <li><button class="appmenu-link" onclick="document.getElementById('appmenu-toggle').checked=false;document.getElementById('theme-toggle').click()"><i class="fas fa-moon"></i> Dark mode</button></li>
-
     <li><a href="cv/Pritam_Deka_CV.pdf" class="appmenu-link"><i class="fas fa-download"></i> Download CV</a></li>
-
     <li><a href="feed.xml" class="appmenu-link"><i class="fas fa-rss"></i> RSS Feed</a></li>
-
   </ul>
-
 </nav>
 
+<script src="dynamic.js"></script>
+<script>
+// Landing page stats — fetch from citations.json + HuggingFace API
+(async function loadLandingStats() {
+  // Citations + papers
+  try {
+    const res = await fetch('citations.json');
+    const data = await res.json();
+    const citEl = document.getElementById('l-citations');
+    const paperEl = document.getElementById('l-papers');
+    if (citEl && data.citations) {
+      const obs = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) { animateCounter(citEl, data.citations); obs.disconnect(); }
+      }, { threshold: 0.3 });
+      obs.observe(citEl);
+    }
+    if (paperEl && data.papers) {
+      const obs2 = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) { animateCounter(paperEl, data.papers); obs2.disconnect(); }
+      }, { threshold: 0.3 });
+      obs2.observe(paperEl);
+    }
+  } catch(e) {}
 
-  <script src="dynamic.js"></script>
+  // HuggingFace models
+  try {
+    const res = await fetchWithTimeout('https://huggingface.co/api/models?author=pritamdeka', 5000);
+    const models = await res.json();
+    const modelEl = document.getElementById('l-models');
+    if (modelEl && models.length) {
+      const obs = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) { animateCounter(modelEl, models.length); obs.disconnect(); }
+      }, { threshold: 0.3 });
+      obs.observe(modelEl);
+    }
+  } catch(e) {
+    const modelEl = document.getElementById('l-models');
+    if (modelEl) modelEl.textContent = '50+';
+  }
+})();
+</script>
 </body>
 </html>
