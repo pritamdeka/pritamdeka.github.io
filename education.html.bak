@@ -51,12 +51,12 @@
 </div>
 
   <nav id="main-nav">
-    <a href="/">Home</a>
-    <a href="/about">About</a>
-    <a href="/education" class="active">Education</a>
-    <a href="/papers">Papers</a>
-    <a href="/activities">Activities</a>
-    <a href="/blog">Blog</a>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="education.html" class="active">Education</a>
+    <a href="papers.html">Papers</a>
+    <a href="activities.html">Activities</a>
+    <a href="blog.html">Blog</a>
     <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
       <i class="fas fa-moon"></i>
     </button>

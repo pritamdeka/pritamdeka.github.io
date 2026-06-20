@@ -10,7 +10,7 @@ function trackEvent(name, data = {}) {
   try {
     if (window.umami && typeof window.umami.track === 'function') {
       window.umami.track(name, {
-        page: location.pathname.split('/').pop() || 'index.html',
+        page: location.pathname === '/' ? 'index' : location.pathname.replace(/^\/|\/$/g, ''),
         ...data,
       });
     }
@@ -174,9 +174,9 @@ const searchData = [
   { title: 'Queen\'s University Belfast', type: 'Experience', section: 'experience' },
   { title: 'University of Southampton', type: 'Experience', section: 'experience' },
   { title: 'PhD', type: 'Education', section: 'about' },
-  { title: 'Publications', type: 'Navigation', href: 'papers.html' },
-  { title: 'Activities', type: 'Navigation', href: 'activities.html' },
-  { title: 'Education', type: 'Navigation', href: 'education.html' },
+  { title: 'Publications', type: 'Navigation', href: '/papers' },
+  { title: 'Activities', type: 'Navigation', href: '/activities' },
+  { title: 'Education', type: 'Navigation', href: '/education' },
 ];
 
 let searchTrackTimer;
@@ -909,10 +909,11 @@ if (networkContainer) {
   function buildCommands() {
     const isDark = body.classList.contains('dark-mode');
     const c = [
-      { group: 'Navigate', icon: 'fa-user', label: 'About', hint: 'index.html', run: () => go('index.html') },
-      { group: 'Navigate', icon: 'fa-graduation-cap', label: 'Education', hint: 'education.html', run: () => go('education.html') },
-      { group: 'Navigate', icon: 'fa-file-alt', label: 'Papers', hint: 'papers.html', run: () => go('papers.html') },
-      { group: 'Navigate', icon: 'fa-trophy', label: 'Activities', hint: 'activities.html', run: () => go('activities.html') },
+      { group: 'Navigate', icon: 'fa-user', label: 'Home / About', hint: '/', run: () => go('/') },
+      { group: 'Navigate', icon: 'fa-graduation-cap', label: 'Education', hint: '/education', run: () => go('/education') },
+      { group: 'Navigate', icon: 'fa-file-alt', label: 'Papers', hint: '/papers', run: () => go('/papers') },
+      { group: 'Navigate', icon: 'fa-trophy', label: 'Activities', hint: '/activities', run: () => go('/activities') },
+      { group: 'Navigate', icon: 'fa-rss', label: 'Blog', hint: '/blog', run: () => go('/blog') },
       {
         group: 'Navigate',
         icon: 'fa-download',
@@ -920,7 +921,7 @@ if (networkContainer) {
         hint: 'PDF',
         run: () => {
           trackEvent('cv_download', { source: 'command_palette' });
-          go('cv/Pritam_Deka_CV.pdf');
+          go('/cv/Pritam_Deka_CV.pdf');
         }
       },
       {

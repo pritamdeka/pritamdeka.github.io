@@ -17,10 +17,10 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="apple-touch-icon" href="favicon.svg">
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style-dynamic.css">
+  <link rel="stylesheet" href="style-dynamic.css?v=17">
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
-  <!-- Umami Analytics — replace src and data-website-id with your instance -->
-  <script async defer src='https://umami.example.com/script.js' data-website-id='UMAMI_SITE_ID'></script>
+  <!-- Umami Analytics -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="64321948-50ef-4c25-a960-5e7bdd9b838a"></script>
 </head>
 <body class="light-mode">
 <!-- Search Bar -->
@@ -50,7 +50,8 @@
  <a href="#archive">Archive</a>
 </div>
   <nav id="main-nav">
-    <a href="index.html">About</a>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
     <a href="education.html">Education</a>
     <a href="papers.html">Papers</a>
     <a href="activities.html">Activities</a>
@@ -105,37 +106,69 @@
       <p>&copy; <span id="current-year">2025</span> Pritam Deka · <a href="feed.xml" style="color:var(--accent)">RSS</a></p>
     </div>
   </footer>
-<!-- Mobile App Bar -->
-<header class="appbar">
-  <a href="index.html" class="appbar-brand">Dr. Pritam Deka</a>
-  <label class="appbar-btn" for="appmenu-toggle"><i class="fas fa-bars"></i> Menu</label>
-</header>
-<input type="checkbox" id="appmenu-toggle" class="appmenu-toggle" aria-hidden="true">
-<nav class="appmenu">
-  <div class="appmenu-header">
-    <h2>Menu</h2>
-    <label class="appmenu-close" for="appmenu-toggle"><i class="fas fa-times"></i></label>
-  </div>
-  <p class="appmenu-section">Pages</p>
-  <ul class="appmenu-list">
-    <li><a href="index.html" class="appmenu-link"><i class="fas fa-user"></i> About</a></li>
-    <li><a href="education.html" class="appmenu-link"><i class="fas fa-graduation-cap"></i> Education</a></li>
-    <li><a href="papers.html" class="appmenu-link"><i class="fas fa-file-alt"></i> Papers</a></li>
-    <li><a href="activities.html" class="appmenu-link"><i class="fas fa-trophy"></i> Activities</a></li>
-    <li><a href="blog.html" class="appmenu-link active"><i class="fas fa-rss"></i> Blog</a></li>
-  </ul>
-  <div class="appmenu-divider"></div>
-  <p class="appmenu-section">Actions</p>
-  <ul class="appmenu-list">
-
-    <li><button class="appmenu-link" onclick="document.getElementById('appmenu-toggle').checked=false;document.getElementById('search-toggle').click()"><i class="fas fa-search"></i> Search</button></li>
-    <li><button class="appmenu-link" onclick="document.getElementById('appmenu-toggle').checked=false;document.getElementById('theme-toggle').click()"><i class="fas fa-moon"></i> Dark mode</button></li>
-    <li><a href="cv/Pritam_Deka_CV.pdf" class="appmenu-link"><i class="fas fa-download"></i> Download CV</a></li>
-    <li><a href="feed.xml" class="appmenu-link"><i class="fas fa-rss"></i> RSS Feed</a></li>
-  </ul>
-</nav>
+<!-- Mobile App Bar -->
+<input type="checkbox" id="appmenu-toggle" class="appmenu-toggle" aria-hidden="true">
 
-  <script src="dynamic.js"></script>
+<header class="appbar">
+
+  <a href="index.html" class="appbar-brand">Dr. Pritam Deka</a>
+
+  <div class="appbar-actions">
+    <button class="appbar-theme-toggle" data-theme-action aria-label="Switch to dark mode"><i class="fas fa-moon"></i></button>
+    <label class="appbar-btn" for="appmenu-toggle"><i class="fas fa-bars"></i> Menu</label>
+  </div>
+
+</header>
+
+
+<nav class="appmenu">
+
+  <div class="appmenu-header">
+
+    <h2>Menu</h2>
+
+    <label class="appmenu-close" for="appmenu-toggle"><i class="fas fa-times"></i></label>
+
+  </div>
+
+  <p class="appmenu-section">Pages</p>
+
+  <ul class="appmenu-list">
+
+    <li><a href="index.html" class="appmenu-link"><i class="fas fa-home"></i> Home</a>
+    <li><a href="about.html" class="appmenu-link"><i class="fas fa-user"></i> About</a></li>
+
+    <li><a href="education.html" class="appmenu-link"><i class="fas fa-graduation-cap"></i> Education</a></li>
+
+    <li><a href="papers.html" class="appmenu-link"><i class="fas fa-file-alt"></i> Papers</a></li>
+
+    <li><a href="activities.html" class="appmenu-link"><i class="fas fa-trophy"></i> Activities</a></li>
+
+    <li><a href="blog.html" class="appmenu-link active"><i class="fas fa-rss"></i> Blog</a></li>
+
+  </ul>
+
+  <div class="appmenu-divider"></div>
+
+  <p class="appmenu-section">Actions</p>
+
+  <ul class="appmenu-list">
+
+
+
+    <li><button class="appmenu-link" onclick="document.getElementById('appmenu-toggle').checked=false;document.getElementById('search-toggle').click()"><i class="fas fa-search"></i> Search</button></li>
+
+
+    <li><a href="cv/Pritam_Deka_CV.pdf" class="appmenu-link"><i class="fas fa-download"></i> Download CV</a></li>
+
+    <li><a href="feed.xml" class="appmenu-link"><i class="fas fa-rss"></i> RSS Feed</a></li>
+
+  </ul>
+
+</nav>
+
+
+  <script src="dynamic.js?v=17"></script>
   <script>
   // ===== Blog page renderer =====
   (async function renderBlog() {
@@ -187,9 +220,19 @@
         '<div class="blog-share">' +
           '<a class="blog-share-btn" target="_blank" href="https://twitter.com/intent/tweet?text=' + encodeURIComponent(md.split('\n')[0].replace('#','').trim()) + '&url=' + encodeURIComponent(postUrl) + '"><i class="fab fa-x-twitter"></i> Share on X</a>' +
           '<a class="blog-share-btn" target="_blank" href="https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(postUrl) + '"><i class="fab fa-linkedin"></i> LinkedIn</a>' +
-          '<button class="blog-share-btn" onclick="navigator.clipboard.writeText(\'' + postUrl + '\');this.innerHTML=\'<i class=\\'fas fa-check\\'></i> Copied!\';setTimeout(()=>{this.innerHTML=\'<i class=\\'fas fa-link\\'></i> Copy link\'},2000)"><i class="fas fa-link"></i> Copy link</button>' +
+          '<button class="blog-share-btn" id="copy-blog-link"><i class="fas fa-link"></i> Copy link</button>' +
         '</div>' +
         '<div class="giscus" id="giscus-container"></div>';
+      const copyButton = document.getElementById('copy-blog-link');
+      if (copyButton) {
+        copyButton.addEventListener('click', async () => {
+          await navigator.clipboard.writeText(postUrl);
+          copyButton.innerHTML = '<i class="fas fa-check"></i> Copied!';
+          setTimeout(() => {
+            copyButton.innerHTML = '<i class="fas fa-link"></i> Copy link';
+          }, 2000);
+        });
+      }
       latestEl.scrollIntoView({ behavior: 'smooth' });
       // Load giscus comments
       loadGiscus();
@@ -207,9 +250,9 @@
     const script = document.createElement('script');
     script.src = 'https://giscus.app/client.js';
     script.setAttribute('data-repo', 'pritamdeka/pritamdeka.github.io');
-    script.setAttribute('data-repo-id', 'REPO_ID_PLACEHOLDER');
+    script.setAttribute('data-repo-id', 'R_kgDOPCSTtw');
     script.setAttribute('data-category', 'Announcements');
-    script.setAttribute('data-category-id', 'CATEGORY_ID_PLACEHOLDER');
+    script.setAttribute('data-category-id', 'DIC_kwDOPCSTt84C_fQV');
     script.setAttribute('data-mapping', 'pathname');
     script.setAttribute('data-strict', '0');
     script.setAttribute('data-reactions-enabled', '1');

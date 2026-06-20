@@ -69,11 +69,11 @@
 <!-- Desktop Nav -->
 <nav id="main-nav">
   <a href="/" class="active">Home</a>
-  <a href="/about">About</a>
-  <a href="/education">Education</a>
-  <a href="/papers">Papers</a>
-  <a href="/activities">Activities</a>
-  <a href="/blog">Blog</a>
+  <a href="about">About</a>
+  <a href="education">Education</a>
+  <a href="papers">Papers</a>
+  <a href="activities">Activities</a>
+  <a href="blog">Blog</a>
   <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
     <i class="fas fa-moon"></i>
   </button>
@@ -294,11 +294,11 @@
   <p class="appmenu-section">Pages</p>
   <ul class="appmenu-list">
     <li><a href="/" class="appmenu-link active"><i class="fas fa-home"></i> Home</a></li>
-    <li><a href="/about" class="appmenu-link"><i class="fas fa-user"></i> About</a></li>
-    <li><a href="/education" class="appmenu-link"><i class="fas fa-graduation-cap"></i> Education</a></li>
-    <li><a href="/papers" class="appmenu-link"><i class="fas fa-file-alt"></i> Papers</a></li>
-    <li><a href="/activities" class="appmenu-link"><i class="fas fa-trophy"></i> Activities</a></li>
-    <li><a href="/blog" class="appmenu-link"><i class="fas fa-rss"></i> Blog</a></li>
+    <li><a href="about" class="appmenu-link"><i class="fas fa-user"></i> About</a></li>
+    <li><a href="education" class="appmenu-link"><i class="fas fa-graduation-cap"></i> Education</a></li>
+    <li><a href="papers" class="appmenu-link"><i class="fas fa-file-alt"></i> Papers</a></li>
+    <li><a href="activities" class="appmenu-link"><i class="fas fa-trophy"></i> Activities</a></li>
+    <li><a href="blog" class="appmenu-link"><i class="fas fa-rss"></i> Blog</a></li>
   </ul>
   <div class="appmenu-divider"></div>
   <p class="appmenu-section">Actions</p>
