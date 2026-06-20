@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://pritamdeka.github.io/sitemap.xml
+Sitemap: https://pritamdeka.com/sitemap.xml

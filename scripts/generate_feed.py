@@ -11,7 +11,7 @@ import html
 from datetime import datetime, timezone
 from pathlib import Path
 
-SITE = "https://pritamdeka.github.io"
+SITE = "https://pritamdeka.com"
 AUTHOR = "Dr. Pritam Deka"
 FEED_ID = f"urn:uuid:pritamdeka-{SITE}"
 
@@ -89,7 +89,7 @@ def main():
         date_str, title, excerpt, file = b
         iso = to_iso_date(date_str)
         eid = f"urn:pritamdeka:blog:{iso[:10]}"
-        link = f"{SITE}/{file}" if file else f"{SITE}/blog.html"
+        link = f"{SITE}/{file}" if file else f"{SITE}/blog"
         entries.append({
             'iso': iso,
             'xml': f"""  <entry>

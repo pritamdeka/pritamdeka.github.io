@@ -9,8 +9,9 @@ if ('serviceWorker' in navigator) {
 function trackEvent(name, data = {}) {
   try {
     if (window.umami && typeof window.umami.track === 'function') {
+      const rawPage = location.pathname === '/' ? 'index' : location.pathname.replace(/^\/|\/$/g, '');
       window.umami.track(name, {
-        page: location.pathname === '/' ? 'index' : location.pathname.replace(/^\/|\/$/g, ''),
+        page: rawPage.replace(/\.html$/, '') || 'index',
         ...data,
       });
     }
@@ -103,33 +104,45 @@ if (mobileMenuBtn && mainNav) {
 
 // ===== Scroll Progress Bar =====
 const scrollProgress = document.getElementById('scroll-progress');
+const backToTop = document.getElementById('back-to-top');
+let scrollUpdatePending = false;
+let backToTopVisible = false;
+let cachedChatFab = null;
 
-window.addEventListener('scroll', () => {
-  if (!scrollProgress) return;
+function updateScrollUI() {
   const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
   const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-  const scrollPercentage = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-  scrollProgress.style.width = scrollPercentage + '%';
-});
 
-// ===== Back to Top Button =====
-const backToTop = document.getElementById('back-to-top');
-
-window.addEventListener('scroll', () => {
-  if (window.scrollY > 500) {
-    backToTop.classList.add('visible');
-    const fab = document.querySelector('.chat-fab');
-    if (fab) fab.classList.add('shifted');
-  } else {
-    backToTop.classList.remove('visible');
-    const fab = document.querySelector('.chat-fab');
-    if (fab) fab.classList.remove('shifted');
+  if (scrollProgress) {
+    const progress = scrollHeight > 0 ? Math.min(1, Math.max(0, scrollTop / scrollHeight)) : 0;
+    scrollProgress.style.transform = `scaleX(${progress})`;
   }
-});
 
-backToTop.addEventListener('click', () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-});
+  const shouldShowBackToTop = window.scrollY > 500;
+  if (shouldShowBackToTop !== backToTopVisible) {
+    backToTopVisible = shouldShowBackToTop;
+    if (backToTop) backToTop.classList.toggle('visible', shouldShowBackToTop);
+    cachedChatFab = cachedChatFab || document.querySelector('.chat-fab');
+    if (cachedChatFab) cachedChatFab.classList.toggle('shifted', shouldShowBackToTop);
+  }
+
+  scrollUpdatePending = false;
+}
+
+function requestScrollUIUpdate() {
+  if (scrollUpdatePending) return;
+  scrollUpdatePending = true;
+  requestAnimationFrame(updateScrollUI);
+}
+
+window.addEventListener('scroll', requestScrollUIUpdate, { passive: true });
+requestScrollUIUpdate();
+
+if (backToTop) {
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
 
 // ===== Search Functionality =====
 const searchToggle = document.getElementById('search-toggle');
@@ -177,6 +190,7 @@ const searchData = [
   { title: 'Publications', type: 'Navigation', href: '/papers' },
   { title: 'Activities', type: 'Navigation', href: '/activities' },
   { title: 'Education', type: 'Navigation', href: '/education' },
+  { title: 'Research Impact Dashboard', type: 'Navigation', href: '/analytics' },
 ];
 
 let searchTrackTimer;
@@ -221,9 +235,9 @@ function navigateTo(target) {
   const selectedItem = searchData.find(item => (item.section || item.href) === target);
   trackEvent('search_result_select', {
     destination_type: selectedItem ? selectedItem.type : 'unknown',
-    destination_kind: target.endsWith('.html') ? 'page' : 'section',
+    destination_kind: target.startsWith('/') || target.endsWith('.html') ? 'page' : 'section',
   });
-  if (target.startsWith('http') || target.endsWith('.html')) {
+  if (target.startsWith('http') || target.startsWith('/') || target.endsWith('.html')) {
     window.location.href = target;
   } else {
     const element = document.getElementById(target);
@@ -904,7 +918,7 @@ if (networkContainer) {
   let commands = [];
   let selected = 0;
 
-  function isIndex() { return /index\.html$|\/$/.test(location.pathname); }
+  function isIndex() { return location.pathname === '/' || /\/index(?:\.html)?$/.test(location.pathname); }
 
   function buildCommands() {
     const isDark = body.classList.contains('dark-mode');
@@ -914,6 +928,7 @@ if (networkContainer) {
       { group: 'Navigate', icon: 'fa-file-alt', label: 'Papers', hint: '/papers', run: () => go('/papers') },
       { group: 'Navigate', icon: 'fa-trophy', label: 'Activities', hint: '/activities', run: () => go('/activities') },
       { group: 'Navigate', icon: 'fa-rss', label: 'Blog', hint: '/blog', run: () => go('/blog') },
+      { group: 'Navigate', icon: 'fa-chart-line', label: 'Research Impact', hint: '/analytics', run: () => go('/analytics') },
       {
         group: 'Navigate',
         icon: 'fa-download',
@@ -1130,7 +1145,9 @@ function fetchWithTimeout(url, ms, options) {
     if (!link) return;
     const href = link.getAttribute('href');
     if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto:') || link.target === '_blank' || link.hasAttribute('download')) return;
-    const samePage = href === location.pathname.split('/').pop() || (href === 'index.html' && (location.pathname === '/' || location.pathname === '/index.html'));
+    const currentPath = location.pathname.replace(/\/index(?:\.html)?$/, '/').replace(/\.html$/, '').replace(/\/$/, '') || '/';
+    const targetPath = new URL(href, location.href).pathname.replace(/\/index(?:\.html)?$/, '/').replace(/\.html$/, '').replace(/\/$/, '') || '/';
+    const samePage = targetPath === currentPath;
     if (samePage) return;
     if (typeof document.startViewTransition === 'function') {
       // Native View Transitions API (Chrome/Edge)
@@ -1154,6 +1171,8 @@ function fetchWithTimeout(url, ms, options) {
   fab.innerHTML = '<i class="fas fa-comments"></i>';
   fab.setAttribute('aria-label', 'Open chat');
   document.body.appendChild(fab);
+  cachedChatFab = fab;
+  fab.classList.toggle('shifted', window.scrollY > 500);
 
   const panel = document.createElement('div');
   panel.className = 'chat-panel';
