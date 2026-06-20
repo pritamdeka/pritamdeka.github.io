@@ -23,7 +23,7 @@ About Dr. Pritam Deka:
 - Reviewer for ICML 2026, NeurIPS 2026, ACM SAC 2024, ICON 2021/2023, GPTMB 2024
 - Education: PhD (QUB), MTech IT (Tezpur University), BE CSE (Gauhati University)
 - Google Scholar ID: b0jYTAUAAAAJ
-- Contact: contact@pritamdeka.com, Belfast, UK`;
+- Contact: contact@pritamdeka.com (p.deka@qub.ac.uk), Belfast, UK`;
 
 // Simple in-memory rate limiting (per IP, resets on deploy)
 const rateLimit = new Map();
