@@ -1,20 +1,20 @@
 [
   {
     "date": "2026-06-22",
-    "week": "2026-W26",
-    "title": "What the Strongest Agent Research Changes for Builders",
-    "file": "blog/2026-06-22-what-the-strongest-agent-research-changes-for-builders.md",
-    "excerpt": "What the Strongest Agent Research Changes for Builders _A source-led briefing on the papers, official announcements, and open-source releases most likely to affect how applied AI teams evaluate and build systems._ This w...",
-    "synthesis_provider": "deterministic",
-    "source_count": 34,
+    "week": "2026-W25",
+    "title": "Evidence Is Becoming the Real Interface for AI Systems",
+    "file": "blog/2026-06-22-evidence-is-becoming-the-real-ai-interface.md",
+    "excerpt": "The most interesting work in agents, multimodal RAG and document intelligence is converging on one problem: models must show where an answer came from, how it was assembled and where it can still fail...",
+    "synthesis_provider": "editorial",
+    "source_count": 5,
     "source_mix": {
-      "hf_papers": 12,
-      "official_news": 10,
-      "release_notes": 4,
-      "arxiv": 8,
-      "community": 2
+      "hf_papers": 5,
+      "official_news": 0,
+      "release_notes": 0,
+      "arxiv": 0,
+      "community": 0
     },
-    "word_count": 1078,
-    "hero_image": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2606.17053.png"
+    "word_count": 1186,
+    "hero_image": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2605.29861.png"
   }
 ]
