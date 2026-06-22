@@ -192,7 +192,7 @@ def call_groq(prompt):
     raise RuntimeError("All Groq models failed: " + " | ".join(failures))
 
 
-def build_prompt(hn, arxiv):
+def build_prompt(date_str, hn, arxiv):
     hn_list = "\n".join(
         f"- {story['title']} ({story['url']})" for story in hn
     ) or "(none)"
@@ -212,8 +212,8 @@ links, or numbers. If the signals are thin, keep the post short.
 ## Recent arXiv cs.CL papers
 {arxiv_list}
 
-Output Markdown only:
-# Week of YYYY-MM-DD
+Output Markdown only. Use this exact heading:
+# Week of {date_str}
 
 A two-sentence introduction.
 
@@ -295,7 +295,7 @@ def main():
         print("No signals fetched — skipping without changing the blog.")
         return
 
-    prompt = build_prompt(hn, arxiv)
+    prompt = build_prompt(date_str, hn, arxiv)
     provider = "deterministic"
     model = None
     try:
