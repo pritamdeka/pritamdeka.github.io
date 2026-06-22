@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "date": "2026-06-22",
+    "week": "2026-W25",
+    "title": "Week of 2024-06-28",
+    "file": "blog/2026-06-22-week-of-2024-06-28.md",
+    "excerpt": "Week of 2024-06-28\n\nThis week, we delve into the practicalities of AI deployment, from understanding LLM capabilities to optimizing models for efficiency and specific tasks. We als...",
+    "synthesis_provider": "gemini",
+    "synthesis_model": "gemini-2.5-flash"
+  }
+]
