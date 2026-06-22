@@ -21,7 +21,7 @@ jobs:
           python-version: '3.11'
 
       - name: Generate weekly blog post
-        timeout-minutes: 5
+        timeout-minutes: 10
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
