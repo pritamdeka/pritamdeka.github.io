@@ -18,11 +18,11 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="apple-touch-icon" href="favicon.svg">
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style-dynamic.css?v=19">
+  <link rel="stylesheet" href="style-dynamic.css?v=20">
   <!-- Umami Analytics -->
   <script defer src="https://cloud.umami.is/script.js" data-website-id="64321948-50ef-4c25-a960-5e7bdd9b838a"></script>
 </head>
-<body class="light-mode">
+<body class="light-mode blog-page">
 <!-- Search Bar -->
 <div class="search-container" id="search-container">
   <div class="search-box">
@@ -69,16 +69,16 @@
     <div class="page-header-inner">
       <span class="ph-eyebrow">Auto-Generated Weekly</span>
       <h1>AI &amp; NLP Digest</h1>
-      <p class="ph-subtitle">A weekly synthesis of notable AI research news, LLM/VLM releases, agentic AI and document-intelligence developments — sourced from Hacker News &amp; arXiv, written by an AI agent.</p>
+      <p class="ph-subtitle">A source-led AI research briefing built from high-signal papers, linked code, official lab announcements and open-source releases—with community discussion kept in perspective.</p>
       <div class="blog-source-row" aria-label="Digest sources">
-        <span><i class="fab fa-hacker-news"></i> Hacker News</span>
-        <span><i class="fas fa-file-lines"></i> arXiv cs.CL</span>
-        <span><i class="fas fa-shield-halved"></i> Source-linked</span>
+        <span><i class="fas fa-fire"></i> HF Daily Papers</span>
+        <span><i class="fas fa-flask"></i> Official AI labs</span>
+        <span><i class="fab fa-github"></i> Code-linked research</span>
       </div>
       <div class="page-header-stats">
         <div class="ph-stat"><span class="ph-num" id="blog-count">—</span><span class="ph-label">Posts</span></div>
         <div class="ph-stat"><span class="ph-num">Weekly</span><span class="ph-label">Cadence</span></div>
-        <div class="ph-stat"><span class="ph-num">HN + arXiv</span><span class="ph-label">Sources</span></div>
+        <div class="ph-stat"><span class="ph-num">Primary-first</span><span class="ph-label">Sources</span></div>
       </div>
     </div>
   </header>
@@ -205,7 +205,10 @@
     if (latestEl) {
       await loadPost(latest.file, latest.date, {
         words: latest.word_count,
-        sources: latest.source_count
+        sources: latest.source_count,
+        mix: latest.source_mix,
+        provider: latest.synthesis_provider,
+        hero: latest.hero_image
       });
     }
     // Archive
@@ -215,14 +218,15 @@
           <span class="paper-year">${p.date.slice(5)}</span>
           <span class="paper-title">${p.title}</span>
           <span class="paper-venue">${p.word_count ? `${Math.max(1, Math.round(p.word_count / 220))} min read · ` : ''}${p.source_count ? `${p.source_count} sources` : p.date}</span>
-          <button type="button" class="paper-link blog-read-button" data-file="${p.file}" data-date="${p.date}" data-words="${p.word_count || ''}" data-sources="${p.source_count || ''}"><i class="fas fa-book-open"></i> Read</button>
+          <button type="button" class="paper-link blog-read-button" data-file="${p.file}" data-date="${p.date}" data-words="${p.word_count || ''}" data-sources="${p.source_count || ''}" data-hero="${p.hero_image || ''}"><i class="fas fa-book-open"></i> Read</button>
         </li>`).join('');
       archiveEl.addEventListener('click', (event) => {
         const button = event.target.closest('.blog-read-button');
         if (button) {
           loadPost(button.dataset.file, button.dataset.date, {
             words: Number(button.dataset.words) || null,
-            sources: Number(button.dataset.sources) || null
+            sources: Number(button.dataset.sources) || null,
+            hero: button.dataset.hero || ''
           });
         }
       });
@@ -249,13 +253,30 @@
       if (metadata.sources) metaParts.push(`${metadata.sources} sources`);
       const postUrl = window.location.origin + '/' + file;
       const html = window.renderDigestMarkdown(md);
-      latestEl.innerHTML = '<div class="blog-meta">' + metaParts.filter(Boolean).join(' · ') + '</div>' + html +
+      const sourceBadges = metadata.mix
+        ? Object.entries(metadata.mix)
+            .filter(([key, count]) => count && key !== 'community')
+            .map(([key, count]) => `<span><i class="fas fa-check-circle"></i> ${count} ${key.replaceAll('_', ' ')}</span>`)
+            .join('')
+        : '';
+      const heroImage = typeof metadata.hero === 'string' &&
+        metadata.hero.startsWith('https://cdn-thumbnails.huggingface.co/')
+          ? `<div class="blog-article-cover"><img src="${metadata.hero}" alt="" loading="eager"></div>`
+          : '';
+      latestEl.innerHTML =
+        '<article class="blog-article">' +
+        '<div class="blog-article-kicker"><i class="fas fa-sparkles"></i> Research briefing</div>' +
+        '<div class="blog-meta">' + metaParts.filter(Boolean).join(' · ') + '</div>' +
+        (sourceBadges ? '<div class="blog-evidence-strip">' + sourceBadges + '</div>' : '') +
+        heroImage +
+        html +
         '<div class="blog-share">' +
           '<a class="blog-share-btn" target="_blank" href="https://twitter.com/intent/tweet?text=' + encodeURIComponent(md.split('\n')[0].replace('#','').trim()) + '&url=' + encodeURIComponent(postUrl) + '"><i class="fab fa-x-twitter"></i> Share on X</a>' +
           '<a class="blog-share-btn" target="_blank" href="https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(postUrl) + '"><i class="fab fa-linkedin"></i> LinkedIn</a>' +
           '<button class="blog-share-btn" id="copy-blog-link"><i class="fas fa-link"></i> Copy link</button>' +
         '</div>' +
-        '<div class="giscus" id="giscus-container"></div>';
+        '<div class="giscus" id="giscus-container"></div>' +
+        '</article>';
       const copyButton = document.getElementById('copy-blog-link');
       if (copyButton) {
         copyButton.addEventListener('click', async () => {
@@ -287,6 +308,7 @@
     };
     const lines = markdown.replace(/\r\n?/g, '\n').split('\n');
     const output = [];
+    const toc = [];
     let listOpen = false;
     const closeList = () => {
       if (listOpen) {
@@ -302,10 +324,22 @@
       }
       if (value.startsWith('## ')) {
         closeList();
-        output.push(`<h2>${inline(value.slice(3))}</h2>`);
+        const heading = value.slice(3);
+        const id = `blog-${heading.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
+        toc.push({ id, heading });
+        output.push(`<h2 id="${id}">${inline(heading)}</h2>`);
+      } else if (value.startsWith('### ')) {
+        closeList();
+        output.push(`<h3>${inline(value.slice(4))}</h3>`);
       } else if (value.startsWith('# ')) {
         closeList();
         output.push(`<h1>${inline(value.slice(2))}</h1>`);
+      } else if (/^_.+_$/.test(value)) {
+        closeList();
+        output.push(`<p class="blog-standfirst">${inline(value.slice(1, -1))}</p>`);
+      } else if (value === '---') {
+        closeList();
+        output.push('<hr>');
       } else if (value.startsWith('- ')) {
         if (!listOpen) {
           output.push('<ul>');
@@ -318,6 +352,14 @@
       }
     });
     closeList();
+    const tocHtml = toc.length
+      ? `<nav class="blog-toc" aria-label="Article contents">
+          <strong>In this briefing</strong>
+          ${toc.map(item => `<a href="#${item.id}">${inline(item.heading)}</a>`).join('')}
+        </nav>`
+      : '';
+    const firstHeading = output.findIndex(item => item.startsWith('<h2'));
+    if (firstHeading > -1) output.splice(firstHeading, 0, tocHtml);
     return output.join('');
   };
 
