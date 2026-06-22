@@ -1098,44 +1098,6 @@ function fetchWithTimeout(url, ms, options) {
   document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => obs.observe(el));
 })();
 
-// ===== Cursor-Following Gradient Orb =====
-(function setupCursorOrb() {
-  if (window.matchMedia('(max-width: 700px)').matches) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const orb = document.createElement('div');
-  orb.className = 'cursor-orb';
-  document.body.appendChild(orb);
-  let tx = window.innerWidth / 2, ty = window.innerHeight / 2;
-  let cx = tx, cy = ty;
-  document.addEventListener('mousemove', (e) => { tx = e.clientX; ty = e.clientY; });
-  function lerp() {
-    cx += (tx - cx) * 0.08;
-    cy += (ty - cy) * 0.08;
-    orb.style.setProperty('--cx', cx + 'px');
-    orb.style.setProperty('--cy', cy + 'px');
-    requestAnimationFrame(lerp);
-  }
-  lerp();
-})();
-
-// ===== 3D Card Tilt on Hover =====
-(function setupTilt() {
-  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  document.querySelectorAll('.project-card, .paper-item, .activity-card, .degree-card').forEach(card => {
-    card.classList.add('tilt');
-    card.addEventListener('mousemove', (e) => {
-      const r = card.getBoundingClientRect();
-      const px = (e.clientX - r.left) / r.width - 0.5;
-      const py = (e.clientY - r.top) / r.height - 0.5;
-      card.style.transform = `perspective(800px) rotateY(${px * 8}deg) rotateX(${-py * 8}deg) scale(1.02)`;
-    });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = '';
-    });
-  });
-})();
-
 // ===== Page Transitions =====
 (function setupPageTransitions() {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

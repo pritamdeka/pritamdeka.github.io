@@ -18,8 +18,7 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="apple-touch-icon" href="favicon.svg">
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style-dynamic.css?v=18">
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
+  <link rel="stylesheet" href="style-dynamic.css?v=19">
   <!-- Umami Analytics -->
   <script defer src="https://cloud.umami.is/script.js" data-website-id="64321948-50ef-4c25-a960-5e7bdd9b838a"></script>
 </head>
@@ -71,6 +70,11 @@
       <span class="ph-eyebrow">Auto-Generated Weekly</span>
       <h1>AI &amp; NLP Digest</h1>
       <p class="ph-subtitle">A weekly synthesis of notable AI research news, LLM/VLM releases, agentic AI and document-intelligence developments — sourced from Hacker News &amp; arXiv, written by an AI agent.</p>
+      <div class="blog-source-row" aria-label="Digest sources">
+        <span><i class="fab fa-hacker-news"></i> Hacker News</span>
+        <span><i class="fas fa-file-lines"></i> arXiv cs.CL</span>
+        <span><i class="fas fa-shield-halved"></i> Source-linked</span>
+      </div>
       <div class="page-header-stats">
         <div class="ph-stat"><span class="ph-num" id="blog-count">—</span><span class="ph-label">Posts</span></div>
         <div class="ph-stat"><span class="ph-num">Weekly</span><span class="ph-label">Cadence</span></div>
@@ -170,17 +174,20 @@
 </nav>
 
 
-  <script src="dynamic.js?v=18"></script>
+  <script src="dynamic.js?v=19"></script>
   <script>
   // ===== Blog page renderer =====
-  (async function renderBlog() {
+  async function renderBlog() {
     const latestEl = document.getElementById('blog-latest');
     const archiveEl = document.getElementById('blog-archive');
     const countEl = document.getElementById('blog-count');
     let manifest = [];
     try {
-      const res = await fetch('blog/index.json');
+      const manifestVersion = Math.floor(Date.now() / 3600000);
+      const res = await fetch(`blog/index.json?v=${manifestVersion}`, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`Manifest request failed: ${res.status}`);
       manifest = await res.json();
+      if (!Array.isArray(manifest)) throw new Error('Invalid blog manifest');
     } catch (e) {
       if (latestEl) latestEl.innerHTML = '<p style="color: var(--text-muted)">No posts yet — the first weekly digest will appear here automatically on Monday.</p>';
       if (archiveEl) archiveEl.innerHTML = '';
@@ -190,6 +197,7 @@
     if (countEl) countEl.textContent = manifest.length;
     if (!manifest.length) {
       if (latestEl) latestEl.innerHTML = '<p style="color: var(--text-muted)">No posts yet — check back after the next Monday run.</p>';
+      if (archiveEl) archiveEl.innerHTML = '<li class="blog-empty">The archive will appear after the first successful weekly run.</li>';
       return;
     }
     // Latest post
@@ -204,20 +212,31 @@
           <span class="paper-year">${p.date.slice(5)}</span>
           <span class="paper-title">${p.title}</span>
           <span class="paper-venue">${p.date}</span>
-          <a href="#" class="paper-link" onclick="loadPost('${p.file}','${p.date}');return false;"><i class="fas fa-book-open"></i> Read</a>
+          <button type="button" class="paper-link blog-read-button" data-file="${p.file}" data-date="${p.date}"><i class="fas fa-book-open"></i> Read</button>
         </li>`).join('');
+      archiveEl.addEventListener('click', (event) => {
+        const button = event.target.closest('.blog-read-button');
+        if (button) loadPost(button.dataset.file, button.dataset.date);
+      });
     }
-  })();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderBlog, { once: true });
+  } else {
+    renderBlog();
+  }
 
   async function loadPost(file, date) {
     const latestEl = document.getElementById('blog-latest');
     if (!latestEl) return;
     try {
-      const mdRes = await fetch(file);
+      const mdRes = await fetch(file, { cache: 'no-store' });
+      if (!mdRes.ok) throw new Error(`Post request failed: ${mdRes.status}`);
       const md = await mdRes.text();
       const dateStr = date ? new Date(date).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
       const postUrl = window.location.origin + '/' + file;
-      const html = (window.marked ? marked.parse(md) : '<pre>' + md + '</pre>');
+      const html = window.renderDigestMarkdown(md);
       latestEl.innerHTML = '<div class="blog-meta">' + dateStr + '</div>' + html +
         '<div class="blog-share">' +
           '<a class="blog-share-btn" target="_blank" href="https://twitter.com/intent/tweet?text=' + encodeURIComponent(md.split('\n')[0].replace('#','').trim()) + '&url=' + encodeURIComponent(postUrl) + '"><i class="fab fa-x-twitter"></i> Share on X</a>' +
@@ -242,6 +261,53 @@
       latestEl.innerHTML = '<p style="color: var(--text-muted)">Could not load post.</p>';
     }
   }
+
+  window.renderDigestMarkdown = function(markdown) {
+    const escapeHtml = (value) => value.replace(/[&<>"']/g, (character) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    })[character]);
+    const inline = (value) => {
+      let output = escapeHtml(value);
+      output = output.replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+      output = output.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      output = output.replace(/_([^_]+)_/g, '<em>$1</em>');
+      return output;
+    };
+    const lines = markdown.replace(/\r\n?/g, '\n').split('\n');
+    const output = [];
+    let listOpen = false;
+    const closeList = () => {
+      if (listOpen) {
+        output.push('</ul>');
+        listOpen = false;
+      }
+    };
+    lines.forEach((line) => {
+      const value = line.trim();
+      if (!value) {
+        closeList();
+        return;
+      }
+      if (value.startsWith('## ')) {
+        closeList();
+        output.push(`<h2>${inline(value.slice(3))}</h2>`);
+      } else if (value.startsWith('# ')) {
+        closeList();
+        output.push(`<h1>${inline(value.slice(2))}</h1>`);
+      } else if (value.startsWith('- ')) {
+        if (!listOpen) {
+          output.push('<ul>');
+          listOpen = true;
+        }
+        output.push(`<li>${inline(value.slice(2))}</li>`);
+      } else {
+        closeList();
+        output.push(`<p>${inline(value)}</p>`);
+      }
+    });
+    closeList();
+    return output.join('');
+  };
 
   // ===== Giscus Comments =====
   // Replace data-repo-id and data-category-id with your values from giscus.app
