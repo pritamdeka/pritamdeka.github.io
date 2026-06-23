@@ -4,51 +4,24 @@
   <link href="https://pritamdeka.com/" rel="alternate" type="text/html"/>
   <link href="https://pritamdeka.com/feed.xml" rel="self" type="application/atom+xml"/>
   <id>urn:uuid:pritamdeka-https://pritamdeka.com</id>
-  <updated>2026-03-01T00:00:00Z</updated>
+  <updated>2026-06-22T09:00:00Z</updated>
   <author><name>Dr. Pritam Deka</name></author>
   <entry>
-    <id>urn:pritamdeka:news:1:2026-03</id>
-    <title>Paper Accepted at ACM SAC 2026</title>
-    <link href="https://pritamdeka.com/#news"/>
-    <updated>2026-03-01T00:00:00Z</updated>
-    <published>2026-03-01T00:00:00Z</published>
-    <summary>Our work on &quot;Structured Extraction from Business Process Diagrams Using Vision-Language Models&quot; has been accepted for presentation at ACM SAC 2026.</summary>
-    <author><name>Dr. Pritam Deka</name></author>
+    <id>urn:pritamdeka:blog:2026-06-22</id>
+    <title>Evidence Is Becoming the Real Interface for AI Systems</title>
+    <link href="https://pritamdeka.com/blog/2026-06-22-evidence-is-becoming-the-real-ai-interface.md"/>
+    <updated>2026-06-22T09:00:00Z</updated>
+    <published>2026-06-22T09:00:00Z</published>
+    <summary>The most interesting work in agents, multimodal RAG and document intelligence is converging on one problem: models must show where an answer came from, how it was assembled and where it can still fail...</summary>
+    <author><name>Dr. Pritam Deka (AI digest)</name></author>
   </entry>
   <entry>
-    <id>urn:pritamdeka:news:0:2026-01</id>
-    <title>Co-Founded Khyontek AI</title>
-    <link href="https://pritamdeka.com/#news"/>
-    <updated>2026-01-01T00:00:00Z</updated>
-    <published>2026-01-01T00:00:00Z</published>
-    <summary>Co-founded Khyontek AI (Guwahati, Assam) as Co-Founder &amp; AI Product Lead, building SME-focused AI products and leading product strategy, fundraising preparation and an AI internship programme.</summary>
-    <author><name>Dr. Pritam Deka</name></author>
-  </entry>
-  <entry>
-    <id>urn:pritamdeka:news:2:2025-01</id>
-    <title>Vision and Language Symposium Speaker</title>
-    <link href="https://pritamdeka.com/#news"/>
-    <updated>2025-01-01T00:00:00Z</updated>
-    <published>2025-01-01T00:00:00Z</published>
-    <summary>Main speaker at the Vision and Language Symposium 2025 held at Queen&#x27;s University Belfast.</summary>
-    <author><name>Dr. Pritam Deka</name></author>
-  </entry>
-  <entry>
-    <id>urn:pritamdeka:news:4:2024-12</id>
-    <title>PhD Completed</title>
-    <link href="https://pritamdeka.com/#news"/>
-    <updated>2024-12-01T00:00:00Z</updated>
-    <published>2024-12-01T00:00:00Z</published>
-    <summary>Successfully defended PhD thesis on &quot;Evidence-Based Approach to Verification of Online Health-Related Content&quot; at Queen&#x27;s University Belfast.</summary>
-    <author><name>Dr. Pritam Deka</name></author>
-  </entry>
-  <entry>
-    <id>urn:pritamdeka:news:3:2024-05</id>
-    <title>Started as Research Fellow at QUB</title>
-    <link href="https://pritamdeka.com/#news"/>
-    <updated>2024-05-01T00:00:00Z</updated>
-    <published>2024-05-01T00:00:00Z</published>
-    <summary>Joined Queen&#x27;s University Belfast as a Research Fellow in AI, focusing on corporate document understanding with LLMs and VLMs.</summary>
-    <author><name>Dr. Pritam Deka</name></author>
+    <id>urn:pritamdeka:blog:2026-06-22</id>
+    <title>What the Strongest Agent Research Changes for Builders</title>
+    <link href="https://pritamdeka.com/blog/2026-06-22-what-the-strongest-agent-research-changes-for-builders.md"/>
+    <updated>2026-06-22T09:00:00Z</updated>
+    <published>2026-06-22T09:00:00Z</published>
+    <summary>This week&#x27;s strongest public signals point less to a single breakthrough than to a shared engineering problem: turning model capability into systems that can be evaluated, trusted, and operated under real constraints.</summary>
+    <author><name>Dr. Pritam Deka (AI digest)</name></author>
   </entry>
 </feed>
