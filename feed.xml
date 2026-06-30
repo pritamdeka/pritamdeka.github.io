@@ -4,8 +4,17 @@
   <link href="https://pritamdeka.com/" rel="alternate" type="text/html"/>
   <link href="https://pritamdeka.com/feed.xml" rel="self" type="application/atom+xml"/>
   <id>urn:uuid:pritamdeka-https://pritamdeka.com</id>
-  <updated>2026-06-22T09:00:00Z</updated>
+  <updated>2026-06-29T09:00:00Z</updated>
   <author><name>Dr. Pritam Deka</name></author>
+  <entry>
+    <id>urn:pritamdeka:blog:2026-06-29</id>
+    <title>What the Strongest Agent Research Changes for Builders</title>
+    <link href="https://pritamdeka.com/blog/2026-06-29-what-the-strongest-agent-research-changes-for-builders.md"/>
+    <updated>2026-06-29T09:00:00Z</updated>
+    <published>2026-06-29T09:00:00Z</published>
+    <summary>What the Strongest Agent Research Changes for Builders _A source-led briefing on the papers, official announcements, and open-source releases most likely to affect how applied AI teams evaluate and build systems._ This w...</summary>
+    <author><name>Dr. Pritam Deka (AI digest)</name></author>
+  </entry>
   <entry>
     <id>urn:pritamdeka:blog:2026-06-22</id>
     <title>Evidence Is Becoming the Real Interface for AI Systems</title>
