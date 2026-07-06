@@ -1,5 +1,23 @@
 [
   {
+    "date": "2026-07-06",
+    "week": "2026-W28",
+    "title": "What the Strongest Agent Research Changes for Builders",
+    "file": "blog/2026-07-06-what-the-strongest-agent-research-changes-for-builders.md",
+    "excerpt": "What the Strongest Agent Research Changes for Builders _A source-led briefing on the papers, official announcements, and open-source releases most likely to affect how applied AI teams evaluate and build systems._ This w...",
+    "synthesis_provider": "deterministic",
+    "source_count": 35,
+    "source_mix": {
+      "hf_papers": 12,
+      "official_news": 10,
+      "release_notes": 5,
+      "arxiv": 8,
+      "community": 2
+    },
+    "word_count": 1140,
+    "hero_image": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2607.02255.png"
+  },
+  {
     "date": "2026-06-29",
     "week": "2026-W27",
     "title": "What the Strongest Agent Research Changes for Builders",
