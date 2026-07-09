@@ -93,6 +93,13 @@ def clean_text(value):
     return re.sub(r"\s+", " ", value or "").strip()
 
 
+def canonical_url(url):
+    value = clean_text(url).rstrip("/")
+    if value.startswith("https://hf.co/papers/"):
+        value = value.replace("https://hf.co/papers/", "https://huggingface.co/papers/", 1)
+    return value
+
+
 def topic_score(text):
     lowered = clean_text(text).lower()
     return sum(weight for phrase, weight in TOPIC_WEIGHTS.items() if phrase in lowered)
@@ -454,6 +461,89 @@ def call_groq(prompt):
     raise RuntimeError("All Groq models failed: " + " | ".join(failures))
 
 
+def groq_title_prompt(markdown, date_str, prior_titles, source_titles):
+    current_title = ""
+    match = re.search(r"^#\s+(.+)$", markdown, re.M)
+    if match:
+        current_title = match.group(1).strip()
+    source_list = "\n".join(f"- {title}" for title in source_titles[:10])
+    prior_list = "\n".join(f"- {title}" for title in prior_titles[:12]) or "- none"
+    body_preview = clean_text(re.sub(r"\[[^\]]+\]\([^)]+\)", "", markdown))[:1800]
+    return f"""Write one stronger headline for this AI research blog post.
+
+Rules:
+- Return only the headline, no markdown, quotes, numbering, or explanation.
+- 8-14 words.
+- Hook-driven and specific, but not clickbait.
+- No date, no "week", no "weekly", no colon-prefixed keyword list.
+- It must not be similar to prior titles.
+
+Publication date: {date_str}
+Current title: {current_title}
+
+Prior titles to avoid:
+{prior_list}
+
+Source titles behind the article:
+{source_list}
+
+Article preview:
+{body_preview}
+"""
+
+
+def generate_groq_title(markdown, date_str, prior_titles, source_titles):
+    """Use a Groq open model for the post title without slowing the whole run."""
+    key = os.environ.get("GROQ_API_KEY")
+    if not key:
+        return None, None
+
+    prompt = groq_title_prompt(markdown, date_str, prior_titles, source_titles)
+    for model in groq_models()[:2]:
+        payload = {
+            "model": model,
+            "messages": [
+                {
+                    "role": "system",
+                    "content": "You write concise, evidence-led technology headlines.",
+                },
+                {"role": "user", "content": prompt},
+            ],
+            "temperature": 0.8,
+            "max_completion_tokens": 80,
+        }
+        try:
+            raw = http_request(
+                GROQ_URL,
+                timeout=20,
+                data=json.dumps(payload).encode("utf-8"),
+                headers={
+                    "Authorization": f"Bearer {key}",
+                    "Content-Type": "application/json",
+                },
+                attempts=1,
+            )
+            data = json.loads(raw.decode("utf-8"))
+            title = clean_text(data["choices"][0]["message"]["content"])
+            title = title.strip(" #\"'“”‘’")
+            title = re.sub(r"^\d+\.\s*", "", title)
+            if "\n" in title:
+                title = clean_text(title.splitlines()[0])
+            issues = validate_headline(title, date_str, prior_titles)
+            if not issues:
+                return title, model
+            print(f"Groq title rejected ({model}): " + "; ".join(issues))
+        except Exception as error:
+            print(f"Groq title unavailable ({model}: {type(error).__name__}: {error})")
+    return None, None
+
+
+def replace_markdown_title(markdown, title):
+    if re.search(r"^#\s+.+$", markdown, re.M):
+        return re.sub(r"^#\s+.+$", f"# {title}", markdown, count=1, flags=re.M)
+    return f"# {title}\n\n{markdown.lstrip()}"
+
+
 def source_dossier(hf_papers, official_news, releases, arxiv, hn):
     sections = ["FEATURED RESEARCH — HUGGING FACE DAILY PAPERS"]
     for index, paper in enumerate(hf_papers, 1):
@@ -510,22 +600,32 @@ def source_dossier(hf_papers, official_news, releases, arxiv, hn):
     return "\n\n".join(sections)
 
 
+def item_urls(item):
+    """Return all source URLs attached to a collected signal."""
+    return {
+        canonical_url(url)
+        for url in (
+            item.get("url"),
+            item.get("arxiv_url"),
+            item.get("code_url"),
+            item.get("project_url"),
+            item.get("hn_url"),
+        )
+        if clean_text(url)
+    }
+
+
 def allowed_urls(hf_papers, official_news, releases, arxiv, hn):
     urls = set()
     for paper in hf_papers:
-        urls.update((
-            paper["url"],
-            paper["arxiv_url"],
-            paper["code_url"],
-            paper["project_url"],
-        ))
+        urls.update(item_urls(paper))
     for item in official_news + releases:
-        urls.add(item["url"])
+        urls.update(item_urls(item))
     for paper in arxiv:
-        urls.add(paper["url"])
+        urls.update(item_urls(paper))
     for story in hn:
-        urls.update((story["url"], story["hn_url"]))
-    return {url.rstrip("/") for url in urls if url}
+        urls.update(item_urls(story))
+    return {canonical_url(url) for url in urls if url}
 
 
 def build_prompt(date_str, hf_papers, official_news, releases, arxiv, hn):
@@ -588,7 +688,10 @@ SOURCE DOSSIER
 
 
 def extract_urls(markdown):
-    return {url.rstrip("/") for url in re.findall(r"https?://[^)\s>]+", markdown)}
+    return {
+        canonical_url(url)
+        for url in re.findall(r"https?://[^)\s>]+", markdown)
+    }
 
 
 def validate_draft(markdown, date_str, source_urls, community_urls=None):
@@ -600,13 +703,7 @@ def validate_draft(markdown, date_str, source_urls, community_urls=None):
         title = ""
     else:
         title = title_match.group(1).strip()
-        title_words = re.findall(r"\b[\w'-]+\b", title)
-        if not 6 <= len(title_words) <= 16:
-            issues.append(f"headline must contain 6-16 words ({len(title_words)} found)")
-        if re.search(r"\bweek(?:ly)?\b", title.lower()) or date_str in title:
-            issues.append("headline must not contain week/weekly wording or the publication date")
-        if title.count(",") >= 2:
-            issues.append("headline appears keyword-stuffed")
+        issues.extend(validate_headline(title, date_str))
     first_lines = [line.strip() for line in markdown.splitlines()[1:] if line.strip()]
     if not first_lines or not (
         first_lines[0].startswith("_") and first_lines[0].endswith("_")
@@ -647,6 +744,25 @@ def validate_draft(markdown, date_str, source_urls, community_urls=None):
         issues.append("contains generic phrases: " + ", ".join(used_generic))
     if len(re.findall(r"\b(however|because|therefore|trade-off|limitation|risk)\b", lowered)) < 3:
         issues.append("insufficient analytical or caveat language")
+    return issues
+
+
+def validate_headline(title, date_str, prior_titles=None):
+    issues = []
+    title = clean_text(title).strip("# ")
+    title_words = re.findall(r"\b[\w'-]+\b", title)
+    if not 6 <= len(title_words) <= 16:
+        issues.append(f"headline must contain 6-16 words ({len(title_words)} found)")
+    if re.search(r"\bweek(?:ly)?\b", title.lower()) or date_str in title:
+        issues.append("headline must not contain week/weekly wording or the publication date")
+    if title.count(",") >= 2:
+        issues.append("headline appears keyword-stuffed")
+    if ":" in title[:24]:
+        issues.append("headline must not use a dated or keyword-list prefix")
+    for old_title in prior_titles or ():
+        if similar_title(title, old_title):
+            issues.append("headline is too similar to a prior post")
+            break
     return issues
 
 
@@ -709,6 +825,19 @@ def markdown_link(title, url):
     return f"[{clean_text(title)}]({url})" if url else clean_text(title)
 
 
+def compact_topic(title):
+    words = [
+        word
+        for word in re.findall(r"[A-Za-z][A-Za-z0-9-]{2,}", clean_text(title))
+        if word.lower() not in {
+            "the", "and", "for", "with", "from", "into", "using", "toward",
+            "towards", "based", "large", "language", "model", "models",
+        }
+    ]
+    topic = " ".join(words[:4])
+    return topic or "Evidence"
+
+
 def build_fallback_post(date_str, hf_papers, official_news, releases, arxiv, hn):
     """Build a readable source-led briefing when both AI providers fail."""
     strongest_news = official_news[:3]
@@ -723,14 +852,20 @@ def build_fallback_post(date_str, hf_papers, official_news, releases, arxiv, hn)
         if phrase in combined:
             theme_terms.append(phrase)
     theme = theme_terms[0] if theme_terms else "AI systems"
+    lead_title = (
+        strongest_papers[0]["title"]
+        if strongest_papers else
+        (strongest_news + strongest_releases)[0]["title"]
+    )
+    hook_topic = compact_topic(lead_title)
 
     lines = [
-        f"# What the Strongest {theme.title()} Research Changes for Builders",
+        f"# Why {hook_topic} Matters for Reliable AI Systems",
         "",
         "_A source-led briefing on the papers, official announcements, and open-source "
         "releases most likely to affect how applied AI teams evaluate and build systems._",
         "",
-        "This week's strongest public signals point less to a single breakthrough "
+        "The strongest public signals in this briefing point less to a single breakthrough "
         "than to a shared engineering problem: turning model capability into systems "
         "that can be evaluated, trusted, and operated under real constraints. The "
         "items below are selected for relevance to applied NLP, multimodal systems, "
@@ -810,10 +945,108 @@ def load_manifest(path):
         return []
 
 
+def published_context(manifest, current_date, blog_dir=Path("blog")):
+    """Read prior published posts so a new week does not recycle them."""
+    prior_titles = []
+    prior_urls = set()
+    current_files = set()
+
+    for entry in manifest:
+        if not isinstance(entry, dict):
+            continue
+        title = clean_text(entry.get("title"))
+        if title and entry.get("date") != current_date:
+            prior_titles.append(title)
+
+        file_name = clean_text(entry.get("file"))
+        if file_name and entry.get("date") == current_date:
+            current_files.add(file_name)
+
+        for url in entry.get("source_urls") or ():
+            if clean_text(url) and entry.get("date") != current_date:
+                prior_urls.add(canonical_url(url))
+
+        if entry.get("date") == current_date or not file_name:
+            continue
+        path = Path(file_name)
+        if not path.is_absolute():
+            path = Path(file_name)
+        try:
+            prior_urls.update(extract_urls(path.read_text(encoding="utf-8")))
+        except OSError:
+            continue
+
+    return {
+        "prior_titles": prior_titles,
+        "prior_urls": prior_urls,
+        "current_files": current_files,
+    }
+
+
+def freshen_items(items, context, limit):
+    """Drop signals already cited or too close to older post titles."""
+    prior_titles = context["prior_titles"]
+    prior_urls = context["prior_urls"]
+    fresh = []
+    for item in items:
+        urls = item_urls(item)
+        if urls and urls & prior_urls:
+            continue
+        if any(similar_title(item["title"], title) for title in prior_titles):
+            continue
+        fresh.append(item)
+    return fresh[:limit]
+
+
+def unique_slug(base_slug, date_str, manifest):
+    """Keep post paths stable for same-day reruns and unique across older posts."""
+    used = {
+        Path(clean_text(item.get("file"))).stem
+        for item in manifest
+        if isinstance(item, dict) and item.get("date") != date_str
+    }
+    slug = base_slug
+    suffix = 2
+    while f"{date_str}-{slug}" in used:
+        trimmed = base_slug[: max(1, 67 - len(str(suffix)))]
+        slug = f"{trimmed}-{suffix}"
+        suffix += 1
+    return slug
+
+
+def prune_manifest(manifest, current_date):
+    """Remove same-day duplicates and older duplicate titles/files."""
+    pruned = []
+    seen_titles = set()
+    seen_files = set()
+    for item in manifest:
+        if not isinstance(item, dict):
+            continue
+        if item.get("date") == current_date:
+            continue
+        title_key = clean_text(item.get("title")).lower()
+        file_key = clean_text(item.get("file"))
+        if title_key and title_key in seen_titles:
+            continue
+        if file_key and file_key in seen_files:
+            continue
+        if title_key:
+            seen_titles.add(title_key)
+        if file_key:
+            seen_files.add(file_key)
+        pruned.append(item)
+    return pruned
+
+
 def main():
     now = datetime.now(timezone.utc)
     date_str = now.strftime("%Y-%m-%d")
     week = now.strftime("%G-W%V")
+    blog_dir = Path("blog")
+    blog_dir.mkdir(exist_ok=True)
+    manifest_path = blog_dir / "index.json"
+    manifest = load_manifest(manifest_path)
+    context = published_context(manifest, date_str, blog_dir)
 
     collectors = {
         "hf_papers": lambda: fetch_hf_daily_papers(limit=12),
@@ -835,15 +1068,16 @@ def main():
             except Exception as error:
                 print(f"{name} collector failed: {type(error).__name__}: {error}")
 
-    hf_papers = collected["hf_papers"]
-    official_news = collected["official_news"]
-    releases = collected["releases"]
+    hf_papers = freshen_items(collected["hf_papers"], context, 12)
+    official_news = freshen_items(collected["official_news"], context, 10)
+    releases = freshen_items(collected["releases"], context, 7)
     hf_titles = {paper["title"].lower() for paper in hf_papers}
     arxiv = [
         paper for paper in collected["arxiv"]
         if not any(similar_title(paper["title"], title) for title in hf_titles)
-    ][:8]
-    hn = collected["hn"]
+    ]
+    arxiv = freshen_items(arxiv, context, 8)
+    hn = freshen_items(collected["hn"], context, 2)
     print(
         "Ranked signals: "
         f"{len(hf_papers)} HF papers, {len(official_news)} official posts, "
@@ -858,7 +1092,7 @@ def main():
     )
     urls = allowed_urls(hf_papers, official_news, releases, arxiv, hn)
     community_urls = {
-        url.rstrip("/")
+        canonical_url(url)
         for story in hn
         for url in (story["url"], story["hn_url"])
         if url
@@ -876,17 +1110,34 @@ def main():
             date_str, hf_papers, official_news, releases, arxiv, hn
         )
 
+    source_titles = [
+        item["title"]
+        for item in (hf_papers + official_news + releases + arxiv + hn)
+        if clean_text(item.get("title"))
+    ]
+    title_provider = provider
+    title_model = model
+    groq_title, groq_title_model = generate_groq_title(
+        post_md, date_str, context["prior_titles"], source_titles
+    )
+    if groq_title:
+        post_md = replace_markdown_title(post_md, groq_title)
+        title_provider = "groq"
+        title_model = groq_title_model
+        print(f"Groq headline selected with {groq_title_model}.")
+
     title_match = re.search(r"^#\s+(.+)$", post_md, re.M)
     title = title_match.group(1).strip() if title_match else f"AI briefing - {date_str}"
-    slug = slugify(title) or f"briefing-{date_str}"
+    headline_issues = validate_headline(title, date_str, context["prior_titles"])
+    if headline_issues:
+        raise RuntimeError(
+            "Generated headline failed validation: " + "; ".join(headline_issues)
+        )
+    slug = unique_slug(slugify(title) or f"briefing-{date_str}", date_str, manifest)
 
-    blog_dir = Path("blog")
-    blog_dir.mkdir(exist_ok=True)
     post_path = blog_dir / f"{date_str}-{slug}.md"
     post_path.write_text(post_md, encoding="utf-8")
 
-    manifest_path = blog_dir / "index.json"
-    manifest = load_manifest(manifest_path)
     entry = {
         "date": date_str,
         "week": week,
@@ -894,6 +1145,7 @@ def main():
         "file": post_path.as_posix(),
         "excerpt": clean_text(re.sub(r"[#*\[\]()>]", "", post_md))[:220] + "...",
         "synthesis_provider": provider,
+        "title_provider": title_provider,
         "source_count": (
             len(hf_papers) + len(official_news) + len(releases) + len(arxiv)
         ),
@@ -905,12 +1157,15 @@ def main():
             "community": len(hn),
         },
         "word_count": len(re.findall(r"\b[\w'-]+\b", post_md)),
+        "source_urls": sorted(urls),
     }
     if hf_papers and hf_papers[0].get("thumbnail"):
         entry["hero_image"] = hf_papers[0]["thumbnail"]
     if model:
         entry["synthesis_model"] = model
-    manifest = [item for item in manifest if item.get("date") != date_str]
+    if title_model:
+        entry["title_model"] = title_model
+    manifest = prune_manifest(manifest, date_str)
     manifest.insert(0, entry)
     manifest_path.write_text(
         json.dumps(manifest[:52], indent=2, ensure_ascii=False),
