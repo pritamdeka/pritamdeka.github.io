@@ -1,15 +1,15 @@
-# What the Strongest Agent Research Changes for Builders
+# Agent Memory and Red Teaming Are Becoming Operational AI Tests
 
 _A source-led briefing on the papers, official announcements, and open-source releases most likely to affect how applied AI teams evaluate and build systems._
 
-This week's strongest public signals point less to a single breakthrough than to a shared engineering problem: turning model capability into systems that can be evaluated, trusted, and operated under real constraints. The items below are selected for relevance to applied NLP, multimodal systems, retrieval, and document intelligence. Where only metadata is available, the briefing avoids conclusions beyond that evidence.
+The strongest public signals in this briefing point less to a single breakthrough than to a shared engineering problem: turning model capability into systems that can be evaluated, trusted, and operated under real constraints. The items below are selected for relevance to applied NLP, multimodal systems, retrieval, and document intelligence. Where only metadata is available, the briefing avoids conclusions beyond that evidence.
 
 ## The signal
 - **[OpenAI and Broadcom unveil LLM-optimized inference chip](https://openai.com/index/openai-broadcom-jalapeno-inference-chip)** — OpenAI and Broadcom introduce Jalapeño, a custom AI chip built for LLM inference to improve performance, efficiency, and scale across AI systems.
 - **[ScarfBench: Benchmarking AI Agents for Enterprise Java Framework Migration](https://huggingface.co/blog/ibm-research/scarfbench)** — 
 - **[How agents are transforming work](https://openai.com/index/how-agents-are-transforming-work)** — A new OpenAI research paper shows how AI agents are transforming work, enabling longer, more complex tasks and expanding productivity across roles.
-- **[Transformers Release v5.13.0](https://github.com/huggingface/transformers/releases/tag/v5.13.0)** — # Release v5.13.0 ## New Model additions ### KimiK 2.5, 2.6, and 2.7 <img width="1097" height="400" alt="image" src="https://github.com/user-attachments/assets/c24d2232-a9b4-413b-a2c8-58d013b6dfbd" /> This release includes the architecture for Kimi 2.5 which is used by 2.5-2.7: Kimi K2.5 is an open-source, native multi
-- **[vLLM v0.24.0](https://github.com/vllm-project/vllm/releases/tag/v0.24.0)** — # vLLM v0.24.0 Release Notes ## Highlights This release features 571 commits from 256 contributors (77 new)! * **MiniMax-M3**: Added support for the new **MiniMax-M3** model (#45381), with a fast follow-on of BF16/FP8 indexer via MSA (#45892), MXFP4 support (#45896), FP8 sparse GQA (#45744), and extensive AMD/ROCm tuni
+- **[Transformers Release v5.13.0](https://github.com/huggingface/transformers/releases/tag/v5.13.0)** — Transformers v5.13.0 adds KimiK 2.5, 2.6, and 2.7 architecture support, which matters for teams tracking open model compatibility and deployment options.
+- **[vLLM v0.24.0](https://github.com/vllm-project/vllm/releases/tag/v0.24.0)** — vLLM v0.24.0 brings a large serving release with MiniMax-M3 support and additional backend work across quantization and AMD/ROCm-related paths.
 
 Taken together, these primary sources are worth reading for the implementation questions they expose: which claims survive evaluation, what operational costs are hidden by demos, and where open tooling changes the build-versus-buy decision.
 

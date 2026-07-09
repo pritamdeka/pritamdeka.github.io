@@ -93,6 +93,29 @@ def clean_text(value):
     return re.sub(r"\s+", " ", value or "").strip()
 
 
+def strip_html(value):
+    """Convert source/model HTML fragments into plain Markdown-safe text."""
+    text = str(value or "")
+    text = re.sub(r"(?is)<(script|style|svg|picture|iframe|video|audio)\b.*?</\1>", " ", text)
+    text = re.sub(r"(?is)<img\b[^>]*>", " ", text)
+    text = re.sub(r"(?i)<br\s*/?>", "\n", text)
+    text = re.sub(r"(?i)</p\s*>", "\n", text)
+    text = re.sub(r"(?i)</h[1-6]\s*>", "\n", text)
+    text = re.sub(r"(?s)<[^>]+>", " ", text)
+    text = re.sub(r"&nbsp;", " ", text)
+    text = re.sub(r"&amp;", "&", text)
+    text = re.sub(r"&lt;", "<", text)
+    text = re.sub(r"&gt;", ">", text)
+    text = re.sub(r"&quot;", '"', text)
+    text = re.sub(r"&#39;|&apos;", "'", text)
+    return clean_text(text)
+
+
+def plain_text(value):
+    """Normalize arbitrary source text for inclusion in prompts/posts."""
+    return strip_html(value)
+
+
 def canonical_url(url):
     value = clean_text(url).rstrip("/")
     if value.startswith("https://hf.co/papers/"):
@@ -153,7 +176,7 @@ def fetch_hn_ai_stories(limit=7):
             if not isinstance(story, dict):
                 continue
             title = clean_text(story.get("title"))
-            text = clean_text(re.sub(r"<[^>]+>", " ", story.get("text") or ""))
+            text = plain_text(story.get("text") or "")
             relevance = topic_score(f"{title} {text}")
             if not title or relevance < 3:
                 continue
@@ -200,7 +223,7 @@ def fetch_hf_daily_papers(limit=12):
             paper = row.get("paper", row)
             paper_id = clean_text(paper.get("id"))
             title = clean_text(paper.get("title") or row.get("title"))
-            summary = clean_text(paper.get("summary") or row.get("summary"))
+            summary = plain_text(paper.get("summary") or row.get("summary"))
             if not paper_id or not title:
                 continue
             authors = [
@@ -285,7 +308,7 @@ def parse_feed_items(xml, source_name, limit=6):
         items.append({
             "title": title,
             "url": link,
-            "summary": clean_text(re.sub(r"<[^>]+>", " ", summary))[:900],
+            "summary": plain_text(summary)[:900],
             "published": published[:25],
             "source": source_name,
             "rank": 55 + relevance * 8,
@@ -319,7 +342,7 @@ def fetch_release_notes(limit=7):
                 if row.get("draft") or row.get("prerelease"):
                     continue
                 title = clean_text(row.get("name") or row.get("tag_name"))
-                body = clean_text(row.get("body"))
+                body = plain_text(row.get("body"))
                 if not title or not row.get("html_url"):
                     continue
                 releases.append({
@@ -361,7 +384,7 @@ def fetch_arxiv_papers(limit=10):
         papers = []
         for entry in root.findall(f"{{{namespace}}}entry"):
             title = xml_text(entry, "title", namespace)
-            abstract = xml_text(entry, "summary", namespace)
+            abstract = plain_text(xml_text(entry, "summary", namespace))
             url = xml_text(entry, "id", namespace)
             published = xml_text(entry, "published", namespace)[:10]
             authors = [
@@ -544,6 +567,15 @@ def replace_markdown_title(markdown, title):
     return f"# {title}\n\n{markdown.lstrip()}"
 
 
+def article_excerpt(markdown, limit=220):
+    body = re.sub(r"^#\s+.+\n+", "", markdown, count=1, flags=re.M)
+    body = re.sub(r"^_[^_]+_\s*", "", body.strip(), count=1)
+    body = re.sub(r"\[[^\]]+\]\((https?://[^)]+)\)", lambda m: m.group(0).split("](")[0][1:], body)
+    body = re.sub(r"[*_`#>\-]+", " ", body)
+    text = plain_text(body)
+    return text[:limit].rstrip() + ("..." if len(text) > limit else "")
+
+
 def source_dossier(hf_papers, official_news, releases, arxiv, hn):
     sections = ["FEATURED RESEARCH — HUGGING FACE DAILY PAPERS"]
     for index, paper in enumerate(hf_papers, 1):
@@ -694,8 +726,25 @@ def extract_urls(markdown):
     }
 
 
+def contains_html_tags(markdown):
+    return bool(re.search(r"</?[a-z][a-z0-9-]*(?:\s+[^>]*)?>", markdown, re.I))
+
+
+def sanitize_markdown(markdown):
+    """Remove raw HTML while preserving ordinary Markdown structure."""
+    lines = []
+    for line in str(markdown or "").splitlines():
+        cleaned = strip_html(line) if contains_html_tags(line) else line.rstrip()
+        lines.append(cleaned)
+    sanitized = "\n".join(lines).strip() + "\n"
+    sanitized = re.sub(r"\n{4,}", "\n\n\n", sanitized)
+    return sanitized
+
+
 def validate_draft(markdown, date_str, source_urls, community_urls=None):
     issues = []
+    if contains_html_tags(markdown):
+        issues.append("contains raw HTML tags")
     words = re.findall(r"\b[\w'-]+\b", markdown)
     title_match = re.match(r"^#\s+(.+)$", markdown, re.M)
     if not title_match:
@@ -783,13 +832,13 @@ PREVIOUS DRAFT
 def generate_validated_draft(prompt, date_str, urls, community_urls=None):
     attempts = []
     try:
-        draft = call_gemini(prompt)
+        draft = sanitize_markdown(call_gemini(prompt))
         issues = validate_draft(draft, date_str, urls, community_urls)
         attempts.append(("gemini", GEMINI_MODEL, issues))
         if not issues:
             return draft, "gemini", GEMINI_MODEL
         print("Gemini draft rejected: " + "; ".join(issues))
-        revised = call_gemini(revision_prompt(prompt, draft, issues))
+        revised = sanitize_markdown(call_gemini(revision_prompt(prompt, draft, issues)))
         revised_issues = validate_draft(revised, date_str, urls, community_urls)
         attempts.append(("gemini-revision", GEMINI_MODEL, revised_issues))
         if not revised_issues:
@@ -800,12 +849,14 @@ def generate_validated_draft(prompt, date_str, urls, community_urls=None):
 
     try:
         draft, model = call_groq(prompt)
+        draft = sanitize_markdown(draft)
         issues = validate_draft(draft, date_str, urls, community_urls)
         attempts.append(("groq", model, issues))
         if not issues:
             return draft, "groq", model
         print(f"Groq draft rejected ({model}): " + "; ".join(issues))
         revised, revision_model = call_groq(revision_prompt(prompt, draft, issues))
+        revised = sanitize_markdown(revised)
         revised_issues = validate_draft(revised, date_str, urls, community_urls)
         attempts.append(("groq-revision", revision_model, revised_issues))
         if not revised_issues:
@@ -822,23 +873,44 @@ def generate_validated_draft(prompt, date_str, urls, community_urls=None):
 
 
 def markdown_link(title, url):
-    return f"[{clean_text(title)}]({url})" if url else clean_text(title)
+    label = plain_text(title)
+    return f"[{label}]({url})" if url else label
 
 
 def compact_topic(title):
     words = [
         word
-        for word in re.findall(r"[A-Za-z][A-Za-z0-9-]{2,}", clean_text(title))
+        for word in re.findall(r"[A-Za-z][A-Za-z0-9-]{2,}", plain_text(title))
         if word.lower() not in {
             "the", "and", "for", "with", "from", "into", "using", "toward",
             "towards", "based", "large", "language", "model", "models",
+            "release", "version", "addition", "new", "paper",
         }
     ]
     topic = " ".join(words[:4])
     return topic or "Evidence"
 
 
-def build_fallback_post(date_str, hf_papers, official_news, releases, arxiv, hn):
+def deterministic_headline(source_titles, date_str, prior_titles=None):
+    topics = [compact_topic(title) for title in source_titles if clean_text(title)]
+    topics = [topic for index, topic in enumerate(topics) if topic and topic not in topics[:index]]
+    primary = topics[0] if topics else "Evidence"
+    secondary = topics[1] if len(topics) > 1 else "Evaluation"
+    candidates = [
+        f"Why {primary} Matters for Reliable AI Systems",
+        f"How {primary} Changes the Reliability Question for AI Builders",
+        f"What {primary} Reveals About Evaluation Debt in AI Systems",
+        f"Why {primary} and {secondary} Are Reshaping Applied AI",
+        f"The Practical AI Signal Hidden Inside {primary}",
+    ]
+    for candidate in candidates:
+        if not validate_headline(candidate, date_str, prior_titles):
+            return candidate
+    safe_topic = re.sub(r"[^A-Za-z0-9 ]+", "", primary).strip() or "Evidence"
+    return f"Why {safe_topic} Deserves a Fresh Reliability Check"
+
+
+def build_fallback_post(date_str, hf_papers, official_news, releases, arxiv, hn, prior_titles=None):
     """Build a readable source-led briefing when both AI providers fail."""
     strongest_news = official_news[:3]
     strongest_releases = releases[:2]
@@ -852,15 +924,15 @@ def build_fallback_post(date_str, hf_papers, official_news, releases, arxiv, hn)
         if phrase in combined:
             theme_terms.append(phrase)
     theme = theme_terms[0] if theme_terms else "AI systems"
-    lead_title = (
-        strongest_papers[0]["title"]
-        if strongest_papers else
-        (strongest_news + strongest_releases)[0]["title"]
-    )
-    hook_topic = compact_topic(lead_title)
+    source_titles = [
+        item["title"]
+        for item in strongest_papers + strongest_news + strongest_releases
+        if clean_text(item.get("title"))
+    ]
+    headline = deterministic_headline(source_titles, date_str, prior_titles)
 
     lines = [
-        f"# Why {hook_topic} Matters for Reliable AI Systems",
+        f"# {headline}",
         "",
         "_A source-led briefing on the papers, official announcements, and open-source "
         "releases most likely to affect how applied AI teams evaluate and build systems._",
@@ -1107,8 +1179,10 @@ def main():
     except Exception as error:
         print(f"AI editorial pipeline unavailable ({error})")
         post_md = build_fallback_post(
-            date_str, hf_papers, official_news, releases, arxiv, hn
+            date_str, hf_papers, official_news, releases, arxiv, hn,
+            context["prior_titles"]
         )
+    post_md = sanitize_markdown(post_md)
 
     source_titles = [
         item["title"]
@@ -1143,7 +1217,7 @@ def main():
         "week": week,
         "title": title,
         "file": post_path.as_posix(),
-        "excerpt": clean_text(re.sub(r"[#*\[\]()>]", "", post_md))[:220] + "...",
+        "excerpt": article_excerpt(post_md),
         "synthesis_provider": provider,
         "title_provider": title_provider,
         "source_count": (

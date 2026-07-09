@@ -2,10 +2,11 @@
   {
     "date": "2026-07-06",
     "week": "2026-W28",
-    "title": "What the Strongest Agent Research Changes for Builders",
+    "title": "Agent Memory and Red Teaming Are Becoming Operational AI Tests",
     "file": "blog/2026-07-06-what-the-strongest-agent-research-changes-for-builders.md",
-    "excerpt": "What the Strongest Agent Research Changes for Builders _A source-led briefing on the papers, official announcements, and open-source releases most likely to affect how applied AI teams evaluate and build systems._ This w...",
+    "excerpt": "Agent memory, red teaming, serving releases, and attribution work are converging on a practical question: how do AI teams prove that agent behavior remains bounded, inspectable, and safe under operational pressure?...",
     "synthesis_provider": "deterministic",
+    "title_provider": "deterministic",
     "source_count": 35,
     "source_mix": {
       "hf_papers": 12,
@@ -20,10 +21,11 @@
   {
     "date": "2026-06-29",
     "week": "2026-W27",
-    "title": "What the Strongest Agent Research Changes for Builders",
+    "title": "Guardrails and Review Agents Are Exposing AI Reliability Debt",
     "file": "blog/2026-06-29-what-the-strongest-agent-research-changes-for-builders.md",
-    "excerpt": "What the Strongest Agent Research Changes for Builders _A source-led briefing on the papers, official announcements, and open-source releases most likely to affect how applied AI teams evaluate and build systems._ This w...",
+    "excerpt": "Guardrails, review agents, multimodal search, and serving releases point to the same bottleneck: capability is less useful when teams cannot verify what changed, why it worked, and where it may fail...",
     "synthesis_provider": "deterministic",
+    "title_provider": "deterministic",
     "source_count": 34,
     "source_mix": {
       "hf_papers": 12,

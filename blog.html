@@ -299,8 +299,17 @@
     const escapeHtml = (value) => value.replace(/[&<>"']/g, (character) => ({
       '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
     })[character]);
+    const stripRawHtml = (value) => value
+      .replace(/<(script|style|svg|picture|iframe|video|audio)\b[\s\S]*?<\/\1>/gi, ' ')
+      .replace(/<img\b[^>]*>/gi, ' ')
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<\/p\s*>/gi, '\n')
+      .replace(/<\/h[1-6]\s*>/gi, '\n')
+      .replace(/<\/?[a-z][a-z0-9-]*(?:\s+[^>]*)?>/gi, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
     const inline = (value) => {
-      let output = escapeHtml(value);
+      let output = escapeHtml(stripRawHtml(value));
       output = output.replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
       output = output.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
       output = output.replace(/_([^_]+)_/g, '<em>$1</em>');
