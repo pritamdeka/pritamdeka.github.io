@@ -4,8 +4,17 @@
   <link href="https://pritamdeka.com/" rel="alternate" type="text/html"/>
   <link href="https://pritamdeka.com/feed.xml" rel="self" type="application/atom+xml"/>
   <id>urn:uuid:pritamdeka-https://pritamdeka.com</id>
-  <updated>2026-07-06T09:00:00Z</updated>
+  <updated>2026-07-13T09:00:00Z</updated>
   <author><name>Dr. Pritam Deka</name></author>
+  <entry>
+    <id>urn:pritamdeka:blog:2026-07-13</id>
+    <title>Reliable AI Systems Need Grounding in Real World Evaluations and Evidence</title>
+    <link href="https://pritamdeka.com/blog/2026-07-13-reliable-ai-systems-need-grounding-in-real-world-evaluations-and-evide.md"/>
+    <updated>2026-07-13T09:00:00Z</updated>
+    <published>2026-07-13T09:00:00Z</published>
+    <summary>The strongest public signals in this briefing point less to a single breakthrough than to a shared engineering problem: turning model capability into systems that can be evaluated, trusted, and operated under real constr...</summary>
+    <author><name>Dr. Pritam Deka (AI digest)</name></author>
+  </entry>
   <entry>
     <id>urn:pritamdeka:blog:2026-07-06</id>
     <title>Agent Memory and Red Teaming Are Becoming Operational AI Tests</title>
