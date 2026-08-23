@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Test Suite | Dr. Pritam Deka</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="style-dynamic.css?v=14">
+  <style>
+    .test-page { max-width: 800px; margin: 2rem auto; padding: 0 1.5rem; }
+    .test-page h1 { font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .test-page .subtitle { color: var(--text-muted); margin-bottom: 2rem; }
+    .test-table { width: 100%; border-collapse: collapse; }
+    .test-table th { text-align: left; padding: 0.8rem; background: var(--bg-secondary); border-bottom: 2px solid var(--border); font-size: 0.85rem; font-weight: 700; }
+    .test-table td { padding: 0.8rem; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+    .test-result-pass { color: #10b981; font-weight: 700; }
+    .test-result-fail { color: #ef4444; font-weight: 700; }
+    .test-result-pending { color: var(--text-muted); }
+    .test-fixture { position: fixed; top: -9999px; left: -9999px; opacity: 0; pointer-events: none; }
+    .test-fixture * { transition: none !important; animation: none !important; }
+    .test-note { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 1rem 1.2rem; border-radius: 8px; margin: 1.5rem 0; font-size: 0.88rem; }
+  </style>
+</head>
+<body class="light-mode">
+<div class="test-page">
+  <h1>Test Suite</h1>
+  <p class="subtitle">Verifies the chat FAB scroll fix, dark mode colors, and CSS :has() handling. Open this page on your phone to confirm all fixes work before pushing.</p>
+
+  <div class="test-note">
+    <strong>How to use:</strong> Open this page on the device where you saw the issues.
+    The table below auto-runs 5 tests on page load. All 5 must show <span class="test-result-pass">PASS</span> in green.
+    If any show <span class="test-result-fail">FAIL</span> in red, do not push — report the failing test name.
+  </div>
+
+  <table class="test-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Test</th>
+        <th>Expected</th>
+        <th>Actual</th>
+        <th>Result</th>
+      </tr>
+    </thead>
+    <tbody id="test-results">
+      <tr><td colspan="5" style="text-align:center;color:var(--text-muted)">Running tests...</td></tr>
+    </tbody>
+  </table>
+
+  <div class="test-note" style="margin-top: 2rem;">
+    <strong>After all tests pass:</strong> Delete this file (<code>test.html</code>) before pushing to GitHub,
+    or leave it — it has <code>noindex</code> so search engines won't find it.
+  </div>
+</div>
+
+<!-- Test fixtures (hidden elements for CSS testing) -->
+<div class="test-fixture" id="fixture-area">
+  <button class="chat-fab" id="test-chat-fab"><i class="fas fa-comments"></i></button>
+  <button class="back-to-top" id="test-back-to-top"><i class="fas fa-arrow-up"></i></button>
+  <nav class="appmenu" id="test-appmenu">
+    <a href="#" class="appmenu-link" id="test-appmenu-link"><i class="fas fa-user"></i> Test Link</a>
+  </nav>
+  <div class="search-container" id="search-container">
+    <input type="text" id="search-input" placeholder="Test">
+  </div>
+  <div class="chat-panel active" id="test-chat-panel">
+    <div class="chat-msg bot" id="test-chat-msg">Test message</div>
+  </div>
+  <input type="text" class="chat-input" id="test-chat-input">
+</div>
+
+<script>
+(function runTests() {
+  var results = [];
+  var body = document.body;
+
+  function addResult(name, expected, actual, pass) {
+    results.push({ name: name, expected: expected, actual: actual, pass: pass });
+  }
+
+  // Test 1: :has() selector support
+  try {
+    var hasSupport = CSS.supports('selector', 'body:has(div)');
+    addResult(':has() selector support', 'true or false', String(hasSupport), true);
+  } catch(e) {
+    addResult(':has() selector support', 'true or false', 'error: ' + e.message, false);
+  }
+
+  // Test 2: Chat FAB .shifted class moves it up
+  try {
+    var fab = document.getElementById('test-chat-fab');
+    fab.classList.add('shifted');
+    var bottomVal = window.getComputedStyle(fab).bottom;
+    // Should be 90px (desktop) — on mobile it would be 80px
+    var pass = (bottomVal === '90px' || bottomVal === '80px');
+    addResult('Chat FAB .shifted moves up', '90px or 80px', bottomVal, pass);
+    fab.classList.remove('shifted');
+  } catch(e) {
+    addResult('Chat FAB .shifted moves up', '90px or 80px', 'error: ' + e.message, false);
+  }
+
+  // Test 3: Dark mode .appmenu background is dark
+  try {
+    body.classList.remove('light-mode');
+    body.classList.add('dark-mode');
+    var menu = document.getElementById('test-appmenu');
+    var bg = window.getComputedStyle(menu).backgroundColor;
+    // Should be rgb(22, 24, 48) = #161830
+    var pass = (bg === 'rgb(22, 24, 48)' || bg === '#161830');
+    addResult('Dark mode .appmenu background', 'rgb(22, 24, 48)', bg, pass);
+  } catch(e) {
+    addResult('Dark mode .appmenu background', 'rgb(22, 24, 48)', 'error: ' + e.message, false);
+  }
+
+  // Test 4: Dark mode #search-input text is light on dark background
+  try {
+    var input = document.getElementById('search-input');
+    var color = window.getComputedStyle(input).color;
+    var bgColor = window.getComputedStyle(input).backgroundColor;
+    // Text should be light (rgb(232, 234, 246) = #e8eaf6)
+    // Background should be dark (rgb(12, 14, 31) = #0c0e1f)
+    var colorPass = (color === 'rgb(232, 234, 246)' || color === '#e8eaf6');
+    var bgPass = (bgColor === 'rgb(12, 14, 31)' || bgColor === '#0c0e1f');
+    addResult('Dark mode search input colors', 'text=light, bg=dark',
+      'text=' + color + ', bg=' + bgColor, colorPass && bgPass);
+  } catch(e) {
+    addResult('Dark mode search input colors', 'text=light, bg=dark', 'error: ' + e.message, false);
+  }
+
+  // Test 5: Dark mode .appmenu-link text is light
+  try {
+    var link = document.getElementById('test-appmenu-link');
+    var linkColor = window.getComputedStyle(link).color;
+    var linkPass = (linkColor === 'rgb(232, 234, 246)' || linkColor === '#e8eaf6');
+    addResult('Dark mode .appmenu-link text', 'rgb(232, 234, 246)', linkColor, linkPass);
+  } catch(e) {
+    addResult('Dark mode .appmenu-link text', 'rgb(232, 234, 246)', 'error: ' + e.message, false);
+  }
+
+  // Reset body class
+  body.classList.remove('dark-mode');
+  body.classList.add('light-mode');
+
+  // Render results
+  var tbody = document.getElementById('test-results');
+  tbody.innerHTML = '';
+  var allPass = true;
+  results.forEach(function(r, i) {
+    if (!r.pass) allPass = false;
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td>' + (i + 1) + '</td>' +
+      '<td>' + r.name + '</td>' +
+      '<td>' + r.expected + '</td>' +
+      '<td>' + r.actual + '</td>' +
+      '<td class="' + (r.pass ? 'test-result-pass' : 'test-result-fail') + '">' +
+      (r.pass ? 'PASS' : 'FAIL') + '</td>';
+    tbody.appendChild(tr);
+  });
+
+  // Summary row
+  var summaryTr = document.createElement('tr');
+  summaryTr.innerHTML = '<td colspan="4" style="font-weight:700;text-align:right">Overall:</td>' +
+    '<td class="' + (allPass ? 'test-result-pass' : 'test-result-fail') + '" style="font-size:1.1rem">' +
+    (allPass ? 'ALL PASS' : 'SOME FAILED') + '</td>';
+  tbody.appendChild(summaryTr);
+
+  console.log('Test results:', results);
+  console.log(allPass ? 'ALL TESTS PASSED' : 'SOME TESTS FAILED');
+})();
+</script>
+</body>
+</html>

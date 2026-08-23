@@ -22,6 +22,8 @@ other visitor-provided personal data.
 | `primary_cta` | `action`, `destination`, `page` | Main call-to-action engagement |
 | `command_palette_open` | `page` | Command-palette discovery |
 | `command_action` | `group`, `action`, `page` | Commands visitors use |
+| `impact_dashboard_view` | `page` | Public research-dashboard discovery |
+| `impact_source_open` | `source`, `page` | Visits to Scholar, Hugging Face, or an individual model |
 
 ## Recommended Umami goals and boards
 
@@ -33,6 +35,7 @@ other visitor-provided personal data.
 - Board: conversions (`cv_download`, successful contact, primary CTAs).
 - Board: discovery (search and command-palette events).
 - Board: chatbot health (opens, questions, outcomes, and latency buckets).
+- Board: research impact (`impact_dashboard_view` and `impact_source_open` by source).
 
 Review trends after four to six weeks before making major navigation or design
 changes. Low-volume data should be treated directionally rather than as a

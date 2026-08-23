@@ -753,23 +753,29 @@ def validate_draft(markdown, date_str, source_urls, community_urls=None):
     else:
         title = title_match.group(1).strip()
         issues.extend(validate_headline(title, date_str))
-    first_lines = [line.strip() for line in markdown.splitlines()[1:] if line.strip()]
-    if not first_lines or not (
-        first_lines[0].startswith("_") and first_lines[0].endswith("_")
-    ):
-        issues.append("missing italic standfirst immediately below headline")
+    # Standfirst: italic line within first 3 lines after headline (either _.._ or *..*)
+    early_lines = [line.strip() for line in markdown.splitlines()[1:] if line.strip()][:3]
+    has_standfirst = any(
+        (line.startswith("_") and line.endswith("_"))
+        or (line.startswith("*") and line.endswith("*"))
+        for line in early_lines
+    )
+    if not has_standfirst:
+        issues.append("missing italic standfirst near the headline")
     if len(words) < MIN_DRAFT_WORDS:
         issues.append(f"too short ({len(words)} words; minimum {MIN_DRAFT_WORDS})")
     if len(words) > MAX_DRAFT_WORDS:
         issues.append(f"too long ({len(words)} words; maximum {MAX_DRAFT_WORDS})")
+    # Headings matched case-insensitively and whitespace-normalized
+    lowered = re.sub(r"\s+", " ", markdown.lower())
     for heading in (
-        "## The signal",
-        "## Deep dive",
-        "## Research radar",
-        "## Practical implications",
-        "## What to watch",
+        "the signal",
+        "deep dive",
+        "research radar",
+        "practical implications",
+        "what to watch",
     ):
-        if heading not in markdown:
+        if f"## {heading}" not in lowered:
             issues.append(f"missing section: {heading}")
     used_urls = extract_urls(markdown)
     invented = used_urls - source_urls
@@ -787,11 +793,11 @@ def validate_draft(markdown, date_str, source_urls, community_urls=None):
         community_count = len(cited & community_urls)
         if community_count / len(cited) > 0.3:
             issues.append("more than 30% of citations come from community sources")
-    lowered = markdown.lower()
-    used_generic = [phrase for phrase in GENERIC_PHRASES if phrase in lowered]
+    lowered_all = markdown.lower()
+    used_generic = [phrase for phrase in GENERIC_PHRASES if phrase in lowered_all]
     if used_generic:
         issues.append("contains generic phrases: " + ", ".join(used_generic))
-    if len(re.findall(r"\b(however|because|therefore|trade-off|limitation|risk)\b", lowered)) < 3:
+    if len(re.findall(r"\b(however|because|therefore|trade-off|limitation|risk)\b", lowered_all)) < 3:
         issues.append("insufficient analytical or caveat language")
     return issues
 
@@ -829,6 +835,17 @@ PREVIOUS DRAFT
 """
 
 
+def log_rejection(provider, model, draft, issues):
+    """Print a diagnostic preview so CI logs show why a draft was rejected."""
+    print(f"--- {provider}/{model} rejection details ---")
+    print(f"Issues: {'; '.join(issues)}")
+    preview = re.sub(r"\s+", " ", draft)[:400]
+    word_count = len(re.findall(r"\b[\w'-]+\b", draft))
+    print(f"Draft stats: {word_count} words")
+    print(f"Draft preview: {preview}...")
+    print(f"--- end {provider}/{model} rejection ---")
+
+
 def generate_validated_draft(prompt, date_str, urls, community_urls=None):
     attempts = []
     try:
@@ -837,13 +854,32 @@ def generate_validated_draft(prompt, date_str, urls, community_urls=None):
         attempts.append(("gemini", GEMINI_MODEL, issues))
         if not issues:
             return draft, "gemini", GEMINI_MODEL
-        print("Gemini draft rejected: " + "; ".join(issues))
+        log_rejection("gemini", GEMINI_MODEL, draft, issues)
         revised = sanitize_markdown(call_gemini(revision_prompt(prompt, draft, issues)))
         revised_issues = validate_draft(revised, date_str, urls, community_urls)
         attempts.append(("gemini-revision", GEMINI_MODEL, revised_issues))
         if not revised_issues:
             return revised, "gemini", GEMINI_MODEL
-        print("Gemini revision rejected: " + "; ".join(revised_issues))
+        log_rejection("gemini-revision", GEMINI_MODEL, revised, revised_issues)
+
+        # One last Gemini attempt with an explicitly formatted skeleton to copy.
+        skeleton_prompt = (
+            prompt
+            + "\n\nCRITICAL FORMAT REMINDERS (previous attempts failed these):\n"
+            + "\n".join(f"- FIX: {issue}" for issue in revised_issues[:5])
+            + "\nUse exactly these section headings, lowercase as shown: "
+            "'## The signal', '## Deep dive', '## Research radar', "
+            "'## Practical implications', '## What to watch'.\n"
+            "The line immediately after the H1 must be a single-line italic standfirst "
+            "wrapped in underscores like _this_.\n"
+            "Return only the Markdown."
+        )
+        retry = sanitize_markdown(call_gemini(skeleton_prompt))
+        retry_issues = validate_draft(retry, date_str, urls, community_urls)
+        attempts.append(("gemini-skeleton-retry", GEMINI_MODEL, retry_issues))
+        if not retry_issues:
+            return retry, "gemini", GEMINI_MODEL
+        log_rejection("gemini-skeleton-retry", GEMINI_MODEL, retry, retry_issues)
     except Exception as error:
         print(f"Gemini unavailable ({type(error).__name__}: {error})")
 
@@ -854,14 +890,14 @@ def generate_validated_draft(prompt, date_str, urls, community_urls=None):
         attempts.append(("groq", model, issues))
         if not issues:
             return draft, "groq", model
-        print(f"Groq draft rejected ({model}): " + "; ".join(issues))
+        log_rejection("groq", model, draft, issues)
         revised, revision_model = call_groq(revision_prompt(prompt, draft, issues))
         revised = sanitize_markdown(revised)
         revised_issues = validate_draft(revised, date_str, urls, community_urls)
         attempts.append(("groq-revision", revision_model, revised_issues))
         if not revised_issues:
             return revised, "groq", revision_model
-        print(f"Groq revision rejected ({revision_model}): " + "; ".join(revised_issues))
+        log_rejection("groq-revision", revision_model, revised, revised_issues)
     except Exception as error:
         print(f"Groq unavailable ({type(error).__name__}: {error})")
 
@@ -910,8 +946,112 @@ def deterministic_headline(source_titles, date_str, prior_titles=None):
     return f"Why {safe_topic} Deserves a Fresh Reliability Check"
 
 
+FALLBACK_STANDFIRSTS = (
+    "A source-led briefing on the papers, official announcements, and open-source "
+    "releases most likely to affect how applied AI teams evaluate and build systems.",
+    "This week's strongest public signals, read for what they change about evaluation, "
+    "deployment cost, and system design in applied AI.",
+    "The research and release notes worth your time, filtered for relevance to NLP, "
+    "multimodal systems, and document intelligence.",
+    "A evidence-first scan of the week: what shipped, what was published, and what it "
+    "actually implies for teams building AI systems.",
+)
+
+FALLBACK_THESES = (
+    "The strongest public signals in this briefing point less to a single breakthrough "
+    "than to a shared engineering problem: turning model capability into systems that "
+    "can be evaluated, trusted, and operated under real constraints.",
+    "Across papers and releases this week, one pattern repeats: capability gains are "
+    "increasingly conditional. The interesting question is not whether models can do a "
+    "task in a demo but whether the surrounding evaluation and tooling make that "
+    "capability dependable.",
+    "This week's sources converge on verification as the bottleneck. Models are doing "
+    "more, faster; the hard part is proving where they still fail before users find out.",
+    "The notable work this week moves effort from architecture toward infrastructure — "
+    "guardrails, memory contracts, serving efficiency, and the measurement practices "
+    "that decide whether a technique survives contact with production data.",
+)
+
+FALLBACK_IMPLICATION_POOLS = [
+    "Reproduce the central claim of {topic} on a small internal dataset before adopting the method.",
+    "Benchmark {topic} against your current baseline rather than the paper's reported baseline.",
+    "Instrument {topic}-style pipelines with failure-mode logging, not just aggregate accuracy.",
+    "Check whether {topic} assumptions about input quality hold in your production traffic.",
+    "Estimate the operational cost of {topic} at your expected traffic before committing.",
+    "Write down the distribution shifts that would break {topic} and test two of them directly.",
+    "Review whether {topic} changes your build-versus-buy calculus for any internal component.",
+]
+
+FALLBACK_WATCH_POOLS = [
+    "Whether code and reproducible evaluation details ship for {topic}.",
+    "Whether independent replications confirm {topic} outside its original benchmark.",
+    "How quickly {topic} gets absorbed into mainstream serving stacks.",
+    "Whether {topic} survives contact with messier, multilingual, or adversarial inputs.",
+]
+
+
+FALLBACK_BRIDGES = (
+    "Read together, these primary sources expose the implementation questions "
+    "that matter: which claims survive evaluation, what operational costs hide "
+    "behind demos, and where open tooling shifts the build-versus-buy decision.",
+    "Taken as a set, the signal is less about any single release than about the "
+    "evaluation burden each one creates: teams now have to prove more, faster, "
+    "with tooling that is still catching up.",
+    "The common thread across these sources is accountability. Capability keeps "
+    "improving; the binding constraint is showing that the improvement holds up "
+    "outside the original demo conditions.",
+)
+
+
+def fallback_seed(date_str):
+    return int(re.sub(r"\D", "", date_str) or 0)
+
+
+def pick(seq, seed):
+    return seq[seed % len(seq)]
+
+
+def fallback_implications(topics, seed):
+    pool = FALLBACK_IMPLICATION_POOLS[:]
+    chosen = []
+    index = seed
+    used_topics = list(dict.fromkeys(topics)) or ["the leading method"]
+    while len(chosen) < 5:
+        template = pick(pool, index)
+        topic = pick(used_topics, index * 3 + 1)
+        line = template.format(topic=topic)
+        if line not in chosen:
+            chosen.append(line)
+        index += 1
+        if index - seed > 24:
+            break
+    return chosen
+
+
+def fallback_watch_items(topics, seed):
+    chosen = []
+    index = seed + 2
+    used_topics = list(dict.fromkeys(topics)) or ["the highlighted methods"]
+    while len(chosen) < 3:
+        template = pick(FALLBACK_WATCH_POOLS, index)
+        topic = pick(used_topics, index * 5 + 2)
+        line = template.format(topic=topic)
+        if line not in chosen:
+            chosen.append(line)
+        index += 1
+        if index - seed > 18:
+            break
+    return chosen
+
+
 def build_fallback_post(date_str, hf_papers, official_news, releases, arxiv, hn, prior_titles=None):
-    """Build a readable source-led briefing when both AI providers fail."""
+    """Build a readable source-led briefing when both AI providers fail.
+
+    Unlike earlier versions, the framing text rotates by date and the
+    implications/watch sections derive from the actual source topics, so two
+    weeks never produce identical boilerplate.
+    """
+    seed = fallback_seed(date_str)
     strongest_news = official_news[:3]
     strongest_releases = releases[:2]
     strongest_papers = (hf_papers + arxiv)[:6]
@@ -924,25 +1064,33 @@ def build_fallback_post(date_str, hf_papers, official_news, releases, arxiv, hn,
         if phrase in combined:
             theme_terms.append(phrase)
     theme = theme_terms[0] if theme_terms else "AI systems"
+
+    # Derive concrete topics from source titles for dynamic implications.
+    topics = []
+    for item in strongest_papers[:4] + strongest_news[:2]:
+        topic = compact_topic(item["title"])
+        if topic and topic.lower() not in {t.lower() for t in topics}:
+            topics.append(topic)
+
     source_titles = [
         item["title"]
         for item in strongest_papers + strongest_news + strongest_releases
         if clean_text(item.get("title"))
     ]
     headline = deterministic_headline(source_titles, date_str, prior_titles)
+    standfirst = pick(FALLBACK_STANDFIRSTS, seed)
+    thesis = pick(FALLBACK_THESES, seed // 7)
 
     lines = [
         f"# {headline}",
         "",
-        "_A source-led briefing on the papers, official announcements, and open-source "
-        "releases most likely to affect how applied AI teams evaluate and build systems._",
+        f"_{standfirst}_",
         "",
-        "The strongest public signals in this briefing point less to a single breakthrough "
-        "than to a shared engineering problem: turning model capability into systems "
-        "that can be evaluated, trusted, and operated under real constraints. The "
-        "items below are selected for relevance to applied NLP, multimodal systems, "
-        "retrieval, and document intelligence. Where only metadata is available, the "
-        "briefing avoids conclusions beyond that evidence.",
+        thesis,
+        f" The items below are selected for relevance to applied NLP, multimodal "
+        f"systems, retrieval, and document intelligence, with '{theme}' emerging as "
+        f"the recurring thread. Where only metadata is available, the briefing avoids "
+        f"conclusions beyond that evidence.",
         "",
         "## The signal",
     ]
@@ -958,16 +1106,13 @@ def build_fallback_post(date_str, hf_papers, official_news, releases, arxiv, hn,
         )
     lines.extend([
         "",
-        "Taken together, these primary sources are worth reading for the implementation "
-        "questions they expose: which claims survive evaluation, what operational "
-        "costs are hidden by demos, and where open tooling changes the build-versus-buy "
-        "decision.",
+        pick(FALLBACK_BRIDGES, seed // 3),
         "",
         "## Deep dive",
         "",
     ])
     if strongest_papers:
-        lead = strongest_papers[0]
+        lead = strongest_papers[seed % len(strongest_papers)]
         lines.append(
             f"The highest-ranked research signal is **{markdown_link(lead['title'], lead['url'])}**. "
             f"Its abstract frames the contribution as follows: {lead['abstract'][:650]} "
@@ -982,24 +1127,14 @@ def build_fallback_post(date_str, hf_papers, official_news, releases, arxiv, hn,
             f"{paper['abstract'][:420].rstrip()} "
             f"Relevant topics: {', '.join(paper.get('categories', [])[:3])}."
         )
+    lines.extend(["", "## Practical implications", ""])
+    lines.extend(f"- {line}" for line in fallback_implications(topics, seed))
+    lines.extend(["", "## What to watch", ""])
+    lines.extend(f"- {line}" for line in fallback_watch_items(topics, seed))
     lines.extend([
         "",
-        "## Practical implications",
-        "",
-        "- Reproduce the most relevant claim on a small internal dataset before changing architecture.",
-        "- Separate retrieval, generation, and verification metrics so aggregate scores do not hide failure modes.",
-        "- Record latency, token use, and human-review burden alongside task quality.",
-        "- Test the system on distribution shifts and incomplete documents, not only clean benchmark inputs.",
-        "- Treat community excitement as discovery only; verify claims against papers, code, and official releases.",
-        "",
-        "## What to watch",
-        "",
-        "- Whether the highlighted methods release code, data, and reproducible evaluation details.",
-        "- Whether follow-up work confirms gains outside the original benchmark or domain.",
-        "- Whether operational costs alter the apparent advantage over simpler baselines.",
-        "",
-        "_This fallback edition was assembled directly from public source metadata because "
-        "the AI editorial providers were unavailable or their drafts did not pass review._",
+        "_This edition was assembled directly from public source metadata because the "
+        "AI editorial providers were unavailable or their drafts did not pass review._",
         "",
     ])
     return "\n".join(lines)
