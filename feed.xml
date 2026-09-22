@@ -4,8 +4,17 @@
   <link href="https://pritamdeka.com/" rel="alternate" type="text/html"/>
   <link href="https://pritamdeka.com/feed.xml" rel="self" type="application/atom+xml"/>
   <id>urn:uuid:pritamdeka-https://pritamdeka.com</id>
-  <updated>2026-09-14T09:00:00Z</updated>
+  <updated>2026-09-21T09:00:00Z</updated>
   <author><name>Dr. Pritam Deka</name></author>
+  <entry>
+    <id>urn:pritamdeka:blog:2026-09-21</id>
+    <title>Why Grounded Skill Synthesis Code Matters for Reliable AI Systems</title>
+    <link href="https://pritamdeka.com/blog/2026-09-21-why-grounded-skill-synthesis-code-matters-for-reliable-ai-systems.md"/>
+    <updated>2026-09-21T09:00:00Z</updated>
+    <published>2026-09-21T09:00:00Z</published>
+    <summary>Across papers and releases this week, one pattern repeats: capability gains are increasingly conditional. The interesting question is not whether models can do a task in a demo but whether the surrounding evaluation and...</summary>
+    <author><name>Dr. Pritam Deka (AI digest)</name></author>
+  </entry>
   <entry>
     <id>urn:pritamdeka:blog:2026-09-14</id>
     <title>Why Benchmark Radar Living Database Matters for Reliable AI Systems</title>
