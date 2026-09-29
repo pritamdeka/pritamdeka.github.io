@@ -4,8 +4,17 @@
   <link href="https://pritamdeka.com/" rel="alternate" type="text/html"/>
   <link href="https://pritamdeka.com/feed.xml" rel="self" type="application/atom+xml"/>
   <id>urn:uuid:pritamdeka-https://pritamdeka.com</id>
-  <updated>2026-09-21T09:00:00Z</updated>
+  <updated>2026-09-28T09:00:00Z</updated>
   <author><name>Dr. Pritam Deka</name></author>
+  <entry>
+    <id>urn:pritamdeka:blog:2026-09-28</id>
+    <title>Why ZooWork-ShopRanker Open Preference-Aligned E-Commerce Matters for Reliable AI Systems</title>
+    <link href="https://pritamdeka.com/blog/2026-09-28-why-zoowork-shopranker-open-preference-aligned-e-commerce-matters-for-.md"/>
+    <updated>2026-09-28T09:00:00Z</updated>
+    <published>2026-09-28T09:00:00Z</published>
+    <summary>This week&#x27;s sources converge on verification as the bottleneck. Models are doing more, faster; the hard part is proving where they still fail before users find out. The items below are selected for relevance to applied N...</summary>
+    <author><name>Dr. Pritam Deka (AI digest)</name></author>
+  </entry>
   <entry>
     <id>urn:pritamdeka:blog:2026-09-21</id>
     <title>Why Grounded Skill Synthesis Code Matters for Reliable AI Systems</title>
