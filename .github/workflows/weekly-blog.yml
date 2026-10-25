@@ -28,10 +28,15 @@ jobs:
           GROQ_MODELS: ${{ vars.GROQ_MODELS }}
         run: python scripts/generate_blog.py
 
+      - name: Build shareable post pages, sitemap and feed
+        run: |
+          python scripts/generate_post_pages.py
+          python scripts/generate_feed.py
+
       - name: Commit and push if changed
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add blog/
+          git add blog/ sitemap.xml feed.xml
           git diff --staged --quiet || git commit -m "📝 Weekly AI digest [skip ci]"
           git push

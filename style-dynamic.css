@@ -3567,6 +3567,26 @@ nav a.spy-active::after {
   transform: scale(0.97);
 }
 
+.blog-share-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-right: 0.2rem;
+}
+
+/* Native share sheet (phones, Safari, Edge) only where supported */
+.blog-share-native { display: none; }
+.can-share .blog-share-native {
+  display: inline-flex;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 .blog-source-row {
   display: flex;
   justify-content: center;
@@ -4236,6 +4256,21 @@ body:has(.back-to-top.visible) .chat-fab {
   max-width: 800px;
 }
 
+.landing-avatar {
+  display: block;
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 1.4rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.12), 0 18px 40px rgba(20, 16, 80, 0.35);
+}
+
+@media (max-width: 700px) {
+  .landing-avatar { width: 112px; height: 112px; margin-bottom: 1.1rem; }
+}
+
 .landing-eyebrow {
   display: inline-flex;
   align-items: center;
@@ -4879,7 +4914,7 @@ body:has(.back-to-top.visible) .chat-fab {
 
 .career-item {
   flex: 1;
-  min-width: 140px;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -4920,11 +4955,31 @@ body:has(.back-to-top.visible) .chat-fab {
   .what-i-do-grid { grid-template-columns: 1fr; }
   .tech-group { flex-direction: column; gap: 0.5rem; }
   .tech-group-label { min-width: auto; padding-top: 0; }
+  /* Vertical timeline on phones so no milestone is hidden off-screen */
   .career-timeline {
-    overflow-x: auto;
-    scroll-padding-inline: 1rem;
+    flex-direction: column;
+    gap: 1.1rem;
+    overflow: visible;
+    padding: 0.25rem 0 0.25rem 0.25rem;
   }
-  .career-item { min-width: 120px; }
+  .career-timeline::before {
+    top: 12px;
+    bottom: 12px;
+    left: calc(0.25rem + 11px);
+    right: auto;
+    width: 3px;
+    height: auto;
+    background: linear-gradient(180deg, var(--accent), var(--accent-violet), var(--accent-soft));
+  }
+  .career-item {
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    gap: 0.9rem;
+    padding: 0;
+  }
+  .career-dot { margin-bottom: 0; }
+  .career-year { margin-bottom: 0; min-width: 2.6rem; }
 }
 
 /* ===== Research Impact Dashboard ===== */

@@ -90,7 +90,7 @@ def main():
         date_str, title, excerpt, file = b
         iso = to_iso_date(date_str)
         eid = f"urn:pritamdeka:blog:{iso[:10]}"
-        link = f"{SITE}/{file}" if file else f"{SITE}/blog"
+        link = f"{SITE}/blog/{Path(file).stem}" if file else f"{SITE}/blog"
         entries.append({
             'iso': iso,
             'xml': f"""  <entry>

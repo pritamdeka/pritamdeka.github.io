@@ -10,6 +10,7 @@
   <meta property="og:description" content="Weekly auto-generated digest of AI & NLP research news.">
   <meta property="og:url" content="https://pritamdeka.com/blog">
   <link rel="canonical" href="https://pritamdeka.com/blog">
+  <link rel="alternate" type="application/atom+xml" title="Pritam Deka — News &amp; Weekly AI Digest" href="/feed.xml">
   <meta name="twitter:card" content="summary">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,7 +19,7 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="apple-touch-icon" href="favicon.svg">
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style-dynamic.css?v=20">
+  <link rel="stylesheet" href="style-dynamic.css?v=23">
   <!-- Umami Analytics -->
   <script defer src="https://cloud.umami.is/script.js" data-website-id="64321948-50ef-4c25-a960-5e7bdd9b838a"></script>
 </head>
@@ -174,7 +175,7 @@
 </nav>
 
 
-  <script src="dynamic.js?v=19"></script>
+  <script src="dynamic.js?v=20"></script>
   <script>
   // ===== Blog page renderer =====
   async function renderBlog() {
@@ -251,7 +252,10 @@
       const metaParts = [dateStr];
       if (readingTime) metaParts.push(`${readingTime} min read`);
       if (metadata.sources) metaParts.push(`${metadata.sources} sources`);
-      const postUrl = window.location.origin + '/' + file;
+      // Share the static per-post page (blog/<slug>.html) so link previews show this post
+      const postUrl = window.location.origin + '/' + file.replace(/\.md$/, '');
+      const postTitle = md.split('\n')[0].replace(/^#\s*/, '').trim();
+      const shareBar = window.buildShareBar(postUrl, postTitle);
       const html = window.renderDigestMarkdown(md);
       const sourceBadges = metadata.mix
         ? Object.entries(metadata.mix)
@@ -267,26 +271,14 @@
         '<article class="blog-article">' +
         '<div class="blog-article-kicker"><i class="fas fa-sparkles"></i> Research briefing</div>' +
         '<div class="blog-meta">' + metaParts.filter(Boolean).join(' · ') + '</div>' +
+        shareBar +
         (sourceBadges ? '<div class="blog-evidence-strip">' + sourceBadges + '</div>' : '') +
         heroImage +
         html +
-        '<div class="blog-share">' +
-          '<a class="blog-share-btn" target="_blank" rel="noopener noreferrer" href="https://twitter.com/intent/tweet?text=' + encodeURIComponent(md.split('\n')[0].replace('#','').trim()) + '&url=' + encodeURIComponent(postUrl) + '"><i class="fab fa-x-twitter"></i> Share on X</a>' +
-          '<a class="blog-share-btn" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(postUrl) + '"><i class="fab fa-linkedin"></i> LinkedIn</a>' +
-          '<button class="blog-share-btn" id="copy-blog-link"><i class="fas fa-link"></i> Copy link</button>' +
-        '</div>' +
+        shareBar +
+        '<p><a class="blog-share-btn" href="' + postUrl + '"><i class="fas fa-external-link-alt"></i> Open post page</a></p>' +
         '<div class="giscus" id="giscus-container"></div>' +
         '</article>';
-      const copyButton = document.getElementById('copy-blog-link');
-      if (copyButton) {
-        copyButton.addEventListener('click', async () => {
-          await navigator.clipboard.writeText(postUrl);
-          copyButton.innerHTML = '<i class="fas fa-check"></i> Copied!';
-          setTimeout(() => {
-            copyButton.innerHTML = '<i class="fas fa-link"></i> Copy link';
-          }, 2000);
-        });
-      }
       latestEl.scrollIntoView({ behavior: 'smooth' });
       // Load giscus comments
       loadGiscus();

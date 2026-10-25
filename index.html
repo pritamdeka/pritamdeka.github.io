@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style-dynamic.css?v=21">
+<link rel="stylesheet" href="style-dynamic.css?v=22">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="apple-touch-icon" href="favicon.svg">
   <link rel="alternate" type="application/atom+xml" title="Pritam Deka — News" href="feed.xml">
@@ -87,12 +87,13 @@
 <section class="landing-hero" id="home">
   <div class="landing-hero-bg"></div>
   <div class="landing-hero-inner">
+    <img src="assets/profile-hero.webp" alt="Portrait of Dr. Pritam Deka" class="landing-avatar" width="160" height="160" fetchpriority="high">
     <span class="landing-eyebrow"><i class="fas fa-brain"></i> AI Engineer · NLP Researcher · Co-founder Khyontek AI</span>
     <h1 class="landing-name">Dr. Pritam Deka</h1>
     <div class="landing-roles"><span class="ty-text" id="hero-ty"></span></div>
     <p class="landing-tagline">
       Building practical AI systems across LLMs, vision-language models, agentic AI and document intelligence.
-      Research Fellow at Queen's University Belfast · 12+ publications · 50+ open-source models.
+      Research Fellow at Queen's University Belfast · 12 peer-reviewed papers · 60+ open-source models.
     </p>
     <div class="landing-cta">
       <a href="/papers" class="landing-btn primary"><i class="fas fa-file-alt"></i> View Publications</a>
@@ -109,10 +110,10 @@
 <section class="landing-stats reveal" id="stats">
   <div class="landing-stats-inner">
     <div class="lstat"><span class="lstat-num" id="l-citations">0</span><span class="lstat-label">Citations</span></div>
-    <div class="lstat"><span class="lstat-num" id="l-papers">0</span><span class="lstat-label">Publications</span></div>
+    <div class="lstat"><span class="lstat-num" id="l-papers">0</span><span class="lstat-label">Scholar Papers</span></div>
     <div class="lstat"><span class="lstat-num">6</span><span class="lstat-label">h-index</span></div>
     <div class="lstat"><span class="lstat-num" id="l-models">0</span><span class="lstat-label">HF Models</span></div>
-    <div class="lstat"><span class="lstat-num">20+</span><span class="lstat-label">Datasets</span></div>
+    <div class="lstat"><span class="lstat-num">25+</span><span class="lstat-label">HF Datasets</span></div>
   </div>
   <a class="impact-dashboard-link" href="/analytics"><i class="fas fa-chart-line"></i> Explore the research impact dashboard</a>
 </section>
@@ -134,7 +135,7 @@
     <div class="what-i-do-card">
       <div class="what-i-do-icon"><i class="fab fa-github"></i></div>
       <h3>Open-Source &amp; Community</h3>
-      <p>50+ models and 20+ datasets on HuggingFace. Reviewer for ICML &amp; NeurIPS 2026. Best Paper at iiWAS 2021. Mentoring the next generation of AI engineers.</p>
+      <p>60+ models and 25+ datasets on HuggingFace. Reviewer for ICML &amp; NeurIPS 2026. Best Paper at iiWAS 2021. Mentoring the next generation of AI engineers.</p>
     </div>
   </div>
 </section>
@@ -364,7 +365,7 @@
     }
   } catch(e) {
     const modelEl = document.getElementById('l-models');
-    if (modelEl) modelEl.textContent = '50+';
+    if (modelEl) modelEl.textContent = '60+';
   }
 })();
 </script>

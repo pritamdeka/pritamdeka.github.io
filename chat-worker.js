@@ -4,8 +4,14 @@
 // Replace CHAT_WORKER_URL in dynamic.js with the Worker URL
 // After editing this file, re-paste it into the Cloudflare dashboard — the repo copy is not auto-deployed
 
-const GEMINI_MODEL = 'gemini-3.8-flash';
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
+const geminiUrl = (model) => `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+
+// Tried in order until one succeeds (see the request loop below)
+const ATTEMPTS = [
+  { model: 'gemini-3.8-flash', search: true },   // needs a billing-enabled key
+  { model: 'gemini-3.8-flash', search: false },  // free tier: answers from the prompt only
+  { model: 'gemini-2.5-flash', search: true },   // older model, search allowed on free tier
+];
 
 // Sites allowed to call this proxy (custom domain + GitHub Pages fallback)
 const ALLOWED_ORIGINS = [
@@ -28,10 +34,10 @@ About Dr. Pritam Deka:
 - Co-Founder & AI Product Lead at Khyontek AI (Guwahati, Assam, Jan 2026-present)
 - Spasht Health (spashthealth.com, public beta since Sep 2026): Khyontek AI's free medical report reader for India. Users photograph a lab report, prescription or discharge summary and get each value explained in plain language in English or 19 Indian languages, plotted against the report's own reference ranges, with questions to ask their doctor. It explains reports, it does not diagnose; reports are not stored and no account is needed
 - Research: NLP, LLMs, Vision-Language Models, agentic AI, document intelligence, information extraction, fact-checking, RAG
-- 12+ publications including Best Paper at iiWAS 2021
+- 12 peer-reviewed publications (18 items on Google Scholar, 240+ citations, h-index 6) including Best Paper at iiWAS 2021
 - 2026: papers at ACM SAC 2026 and IEEE Access on process diagram extraction with VLMs
 - 2025: Flowchart2Mermaid arXiv preprint
-- 50+ models and 20+ datasets on HuggingFace
+- 60+ models and 25+ datasets on HuggingFace
 - Live apps: Spasht Health (spashthealth.com), Flowchart-to-Mermaid (Vercel), BelfastBuild AI (Vercel), Biomedical Fact-Checker (HF Spaces)
 - Reviewer for ICML 2026, NeurIPS 2026, ACM SAC 2024, ICON 2021/2023, GPTMB 2024
 - Education: PhD (QUB), MTech IT (Tezpur University), BE CSE (Gauhati University)
@@ -107,27 +113,33 @@ export default {
         }));
       const contents = [...prior, { role: 'user', parts: [{ text: userMessage }] }];
 
-      // Enable Google Search grounding so Gemini can look up recent info
-      const res = await fetch(GEMINI_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
-        body: JSON.stringify({
-          systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
-          contents: contents,
-          tools: [{ google_search: {} }],
-          generationConfig: { temperature: 0.7, maxOutputTokens: 1024 },
-        }),
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        console.error('Gemini error', res.status, JSON.stringify(data).slice(0, 500));
-        return new Response(JSON.stringify({ error: 'The AI service is busy right now. Please try again shortly.' }), { status: 502, headers });
+      // Try each model/tool combination until one succeeds. Google Search grounding
+      // on Gemini 3.x needs a paid (billing-enabled) key, so fall back to answering
+      // from the system prompt alone, then to the older model.
+      let data = null;
+      let lastStatus = 0;
+      for (const attempt of ATTEMPTS) {
+        const res = await fetch(geminiUrl(attempt.model), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
+          body: JSON.stringify({
+            systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+            contents: contents,
+            ...(attempt.search ? { tools: [{ google_search: {} }] } : {}),
+            generationConfig: { temperature: 0.7, maxOutputTokens: 1024 },
+          }),
+        });
+        const body = await res.json().catch(() => ({}));
+        if (res.ok) { data = body; break; }
+        lastStatus = res.status;
+        console.error('Gemini error', attempt.model, attempt.search ? 'search' : 'no-search', res.status, JSON.stringify(body).slice(0, 500));
+      }
+      if (!data) {
+        return new Response(JSON.stringify({ error: `The AI service is unavailable right now (code ${lastStatus}). Please try again shortly or email contact@pritamdeka.com.` }), { status: 502, headers });
       }
       // Extract text from response (may include multiple parts if grounding citations are present; skip thought parts)
       const parts = data?.candidates?.[0]?.content?.parts || [];
-      const reply = parts.filter(p => !p.thought).map(p => p.text || '').filter(Boolean).join('
-') || 'Sorry, I could not generate a response.';
+      const reply = parts.filter(p => !p.thought).map(p => p.text || '').filter(Boolean).join('\n') || 'Sorry, I could not generate a response.';
 
       return new Response(JSON.stringify({ reply }), { headers });
     } catch (err) {

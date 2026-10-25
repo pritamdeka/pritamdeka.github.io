@@ -77,6 +77,10 @@ Static personal academic website deployed via GitHub Pages (user site
   renders posts client-side with marked.js.
 - Without `GEMINI_API_KEY` the script prints an error and exits — no
   post is written, no commit happens.
+- `scripts/generate_post_pages.py` (stdlib only) then writes a static,
+  shareable `blog/<slug>.html` per post (served at `/blog/<slug>`, own
+  OG/Twitter tags + BlogPosting JSON-LD) and rewrites the marked blog block
+  in `sitemap.xml`. Don't hand-edit those pages; rerun the script.
 - Auto-commits with `📝 Weekly AI digest [skip ci]`.
 
 ## RSS/Atom feed

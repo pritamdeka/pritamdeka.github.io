@@ -467,7 +467,7 @@ async function fetchDynamicStats() {
   const phCitationsEl = document.getElementById('ph-citations');
   
   try {
-    const response = await fetch('citations.json');
+    const response = await fetch('/citations.json');
     const data = await response.json();
     
     if (paperCountEl) {
@@ -499,7 +499,7 @@ async function renderCitationSparkline() {
   const svg = document.getElementById('spark-svg');
   if (!spark || !svg) return;
   try {
-    const res = await fetch('citations-history.json');
+    const res = await fetch('/citations-history.json');
     const history = await res.json();
     if (!Array.isArray(history) || history.length < 2) return;
     const pts = history.map(h => h.citations);
@@ -1054,7 +1054,7 @@ if (networkContainer) {
 // ===== Service Worker Registration =====
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').catch((err) => {
+    navigator.serviceWorker.register('/sw.js').catch((err) => {
       console.warn('SW registration failed:', err);
     });
   });
@@ -1268,6 +1268,51 @@ function fetchWithTimeout(url, ms, options) {
     });
   });
 })();
+
+// ===== Blog Share Bar =====
+// Shared by blog.html (rendered posts) and the static blog/<slug>.html pages.
+if (navigator.share) document.documentElement.classList.add('can-share');
+
+window.buildShareBar = function(url, title) {
+  const u = encodeURIComponent(url);
+  const t = encodeURIComponent(title);
+  const attr = (value) => String(value).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+  const link = (href, icon, label) =>
+    `<a class="blog-share-btn" target="_blank" rel="noopener noreferrer" href="${href}"><i class="${icon}"></i> ${label}</a>`;
+  return `<div class="blog-share" aria-label="Share this post">
+    <span class="blog-share-label"><i class="fas fa-share-nodes"></i> Share</span>
+    <button type="button" class="blog-share-btn blog-share-native" data-share="native" data-url="${attr(url)}" data-title="${attr(title)}"><i class="fas fa-arrow-up-from-bracket"></i> Share…</button>
+    ${link(`https://www.linkedin.com/sharing/share-offsite/?url=${u}`, 'fab fa-linkedin', 'LinkedIn')}
+    ${link(`https://twitter.com/intent/tweet?text=${t}&url=${u}`, 'fab fa-x-twitter', 'X')}
+    ${link(`https://bsky.app/intent/compose?text=${t}%20${u}`, 'fas fa-cloud', 'Bluesky')}
+    ${link(`https://wa.me/?text=${t}%20${u}`, 'fab fa-whatsapp', 'WhatsApp')}
+    <a class="blog-share-btn" href="mailto:?subject=${t}&body=${u}"><i class="fas fa-envelope"></i> Email</a>
+    <button type="button" class="blog-share-btn" data-share="copy" data-url="${attr(url)}"><i class="fas fa-link"></i> Copy link</button>
+  </div>`;
+};
+
+document.addEventListener('click', async (event) => {
+  const button = event.target.closest('[data-share]');
+  if (button) {
+    const url = button.dataset.url || location.href;
+    if (button.dataset.share === 'native') {
+      try { await navigator.share({ title: button.dataset.title || document.title, url }); } catch (_) { /* dismissed */ }
+      trackEvent('blog_share', { channel: 'native' });
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+      setTimeout(() => { button.innerHTML = '<i class="fas fa-link"></i> Copy link'; }, 2000);
+    } catch (_) {
+      window.prompt('Copy this link:', url);
+    }
+    trackEvent('blog_share', { channel: 'copy' });
+    return;
+  }
+  const link = event.target.closest('.blog-share a.blog-share-btn');
+  if (link) trackEvent('blog_share', { channel: link.textContent.trim().toLowerCase() });
+});
 
 // ===== Conversion and Content-Link Analytics =====
 document.addEventListener('click', (event) => {
