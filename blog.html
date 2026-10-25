@@ -271,8 +271,8 @@
         heroImage +
         html +
         '<div class="blog-share">' +
-          '<a class="blog-share-btn" target="_blank" href="https://twitter.com/intent/tweet?text=' + encodeURIComponent(md.split('\n')[0].replace('#','').trim()) + '&url=' + encodeURIComponent(postUrl) + '"><i class="fab fa-x-twitter"></i> Share on X</a>' +
-          '<a class="blog-share-btn" target="_blank" href="https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(postUrl) + '"><i class="fab fa-linkedin"></i> LinkedIn</a>' +
+          '<a class="blog-share-btn" target="_blank" rel="noopener noreferrer" href="https://twitter.com/intent/tweet?text=' + encodeURIComponent(md.split('\n')[0].replace('#','').trim()) + '&url=' + encodeURIComponent(postUrl) + '"><i class="fab fa-x-twitter"></i> Share on X</a>' +
+          '<a class="blog-share-btn" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(postUrl) + '"><i class="fab fa-linkedin"></i> LinkedIn</a>' +
           '<button class="blog-share-btn" id="copy-blog-link"><i class="fas fa-link"></i> Copy link</button>' +
         '</div>' +
         '<div class="giscus" id="giscus-container"></div>' +

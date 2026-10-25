@@ -57,9 +57,10 @@ def esc(s):
     return html.escape(s, quote=True)
 
 def main():
-    idx = Path('index.html')
+    # News items live on the About page
+    idx = Path('about.html')
     if not idx.exists():
-        print("index.html not found")
+        print("about.html not found")
         return
     html_text = idx.read_text(encoding='utf-8')
     news = parse_news(html_text)
@@ -76,7 +77,7 @@ def main():
             'xml': f"""  <entry>
     <id>{eid}</id>
     <title>{esc(heading)}</title>
-    <link href="{SITE}/#news"/>
+    <link href="{SITE}/about.html#news"/>
     <updated>{iso}</updated>
     <published>{iso}</published>
     <summary>{esc(body)}</summary>

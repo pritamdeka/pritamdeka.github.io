@@ -22,10 +22,10 @@ from datetime import datetime, timezone
 from difflib import SequenceMatcher
 from pathlib import Path
 
-GEMINI_MODEL = "gemini-2.5-flash"
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.8-flash")
 GEMINI_URL = (
     "https://generativelanguage.googleapis.com/v1beta/models/"
-    f"{GEMINI_MODEL}:generateContent?key={{key}}"
+    f"{GEMINI_MODEL}:generateContent"
 )
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 DEFAULT_GROQ_MODELS = (
@@ -421,15 +421,19 @@ def call_gemini(prompt):
         "generationConfig": {"temperature": 0.55, "maxOutputTokens": 4096},
     }
     raw = http_request(
-        GEMINI_URL.format(key=key),
+        GEMINI_URL,
         timeout=75,
         data=json.dumps(payload).encode("utf-8"),
-        headers={"Content-Type": "application/json"},
+        headers={"Content-Type": "application/json", "x-goog-api-key": key},
         attempts=2,
     )
     data = json.loads(raw.decode("utf-8"))
     try:
-        return data["candidates"][0]["content"]["parts"][0]["text"].strip()
+        parts = data["candidates"][0]["content"]["parts"]
+        text = "".join(p.get("text", "") for p in parts if not p.get("thought")).strip()
+        if not text:
+            raise KeyError("text")
+        return text
     except (KeyError, IndexError):
         raise RuntimeError(f"Unexpected Gemini response: {json.dumps(data)[:400]}")
 

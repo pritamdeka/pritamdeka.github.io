@@ -70,6 +70,15 @@
     <author><name>Dr. Pritam Deka (AI digest)</name></author>
   </entry>
   <entry>
+    <id>urn:pritamdeka:news:0:2026-09</id>
+    <title>Launched Spasht Health (Public Beta)</title>
+    <link href="https://pritamdeka.com/about.html#news"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <published>2026-09-01T00:00:00Z</published>
+    <summary>Launched Spasht Health at Khyontek AI: a free medical report reader for India that explains lab reports, prescriptions and discharge summaries in plain language, in English and 19 Indian languages, with questions to take to your doctor.</summary>
+    <author><name>Dr. Pritam Deka</name></author>
+  </entry>
+  <entry>
     <id>urn:pritamdeka:blog:2026-08-31</id>
     <title>Why LoopArena Benchmarking Runtime Controllers Matters for Reliable AI Systems</title>
     <link href="https://pritamdeka.com/blog/2026-08-31-why-looparena-benchmarking-runtime-controllers-matters-for-reliable-ai.md"/>
@@ -176,5 +185,50 @@
     <published>2026-06-22T09:00:00Z</published>
     <summary>The most interesting work in agents, multimodal RAG and document intelligence is converging on one problem: models must show where an answer came from, how it was assembled and where it can still fail...</summary>
     <author><name>Dr. Pritam Deka (AI digest)</name></author>
+  </entry>
+  <entry>
+    <id>urn:pritamdeka:news:2:2026-03</id>
+    <title>Paper Accepted at ACM SAC 2026</title>
+    <link href="https://pritamdeka.com/about.html#news"/>
+    <updated>2026-03-01T00:00:00Z</updated>
+    <published>2026-03-01T00:00:00Z</published>
+    <summary>Our work on &quot;Structured Extraction from Business Process Diagrams Using Vision-Language Models&quot; has been accepted for presentation at ACM SAC 2026.</summary>
+    <author><name>Dr. Pritam Deka</name></author>
+  </entry>
+  <entry>
+    <id>urn:pritamdeka:news:1:2026-01</id>
+    <title>Co-Founded Khyontek AI</title>
+    <link href="https://pritamdeka.com/about.html#news"/>
+    <updated>2026-01-01T00:00:00Z</updated>
+    <published>2026-01-01T00:00:00Z</published>
+    <summary>Co-founded Khyontek AI (Guwahati, Assam) as Co-Founder &amp; AI Product Lead, building SME-focused AI products and leading product strategy, fundraising preparation and an AI internship programme.</summary>
+    <author><name>Dr. Pritam Deka</name></author>
+  </entry>
+  <entry>
+    <id>urn:pritamdeka:news:3:2025-01</id>
+    <title>Vision and Language Symposium Speaker</title>
+    <link href="https://pritamdeka.com/about.html#news"/>
+    <updated>2025-01-01T00:00:00Z</updated>
+    <published>2025-01-01T00:00:00Z</published>
+    <summary>Main speaker at the Vision and Language Symposium 2025 held at Queen&#x27;s University Belfast.</summary>
+    <author><name>Dr. Pritam Deka</name></author>
+  </entry>
+  <entry>
+    <id>urn:pritamdeka:news:5:2024-12</id>
+    <title>PhD Completed</title>
+    <link href="https://pritamdeka.com/about.html#news"/>
+    <updated>2024-12-01T00:00:00Z</updated>
+    <published>2024-12-01T00:00:00Z</published>
+    <summary>Successfully defended PhD thesis on &quot;Evidence-Based Approach to Verification of Online Health-Related Content&quot; at Queen&#x27;s University Belfast.</summary>
+    <author><name>Dr. Pritam Deka</name></author>
+  </entry>
+  <entry>
+    <id>urn:pritamdeka:news:4:2024-05</id>
+    <title>Started as Research Fellow at QUB</title>
+    <link href="https://pritamdeka.com/about.html#news"/>
+    <updated>2024-05-01T00:00:00Z</updated>
+    <published>2024-05-01T00:00:00Z</published>
+    <summary>Joined Queen&#x27;s University Belfast as a Research Fellow in AI, focusing on corporate document understanding with LLMs and VLMs.</summary>
+    <author><name>Dr. Pritam Deka</name></author>
   </entry>
 </feed>

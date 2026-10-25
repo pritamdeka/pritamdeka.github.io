@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
   <!-- Vis.js for Network Graph -->
-  <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
   <link rel="stylesheet" href="style-dynamic.css?v=20">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="apple-touch-icon" href="favicon.svg">
@@ -189,10 +189,10 @@
 			  <div><i class="fas fa-map-marker-alt"></i> Belfast, UK</div>
 			  <div><i class="fas fa-envelope"></i> <a href="mailto:contact@pritamdeka.com">contact@pritamdeka.com</a></div>
 			  <div><i class="fas fa-envelope"></i> <a href="mailto:p.deka@qub.ac.uk">p.deka@qub.ac.uk</a></div>
-			  <div><i class="fab fa-github"></i> <a href="https://github.com/pritamdeka" target="_blank">GitHub</a></div>
-			  <div><span class="huggingface-emoji">🤗</span> <a href="https://huggingface.co/pritamdeka" target="_blank">HuggingFace</a></div>
-			  <div><i class="fab fa-linkedin"></i> <a href="https://www.linkedin.com/in/pritam-deka-phd-9158251b8/" target="_blank">LinkedIn</a></div>
-			  <div><i class="fab fa-google"></i> <a href="https://scholar.google.com/citations?user=b0jYTAUAAAAJ&hl=en" target="_blank">Google Scholar</a></div>
+			  <div><i class="fab fa-github"></i> <a href="https://github.com/pritamdeka" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+			  <div><span class="huggingface-emoji">🤗</span> <a href="https://huggingface.co/pritamdeka" target="_blank" rel="noopener noreferrer">HuggingFace</a></div>
+			  <div><i class="fab fa-linkedin"></i> <a href="https://www.linkedin.com/in/pritam-deka-phd-9158251b8/" target="_blank" rel="noopener noreferrer">LinkedIn</a></div>
+			  <div><i class="fab fa-google"></i> <a href="https://scholar.google.com/citations?user=b0jYTAUAAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Google Scholar</a></div>
 			</div>
 		</div>
       </div>
@@ -269,6 +269,13 @@
         <h2><i class="fas fa-newspaper"></i> Latest News & Updates</h2>
         <div class="news-timeline">
           <div class="news-item">
+            <span class="news-date">September 2026</span>
+            <div class="news-content">
+              <h4><i class="fas fa-file-medical"></i> Launched Spasht Health (Public Beta)</h4>
+              <p>Launched Spasht Health at Khyontek AI: a free medical report reader for India that explains lab reports, prescriptions and discharge summaries in plain language, in English and 19 Indian languages, with questions to take to your doctor.</p>
+            </div>
+          </div>
+          <div class="news-item">
             <span class="news-date">January 2026</span>
             <div class="news-content">
               <h4><i class="fas fa-rocket"></i> Co-Founded Khyontek AI</h4>
@@ -337,6 +344,20 @@
         <h2><i class="fas fa-rocket"></i> Projects &amp; Live Demos</h2>
         <div class="projects-grid">
           <div class="project-card spotlight">
+            <div class="project-icon"><i class="fas fa-file-medical"></i></div>
+            <h3>Spasht Health</h3>
+            <p>Khyontek AI's free medical report reader for India. Photograph a lab report, prescription or discharge summary and get each value explained in plain language, plotted against the report's own reference ranges, with questions for your doctor. No account, reports not stored.</p>
+            <div class="project-tags">
+              <span class="project-tag">Health AI</span>
+              <span class="project-tag">Multilingual</span>
+              <span class="project-tag">Document AI</span>
+            </div>
+            <div class="project-links">
+              <a href="https://spashthealth.com/" target="_blank" rel="noopener noreferrer" class="project-link"><i class="fas fa-external-link-alt"></i> Live app</a>
+            </div>
+          </div>
+
+          <div class="project-card spotlight">
             <div class="project-icon"><i class="fas fa-project-diagram"></i></div>
             <h3>Flowchart2Mermaid</h3>
             <p>Vision-Language Model powered app converting uploaded flowchart images into editable Mermaid code, with diagram preview, export and AI-assisted refinement.</p>
@@ -346,8 +367,8 @@
               <span class="project-tag">Process Mining</span>
             </div>
             <div class="project-links">
-              <a href="https://flowchart-to-mermaid.vercel.app/" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i> Live app</a>
-              <a href="https://arxiv.org/abs/2512.02170" target="_blank" class="project-link"><i class="fas fa-file-alt"></i> Paper</a>
+              <a href="https://flowchart-to-mermaid.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-link"><i class="fas fa-external-link-alt"></i> Live app</a>
+              <a href="https://arxiv.org/abs/2512.02170" target="_blank" rel="noopener noreferrer" class="project-link"><i class="fas fa-file-alt"></i> Paper</a>
             </div>
           </div>
 
@@ -361,7 +382,7 @@
               <span class="project-tag">Retrieval</span>
             </div>
             <div class="project-links">
-              <a href="https://belfastbuild.vercel.app/" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i> Live app</a>
+              <a href="https://belfastbuild.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-link"><i class="fas fa-external-link-alt"></i> Live app</a>
             </div>
           </div>
 
@@ -375,7 +396,7 @@
               <span class="project-tag">Health AI</span>
             </div>
             <div class="project-links">
-              <a href="https://huggingface.co/spaces/pritamdeka/Biomedical-Fact-Checker" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i> Demo</a>
+              <a href="https://huggingface.co/spaces/pritamdeka/Biomedical-Fact-Checker" target="_blank" rel="noopener noreferrer" class="project-link"><i class="fas fa-external-link-alt"></i> Demo</a>
             </div>
           </div>
 
@@ -390,7 +411,7 @@
               <span class="project-tag">BPMN</span>
             </div>
             <div class="project-links">
-              <a href="https://github.com/pritamdeka" target="_blank" class="project-link"><i class="fab fa-github"></i> GitHub</a>
+              <a href="https://github.com/pritamdeka" target="_blank" rel="noopener noreferrer" class="project-link"><i class="fab fa-github"></i> GitHub</a>
             </div>
           </div>
 
@@ -404,8 +425,8 @@
               <span class="project-tag">Dataset</span>
             </div>
             <div class="project-links">
-              <a href="https://zenodo.org/records/10276922" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i> Zenodo</a>
-              <a href="https://doi.org/10.1007/978-981-96-0576-7_20" target="_blank" class="project-link"><i class="fas fa-file-alt"></i> Paper</a>
+              <a href="https://zenodo.org/records/10276922" target="_blank" rel="noopener noreferrer" class="project-link"><i class="fas fa-external-link-alt"></i> Zenodo</a>
+              <a href="https://doi.org/10.1007/978-981-96-0576-7_20" target="_blank" rel="noopener noreferrer" class="project-link"><i class="fas fa-file-alt"></i> Paper</a>
             </div>
           </div>
 
@@ -418,7 +439,7 @@
               <span class="project-tag">Open Source</span>
             </div>
             <div class="project-links">
-              <a href="https://huggingface.co/pritamdeka" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i> Hugging Face</a>
+              <a href="https://huggingface.co/pritamdeka" target="_blank" rel="noopener noreferrer" class="project-link"><i class="fas fa-external-link-alt"></i> Hugging Face</a>
             </div>
           </div>
         </div>
@@ -556,10 +577,10 @@
       </div>
       <p>&copy; <span id="current-year">2025</span> Pritam Deka · <a href="/analytics">Research Impact</a> · Last updated: <span id="last-updated">Loading...</span></p>
       <div class="social-footer">
-        <a href="https://github.com/pritamdeka" target="_blank"><i class="fab fa-github"></i></a>
-        <a href="https://huggingface.co/pritamdeka" target="_blank"><i class="fab fa-huggingface"></i></a>
-        <a href="https://www.linkedin.com/in/pritam-deka-phd-9158251b8/" target="_blank"><i class="fab fa-linkedin"></i></a>
-        <a href="https://scholar.google.com/citations?user=b0jYTAUAAAAJ&hl=en" target="_blank"><i class="fas fa-graduation-cap"></i></a>
+        <a href="https://github.com/pritamdeka" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+        <a href="https://huggingface.co/pritamdeka" target="_blank" rel="noopener noreferrer"><i class="fab fa-huggingface"></i></a>
+        <a href="https://www.linkedin.com/in/pritam-deka-phd-9158251b8/" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+        <a href="https://scholar.google.com/citations?user=b0jYTAUAAAAJ&hl=en" target="_blank" rel="noopener noreferrer"><i class="fas fa-graduation-cap"></i></a>
       </div>
     </div>
   </footer>

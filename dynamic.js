@@ -1,11 +1,4 @@
-﻿// Force-unregister any old service workers from the cache-first era
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistrations().then(function(regs) {
-    regs.forEach(function(r) { r.unregister(); });
-  });
-}
-
-// ===== Privacy-Safe Analytics =====
+﻿// ===== Privacy-Safe Analytics =====
 function trackEvent(name, data = {}) {
   try {
     if (window.umami && typeof window.umami.track === 'function') {
@@ -187,6 +180,8 @@ const searchData = [
   { title: 'Queen\'s University Belfast', type: 'Experience', section: 'experience' },
   { title: 'University of Southampton', type: 'Experience', section: 'experience' },
   { title: 'PhD', type: 'Education', section: 'about' },
+  { title: 'Spasht Health', type: 'Project', section: 'projects' },
+  { title: 'Khyontek AI', type: 'Experience', section: 'experience' },
   { title: 'Publications', type: 'Navigation', href: '/papers' },
   { title: 'Activities', type: 'Navigation', href: '/activities' },
   { title: 'Education', type: 'Navigation', href: '/education' },
