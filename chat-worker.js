@@ -12,6 +12,14 @@ const ATTEMPTS = [
   { model: 'gemini-3.8-flash', search: false },  // free tier: answers from the prompt only
   { model: 'gemini-2.5-flash', search: true },   // older model, search allowed on free tier
 ];
+const attemptKey = (a) => `${a.model}${a.search ? '+search' : ''}`;
+
+// Timing: the site waits 30s, so keep the whole fallback chain well inside that
+const ATTEMPT_TIMEOUT_MS = 9000;
+const TOTAL_BUDGET_MS = 20000;
+// Remember combinations that failed with a config error (per worker instance)
+const SKIP_FAILED_MS = 3600000;
+const failedUntil = new Map();
 
 // Sites allowed to call this proxy (custom domain + GitHub Pages fallback)
 const ALLOWED_ORIGINS = [
@@ -118,21 +126,38 @@ export default {
       // from the system prompt alone, then to the older model.
       let data = null;
       let lastStatus = 0;
+      const startedAt = Date.now();
       for (const attempt of ATTEMPTS) {
-        const res = await fetch(geminiUrl(attempt.model), {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
-          body: JSON.stringify({
-            systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
-            contents: contents,
-            ...(attempt.search ? { tools: [{ google_search: {} }] } : {}),
-            generationConfig: { temperature: 0.7, maxOutputTokens: 1024 },
-          }),
-        });
-        const body = await res.json().catch(() => ({}));
+        const key = attemptKey(attempt);
+        if ((failedUntil.get(key) || 0) > Date.now()) continue; // known to fail recently
+        if (Date.now() - startedAt > TOTAL_BUDGET_MS) break;    // stay inside the page's timeout
+        const generationConfig = { temperature: 0.7, maxOutputTokens: 1024 };
+        // Gemini 3 thinks by default; keep it light so replies come back quickly
+        if (attempt.model.startsWith('gemini-3')) generationConfig.thinkingConfig = { thinkingLevel: 'low' };
+        let res, body;
+        try {
+          res = await fetch(geminiUrl(attempt.model), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
+            body: JSON.stringify({
+              systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+              contents: contents,
+              ...(attempt.search ? { tools: [{ google_search: {} }] } : {}),
+              generationConfig,
+            }),
+            signal: AbortSignal.timeout(ATTEMPT_TIMEOUT_MS),
+          });
+          body = await res.json().catch(() => ({}));
+        } catch (err) {
+          lastStatus = 504;
+          console.error('Gemini timeout', key);
+          continue;
+        }
         if (res.ok) { data = body; break; }
         lastStatus = res.status;
-        console.error('Gemini error', attempt.model, attempt.search ? 'search' : 'no-search', res.status, JSON.stringify(body).slice(0, 500));
+        // Config errors (no billing for search, unknown model, bad field) won't fix themselves — skip this combo for a while
+        if ([400, 403, 404].includes(res.status)) failedUntil.set(key, Date.now() + SKIP_FAILED_MS);
+        console.error('Gemini error', key, res.status, JSON.stringify(body).slice(0, 500));
       }
       if (!data) {
         return new Response(JSON.stringify({ error: `The AI service is unavailable right now (code ${lastStatus}). Please try again shortly or email contact@pritamdeka.com.` }), { status: 502, headers });

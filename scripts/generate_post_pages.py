@@ -242,7 +242,7 @@ def page_html(entry, body, newer, older):
     </div>
   </footer>
 
-  <script src="/dynamic.js?v=20"></script>
+  <script src="/dynamic.js?v=21"></script>
 </body>
 </html>
 """

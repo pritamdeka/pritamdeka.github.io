@@ -1218,7 +1218,7 @@ function fetchWithTimeout(url, ms, options) {
     try {
       const res = await fetchWithTimeout(
         CHAT_WORKER_URL,
-        15000,
+        30000, // the worker may try a fallback model, so allow more than one Gemini round trip
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1249,9 +1249,12 @@ function fetchWithTimeout(url, ms, options) {
       }
     } catch (err) {
       removeTyping();
-      addMsg("Connection error. Please email contact@pritamdeka.com directly.", 'error');
+      const timedOut = err && err.message === 'timeout';
+      addMsg(timedOut
+        ? "The assistant is taking too long to answer. Please try again, or email contact@pritamdeka.com."
+        : "Connection error. Please email contact@pritamdeka.com directly.", 'error');
       trackEvent('chat_response', {
-        outcome: 'network_error',
+        outcome: timedOut ? 'timeout' : 'network_error',
         latency_bucket: latencyBucket(Date.now() - startedAt),
       });
     }
